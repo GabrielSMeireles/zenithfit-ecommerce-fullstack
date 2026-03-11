@@ -1,8 +1,13 @@
 # 👕 ZenithFit – Plataforma de E-commerce
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge\&logo=html5\&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge\&logo=css3\&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge&logo=groq&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=for-the-badge)
 
 > Plataforma de e-commerce para venda de camisetas fitness da marca **ZenithFit**, em desenvolvimento com foco em arquitetura fullstack e simulação de fluxo real de vendas 🛒.
@@ -34,7 +39,7 @@ O **ZenithFit** é um sistema de e-commerce desenvolvido para simular uma aplica
 * Fluxo completo de checkout
 
 Atualmente, o projeto encontra-se na fase de **Front-end estático**, totalmente navegável utilizando **HTML, CSS e JavaScript**.
-A migração para **React** e integração com API em **Node.js + Express + PostgreSQL** está planejada como próxima etapa.
+A migração para **React** e integração com API em **Node.js + Express + PostgreSQL** está planejada como próxima etapa, além de um **chatbot inteligente** powered by **Groq** e testes automatizados com **Cypress**.
 
 ---
 
@@ -84,7 +89,8 @@ O projeto está organizado de forma modular para facilitar a futura migração p
 * Criação de API REST em **Node.js + Express**.
 * Persistência de dados em **PostgreSQL**.
 * Implementação de autenticação real com JWT.
-* Testes automatizados das rotas da API.
+* Chatbot de atendimento integrado com **Groq**.
+* Testes automatizados end-to-end com **Cypress**.
 
 ---
 
@@ -115,9 +121,11 @@ zenithfit-ecommerce/
 | Camada             | Tecnologia                               |
 | ------------------ | ---------------------------------------- |
 | **Front-end**      | HTML5 • CSS3 • JavaScript (ES6)          |
+| **Front-end SPA**  | React *(em desenvolvimento)*             |
 | **Back-end**       | Node.js • Express *(em desenvolvimento)* |
 | **Banco de Dados** | PostgreSQL *(planejado)*                 |
-| **Testes**         | Testes automatizados *(planejado)*       |
+| **Chatbot IA**     | Groq *(planejado)*                       |
+| **Testes**         | Cypress *(planejado)*                    |
 
 ---
 
@@ -152,10 +160,11 @@ git clone https://github.com/seu-usuario/zenithfit-ecommerce.git
 ## 🔜 Próximas Etapas
 
 * [ ] Migração do front-end para React
-* [ ] Implementação da API REST
+* [ ] Implementação da API REST com Node.js + Express
 * [ ] Integração com banco PostgreSQL
 * [ ] Autenticação real com JWT
-* [ ] Testes automatizados
+* [ ] Chatbot de atendimento com Groq
+* [ ] Testes automatizados end-to-end com Cypress
 * [ ] Deploy da aplicação
 
 ---
