@@ -1,34 +1,185 @@
 import express, { type Request, type Response } from "express";
-import {connection} from "./src/db.js";
+import { connection } from "./src/db.js";
 import { prisma } from "./src/db.js";
-//import cors from "cors";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
-//app.use(cors());
+app.use(cors());
 connection();
 
-app.post("/register", async (req: Request, res: Response) => {
-  
+// Criar cliente
+app.post("/clientes", async (req: Request, res: Response) => {
   try {
+    const {
+      cpf,
+      name,
+      nascimento,
+      telefone,
+      ddd,
+      identificacao_telefone,
+      email,
+      password,
+      genero,
+      tipo_telefone,
+    } = req.body;
 
-    const {name, email, password, cep} = req.body;
-
-    if(!name || !email || !password || !cep) {
-        res
-          .status(400)
-          .json({ message: "Todos os campos são obrigatórios." });
-        return;
+    if (!cpf || !name || !nascimento || !telefone || !ddd || !identificacao_telefone || !email || !password || !genero || !tipo_telefone) {
+      res.status(400).json({ message: "Todos os campos são obrigatórios." });
+      return;
     }
 
-    const newUser = await prisma.cliente.create({
-      data: {name: name, email: email, password: password, cep: cep},
+    const clienteExistente = await prisma.cliente.findFirst({
+      where: { nm_email: email },
     });
 
-    res.json(newUser);
+    if (clienteExistente) {
+      res.status(409).json({ message: "Email já cadastrado." });
+      return;
+    }
+
+    const cpfExistente = await prisma.cliente.findUnique({
+      where: { cd_cpf: cpf },
+    });
+
+    if (cpfExistente) {
+      res.status(409).json({ message: "CPF já cadastrado." });
+      return;
+    }
+
+    const newCliente = await prisma.cliente.create({
+      data: {
+        cd_cpf:                    cpf,
+        nm_nome_cliente:           name,
+        dt_nascimento:             new Date(nascimento),
+        cd_telefone:               telefone,
+        cd_DDD:                    ddd,
+        nm_identificacao_telefone: identificacao_telefone,
+        nm_email:                  email,
+        cd_senha:                  password,
+        cd_rank_cliente:           0,
+        cd_genero:                 genero,
+        cd_tipo_telefone:          tipo_telefone,
+        cd_status:                 1,
+      },
+    });
+
+    res.status(201).json(newCliente);
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });
-    return;
+  }
+});
+
+// Listar todos os clientes
+app.get("/clientes", async (req: Request, res: Response) => {
+  try {
+    const clientes = await prisma.cliente.findMany({
+      include: {
+        genero:         true,
+        tipo_telefone:  true,
+        status_cliente: true,
+      },
+    });
+    res.status(200).json(clientes);
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor" });
+  }
+});
+
+// Buscar cliente por CPF
+app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
+  try {
+    const { cpf } = req.params;
+
+    const cliente = await prisma.cliente.findUnique({
+      where: { cd_cpf: cpf },
+      include: {
+        genero:         true,
+        tipo_telefone:  true,
+        status_cliente: true,
+      },
+    });
+
+    if (!cliente) {
+      res.status(404).json({ message: "Cliente não encontrado." });
+      return;
+    }
+
+    res.status(200).json(cliente);
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor" });
+  }
+});
+
+// Atualizar cliente
+app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
+  try {
+    const { cpf } = req.params;
+    const {
+      name,
+      nascimento,
+      telefone,
+      ddd,
+      identificacao_telefone,
+      email,
+      password,
+      genero,
+      tipo_telefone,
+      status,
+    } = req.body;
+
+    const cliente = await prisma.cliente.findUnique({
+      where: { cd_cpf: cpf },
+    });
+
+    if (!cliente) {
+      res.status(404).json({ message: "Cliente não encontrado." });
+      return;
+    }
+
+    const clienteAtualizado = await prisma.cliente.update({
+      where: { cd_cpf: cpf },
+      data: {
+        nm_nome_cliente:           name                   ?? cliente.nm_nome_cliente,
+        dt_nascimento:             nascimento             ? new Date(nascimento) : cliente.dt_nascimento,
+        cd_telefone:               telefone               ?? cliente.cd_telefone,
+        cd_DDD:                    ddd                    ?? cliente.cd_DDD,
+        nm_identificacao_telefone: identificacao_telefone ?? cliente.nm_identificacao_telefone,
+        nm_email:                  email                  ?? cliente.nm_email,
+        cd_senha:                  password               ?? cliente.cd_senha,
+        cd_genero:                 genero                 ?? cliente.cd_genero,
+        cd_tipo_telefone:          tipo_telefone          ?? cliente.cd_tipo_telefone,
+        cd_status:                 status                 ?? cliente.cd_status,
+      },
+    });
+
+    res.status(200).json(clienteAtualizado);
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor" });
+  }
+});
+
+// Deletar cliente
+app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
+  try {
+    const { cpf } = req.params;
+
+    const cliente = await prisma.cliente.findUnique({
+      where: { cd_cpf: cpf },
+    });
+
+    if (!cliente) {
+      res.status(404).json({ message: "Cliente não encontrado." });
+      return;
+    }
+
+    await prisma.cliente.delete({
+      where: { cd_cpf: cpf },
+    });
+
+    res.status(200).json({ message: "Cliente deletado com sucesso." });
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor" });
   }
 });
 

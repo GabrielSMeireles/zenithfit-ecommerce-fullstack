@@ -8,9 +8,41 @@ datasource db {
 }
 
 model Cliente {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
-  cep String
+  cd_cpf                    String         @id
+  nm_nome_cliente           String
+  dt_nascimento             DateTime
+  cd_telefone               String
+  cd_DDD                    String
+  nm_identificacao_telefone String
+  nm_email                  String         @unique
+  cd_senha                  String
+  cd_rank_cliente           Int            @default(0)
+
+  // Relações
+  genero                    Genero         @relation(fields: [cd_genero], references: [cd_genero])
+  cd_genero                 Int
+
+  tipo_telefone             Tipo_telefone  @relation(fields: [cd_tipo_telefone], references: [cd_tipo_telefone])
+  cd_tipo_telefone          Int
+
+  status_cliente            Status_cliente @relation(fields: [cd_status], references: [cd_status])
+  cd_status                 Int
+}
+
+model Genero {
+  cd_genero  Int       @id @default(autoincrement())
+  nm_genero  String
+  clientes   Cliente[]
+}
+
+model Tipo_telefone {
+  cd_tipo_telefone  Int       @id @default(autoincrement())
+  nm_tipo_telefone  String
+  clientes          Cliente[]
+}
+
+model Status_cliente {
+  cd_status  Int       @id @default(autoincrement())
+  nm_status  String
+  clientes   Cliente[]
 }
