@@ -21,12 +21,28 @@ model Cliente {
   // Relações
   genero                    Genero         @relation(fields: [cd_genero], references: [cd_genero])
   cd_genero                 Int
-
   tipo_telefone             Tipo_telefone  @relation(fields: [cd_tipo_telefone], references: [cd_tipo_telefone])
   cd_tipo_telefone          Int
-
   status_cliente            Status_cliente @relation(fields: [cd_status], references: [cd_status])
   cd_status                 Int
+
+  // Relação: Um cliente tem muitos endereços
+  enderecos                 Endereco[]
+}
+
+model Endereco {
+  cd_endereco   Int     @id @default(autoincrement())
+  cd_cep        String
+  nm_logradouro String
+  cd_numero     String
+  nm_bairro     String
+  nm_cidade     String
+  sg_estado     String
+  nm_tipo       String  @default("Residencial") 
+
+  // Chave estrangeira para o Cliente
+  cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf])
+  cd_cpf        String
 }
 
 model Genero {
