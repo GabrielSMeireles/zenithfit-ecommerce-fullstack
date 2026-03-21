@@ -499,20 +499,49 @@ function renderizarTabela(lista) {
                 ${statusAtivo ? 'Ativo' : 'Inativo'}
               </span>
             </td>
+          
             <td class="whitespace-nowrap px-6 py-4">
-              <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4">
                 <button onclick="editarCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary">
-                  <span class="material-symbols-outlined text-base">edit</span> Editar
+                <span class="material-symbols-outlined text-base">edit</span> 
+                Editar
                 </button>
-              </div>
+                <button onclick="excluirCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-500">
+                <span class="material-symbols-outlined text-base">delete</span> 
+                Excluir
+                </button>
+            </div>
             </td>
+            
           </tr>
         `;
     });
 }
+async function excluirCliente(cpf) {
+    // Janela de confirmação nativa
+    if (confirm("Tem certeza que deseja excluir permanentemente este cliente?")) {
+        try {
+            const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`, {
+                method: 'DELETE'
+            });
 
+            if (resposta.ok) {
+                alert("Cliente removido com sucesso!");
+                carregarClientes(); // Atualiza a tabela automaticamente
+            } else {
+                const erro = await resposta.json();
+                alert("Erro ao excluir: " + (erro.message || "Erro desconhecido"));
+            }
+        } catch (error) {
+            console.error("Erro de conexão:", error);
+            alert("Erro de conexão com o servidor.");
+        }
+    }
+}
   // Executa assim que a página abre
   window.onload = carregarClientes;
+
+  
 </script>
 </body>
 </html>
