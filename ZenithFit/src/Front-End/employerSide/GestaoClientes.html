@@ -96,8 +96,17 @@
 <div class="flex h-full w-full flex-1 items-stretch rounded-lg">
 <div class="text-gray-500 dark:text-gray-400 flex items-center justify-center rounded-l-lg border border-r-0 border-gray-300 bg-white pl-4 dark:border-gray-700 dark:bg-gray-800">
 <span class="material-symbols-outlined">search</span>
+ 
+<!-- Input de Busca Funcionando -->
+
 </div>
-<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg border border-l-0 border-gray-300 bg-white px-4 text-base font-normal leading-normal text-gray-900 placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary" placeholder="Buscar por qualquer atributo..." value=""/>
+<input 
+  id="input-busca"
+  oninput="filtrarClientes()"
+  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg border border-l-0 border-gray-300 bg-white px-4 text-base font-normal leading-normal text-gray-900 placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary" 
+  placeholder="Buscar por nome, e-mail ou CPF..." 
+  value=""
+/>
 </div>
 </label>
 </div>
@@ -260,104 +269,70 @@
 </div>
 
     <!-- Modal Alteração de Dados Pessoais -->
-    <div id="personalDataModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg w-full max-w-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-gray-100">Alteração de Dados Pessoais</h2>
-                <button onclick="closeModal('personalDataModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-                    <span class="material-symbols-outlined">close</span>
+   <div id="personalDataModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg w-full max-w-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start mb-4">
+            <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-gray-100">Alteração de Dados Pessoais</h2>
+            <button type="button" onclick="closeModal('personalDataModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="editForm">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome Completo</label>
+                    <input id="edit-nome" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 px-3 py-2" type="text" />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data de Nascimento</label>
+                        <input id="edit-nascimento" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 px-3 py-2" type="date" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CPF</label>
+                        <input id="edit-cpf" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:text-gray-400 px-3 py-2" type="text" readonly />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gênero</label>
+                    <select id="edit-genero" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 px-3 py-2">
+                        <option value="1">Feminino</option>
+                        <option value="2">Masculino</option>
+                        <option value="3">Não informar</option>
+                        <option value="4">Outro</option>
+                    </select>
+                </div>
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone</legend>
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-4">
+                        <div class="sm:col-span-4">
+                            <select id="edit-tipo-tel" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm px-3 py-2">
+                                <option value="1">Celular</option>
+                                <option value="2">Residencial</option>
+                                <option value="3">Comercial</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <input id="edit-ddd" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-center px-3 py-2" placeholder="DDD" type="text" />
+                        </div>
+                        <div class="sm:col-span-6">
+                            <input id="edit-telefone" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm px-3 py-2" placeholder="00000-0000" type="tel" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row-reverse gap-4">
+                <button type="button" onclick="salvarAlteracoes()" class="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-3 bg-primary text-base font-medium text-white hover:bg-primary/90 transition-colors">
+                    Salvar
+                </button>
+                <button type="button" onclick="closeModal('personalDataModal')" class="w-full sm:w-auto inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-800 shadow-sm px-6 py-3 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 transition-colors">
+                    Cancelar
                 </button>
             </div>
-            <form>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome Completo</label>
-                        <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="João da Silva" />
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data de Nascimento</label>
-                            <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="date" value="1990-01-01" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CPF</label>
-                            <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" placeholder="000.000.000-00" value="123.456.789-00" />
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gênero</label>
-                        <select class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2">
-                            <option>Feminino</option>
-                            <option selected>Masculino</option>
-                            <option>Não informar</option>
-                            <option>Outro</option>
-                        </select>
-                    </div>
-                    <fieldset>
-                        <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone</legend>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-4">
-                            <div class="sm:col-span-4">
-                                <select class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 px-3 py-2">
-                                    <option>Celular</option>
-                                    <option>Residencial</option>
-                                    <option>Comercial</option>
-                                </select>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 text-center px-3 py-2" placeholder="DDD" type="text" value="11" />
-                            </div>
-                            <div class="sm:col-span-6">
-                                <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" placeholder="00000-0000" type="tel" value="99999-9999" />
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Endereço Residencial</legend>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CEP</label>
-                                <input class="w-full sm:w-1/2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" placeholder="00000-000" type="text" value="01234-567" />
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-4">
-                                <div class="sm:col-span-9">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rua</label>
-                                    <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="Rua das Flores" />
-                                </div>
-                                <div class="sm:col-span-3">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número</label>
-                                    <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="123" />
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bairro</label>
-                                <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="Centro" />
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-4">
-                                <div class="sm:col-span-8">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cidade</label>
-                                    <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="São Paulo" />
-                                </div>
-                                <div class="sm:col-span-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estado</label>
-                                    <input class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2" type="text" value="SP" />
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="flex flex-col sm:flex-row-reverse gap-4">
-                       <button type="button" onclick="salvarAlteracoes()" class="w-full sm:w-auto ...">
-                            Salvar
-                        </button>
-                        <button onclick="closeModal('personalDataModal')" class="w-full sm:w-auto inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-6 py-3 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-colors">
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
     <script>
   function openPersonalDataModal() {
@@ -411,7 +386,7 @@
     }
   }
 
-  // Função para buscar UM cliente e abrir o modal preenchido
+// Função para buscar UM cliente e abrir o modal preenchido
 async function editarCliente(cpf) {
     try {
         const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
@@ -419,11 +394,15 @@ async function editarCliente(cpf) {
 
         const cliente = await resposta.json();
 
-        // Agora o JS encontra exatamente quem ele precisa pelo ID
+        // Preenchendo os campos do modal
         document.getElementById('edit-nome').value = cliente.nm_nome_cliente;
         document.getElementById('edit-cpf').value = cliente.cd_cpf;
         document.getElementById('edit-ddd').value = cliente.cd_DDD;
         document.getElementById('edit-telefone').value = cliente.cd_telefone;
+        
+        // Preenchendo os Selects (Gênero e Tipo Telefone)
+        document.getElementById('edit-genero').value = cliente.cd_genero;
+        document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone;
         
         if (cliente.dt_nascimento) {
             document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
@@ -435,6 +414,102 @@ async function editarCliente(cpf) {
     }
 }
 
+async function salvarAlteracoes() {
+    const cpf = document.getElementById('edit-cpf').value;
+    
+    // Objeto com os nomes idênticos aos tratados no app.put acima
+    const dadosAtualizados = {
+        nm_nome_cliente: document.getElementById('edit-nome').value,
+        dt_nascimento: document.getElementById('edit-nascimento').value, 
+        cd_genero: document.getElementById('edit-genero').value,
+        cd_tipo_telefone: document.getElementById('edit-tipo-tel').value,
+        cd_DDD: document.getElementById('edit-ddd').value,
+        cd_telefone: document.getElementById('edit-telefone').value
+    };
+
+    console.log("Enviando para o servidor:", dadosAtualizados);
+
+    try {
+        const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosAtualizados)
+        });
+
+        if (resposta.ok) {
+            alert("Alterado com sucesso!");
+            closeModal('personalDataModal');
+            carregarClientes(); // Recarrega a lista
+        } else {
+            const erro = await resposta.json();
+            alert("Erro: " + erro.message);
+        }
+    } catch (error) {
+        alert("Erro de conexão com o servidor.");
+    }
+}
+
+let todosOsClientes = []; // Variável global para guardar a lista completa
+
+async function carregarClientes() {
+    try {
+        const resposta = await fetch('http://localhost:3000/clientes');
+        todosOsClientes = await resposta.json(); // Guarda na global
+        renderizarTabela(todosOsClientes); // Chama a função que desenha a tabela
+    } catch (erro) {
+        console.error("Erro ao conectar com o Back-End:", erro);
+    }
+}
+
+// Nova função para filtrar em tempo real
+function filtrarClientes() {
+    const termo = document.getElementById('input-busca').value.toLowerCase();
+    
+    const clientesFiltrados = todosOsClientes.filter(cliente => {
+        return (
+            cliente.nm_nome_cliente.toLowerCase().includes(termo) ||
+            cliente.nm_email.toLowerCase().includes(termo) ||
+            cliente.cd_cpf.includes(termo)
+        );
+    });
+
+    renderizarTabela(clientesFiltrados);
+}
+
+// Transformei a lógica de desenhar a tabela em uma função separada para reaproveitar
+function renderizarTabela(lista) {
+    const tbody = document.querySelector('table tbody');
+    tbody.innerHTML = ''; 
+
+    lista.forEach(cliente => {
+        const statusAtivo = cliente.cd_status === 1;
+        const statusClass = statusAtivo 
+          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' 
+          : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+            <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">${cliente.nm_nome_cliente}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.nm_email}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.cd_cpf}</td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <span class="inline-flex items-center gap-1.5 rounded-full ${statusClass} px-2 py-1 text-xs font-medium">
+                <span class="size-1.5 rounded-full ${dotClass}"></span>
+                ${statusAtivo ? 'Ativo' : 'Inativo'}
+              </span>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <div class="flex items-center gap-4">
+                <button onclick="editarCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary">
+                  <span class="material-symbols-outlined text-base">edit</span> Editar
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+    });
+}
 
   // Executa assim que a página abre
   window.onload = carregarClientes;
