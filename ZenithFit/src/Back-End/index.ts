@@ -183,6 +183,31 @@ app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response
   }
 });
 
+// Atualizar cliente por CPF
+app.put("/clientes/:cpf", async (req, res) => {
+    try {
+        const { cpf } = req.params;
+        const dados = req.body;
+
+        const clienteAtualizado = await prisma.cliente.update({
+            where: { cd_cpf: cpf },
+            data: {
+                nm_nome_cliente: dados.name,
+                dt_nascimento: new Date(dados.nascimento),
+                cd_telefone: dados.telefone,
+                cd_DDD: dados.ddd,
+                nm_email: dados.email,
+                cd_genero: parseInt(dados.genero),
+                // Adicione outros campos conforme seu schema
+            },
+        });
+        res.status(200).json(clienteAtualizado);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao atualizar cliente" });
+    }
+});
+
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });

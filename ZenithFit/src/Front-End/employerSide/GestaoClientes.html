@@ -360,13 +360,76 @@
     </div>
 
     <script>
-      function openPersonalDataModal() {
-        document.getElementById('personalDataModal').classList.remove('hidden');
-      }
+  function openPersonalDataModal() {
+    document.getElementById('personalDataModal').classList.remove('hidden');
+  }
 
-      function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
-      }
-    </script>
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+  }
+
+  // Função para carregar os dados do Back-End na tabela
+  async function carregarClientes() {
+    try {
+      const resposta = await fetch('http://localhost:3000/clientes');
+      const clientes = await resposta.json();
+      
+      const tbody = document.querySelector('table tbody');
+      tbody.innerHTML = ''; // Limpa as linhas estáticas (Ana Silva, etc.)
+
+      clientes.forEach(cliente => {
+        // Verifica o status para a cor da bolinha
+        const statusAtivo = cliente.cd_status === 1;
+        const statusClass = statusAtivo 
+          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' 
+          : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+            <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">${cliente.nm_nome_cliente}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.nm_email}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.cd_cpf}</td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <span class="inline-flex items-center gap-1.5 rounded-full ${statusClass} px-2 py-1 text-xs font-medium">
+                <span class="size-1.5 rounded-full ${dotClass}"></span>
+                ${statusAtivo ? 'Ativo' : 'Inativo'}
+              </span>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <div class="flex items-center gap-4">
+                <button onclick="editarCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary">
+                  <span class="material-symbols-outlined text-base">edit</span> Editar
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    } catch (erro) {
+      console.error("Erro ao conectar com o Back-End:", erro);
+    }
+  }
+
+  // Função para buscar UM cliente e abrir o modal preenchido
+  async function editarCliente(cpf) {
+    try {
+      const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
+      const cliente = await resposta.json();
+
+      // Preenche os inputs do seu modal com os dados do banco
+      document.querySelector('input[type="text"][value="João da Silva"]').value = cliente.nm_nome_cliente;
+      document.querySelector('input[type="date"]').value = cliente.dt_nascimento.split('T')[0];
+      document.querySelector('input[placeholder="000.000.000-00"]').value = cliente.cd_cpf;
+      
+      openPersonalDataModal();
+    } catch (erro) {
+      alert("Erro ao buscar dados do cliente");
+    }
+  }
+
+  // Executa assim que a página abre
+  window.onload = carregarClientes;
+</script>
 </body>
 </html>
