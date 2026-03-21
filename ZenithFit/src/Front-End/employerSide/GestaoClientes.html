@@ -347,7 +347,7 @@
                 </div>
                 <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
                     <div class="flex flex-col sm:flex-row-reverse gap-4">
-                        <button onclick="closeModal('personalDataModal')" class="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-3 bg-primary text-base font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-colors">
+                       <button type="button" onclick="salvarAlteracoes()" class="w-full sm:w-auto ...">
                             Salvar
                         </button>
                         <button onclick="closeModal('personalDataModal')" class="w-full sm:w-auto inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-6 py-3 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-colors">
@@ -412,21 +412,29 @@
   }
 
   // Função para buscar UM cliente e abrir o modal preenchido
-  async function editarCliente(cpf) {
+async function editarCliente(cpf) {
     try {
-      const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
-      const cliente = await resposta.json();
+        const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
+        if (!resposta.ok) throw new Error("Cliente não encontrado");
 
-      // Preenche os inputs do seu modal com os dados do banco
-      document.querySelector('input[type="text"][value="João da Silva"]').value = cliente.nm_nome_cliente;
-      document.querySelector('input[type="date"]').value = cliente.dt_nascimento.split('T')[0];
-      document.querySelector('input[placeholder="000.000.000-00"]').value = cliente.cd_cpf;
-      
-      openPersonalDataModal();
+        const cliente = await resposta.json();
+
+        // Agora o JS encontra exatamente quem ele precisa pelo ID
+        document.getElementById('edit-nome').value = cliente.nm_nome_cliente;
+        document.getElementById('edit-cpf').value = cliente.cd_cpf;
+        document.getElementById('edit-ddd').value = cliente.cd_DDD;
+        document.getElementById('edit-telefone').value = cliente.cd_telefone;
+        
+        if (cliente.dt_nascimento) {
+            document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
+        }
+
+        openPersonalDataModal();
     } catch (erro) {
-      alert("Erro ao buscar dados do cliente");
+        alert(erro.message);
     }
-  }
+}
+
 
   // Executa assim que a página abre
   window.onload = carregarClientes;

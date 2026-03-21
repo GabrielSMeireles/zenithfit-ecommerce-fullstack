@@ -1,25 +1,16 @@
 import "dotenv/config";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "@prisma/client";
 
-const connectionString = `${process.env.DATABASE_URL}`;
-
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
-
-// Forma antiga de usar o PrismaClient
-// const prisma = new PrismaClient();
+// O PrismaClient busca a URL do banco automaticamente no seu .env
+const prisma = new PrismaClient();
 
 export { prisma };
 
 export async function connection() {
     try {
-        await prisma.$connect()
-        console.log("Conectado com o BD.");
-    }catch (error) {
-        console.error("Erro ao conectar com o BD.", error);
+        await prisma.$connect();
+        console.log("Conectado com o BD com sucesso!");
+    } catch (error) {
+        console.error("Erro ao conectar com o BD:", error);
     }
-
-    
 }
-
