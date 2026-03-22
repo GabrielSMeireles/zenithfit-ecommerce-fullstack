@@ -195,8 +195,8 @@
 </div>
 </div>
 <div class="pt-6">
-<button @click="alert('Cadastro realizado com sucesso!'); window.location.href = userRole === 'cliente' ? 'homepage.html' : '../employerSide/AnaliseVendas.html'" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" type="button">
-<span x-text="userRole === 'cliente' ? 'Finalizar Cadastro de Cliente' : 'Finalizar Cadastro de Colaborador'"></span>
+<button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+    <span x-text="userRole === 'cliente' ? 'Finalizar Cadastro de Cliente' : 'Finalizar Cadastro de Colaborador'"></span>
 </button>
 </div>
 </form>
@@ -206,4 +206,52 @@
 </div>
 <script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-</body></html>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Pegamos o formulário dentro da div de registro
+    const registerForm = document.querySelector('div[x-show="activeTab === \'register\'"] form');
+
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); 
+
+        const formData = new FormData(e.target);
+        
+        // Montando o objeto exatamente como seu Back-end espera
+        const data = {
+            cpf: formData.get('cpf'),
+            nm_nome_cliente: formData.get('full-name'), 
+            dt_nascimento: formData.get('birth-date'),
+            cd_DDD: formData.get('ddd'),
+            cd_telefone: formData.get('phone-number'),
+            nm_email: formData.get('register-email-address'),
+            cd_senha: formData.get('password'),
+            // Ajustando o gênero para Number (como seu back pede)
+            cd_genero: formData.get('gender') === 'masculino' ? 1 : 2,
+            cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/clientes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Cadastro realizado com sucesso!');
+                // Redireciona via JS após a confirmação do banco
+                window.location.href = 'homepage.html'; 
+            } else {
+                alert('Erro ao cadastrar: ' + (result.message || 'Erro desconhecido'));
+            }
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+});
+</script>
+</body>
+</html>
