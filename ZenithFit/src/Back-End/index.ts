@@ -93,38 +93,56 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
   }
 });
 // 4. ATUALIZAR (Atualizado)
+
 app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
-    const { cpf } = req.params;
+    const cpf = req.params.cpf.trim(); // Força o trim aqui também
     const dados = req.body;
 
-    const clienteAtualizado = await prisma.cliente.update({
-      where: { cd_cpf: cpf },
-      data: {
-        nm_nome_cliente: dados.nm_nome_cliente,
-        // ... outros campos do cliente ...
-        enderecos: {
-          updateMany: { // Atualiza todos os endereços desse CPF
-            where: { cd_cpf: cpf },
-            data: {
-              cd_cep: dados.cd_cep,
-              nm_logradouro: dados.nm_logradouro,
-              cd_numero: dados.cd_numero,
-              nm_bairro: dados.nm_bairro,
-              nm_cidade: dados.nm_cidade,
-              sg_estado: dados.sg_uf
-            }
+    // DEBUG: Veja no terminal se o status e a senha estão chegando
+    console.log(`Atualizando CPF: ${cpf}`);
+    console.log(`Status recebido: ${dados.cd_status} (${typeof dados.cd_status})`);
+    console.log(`Senha recebida: ${dados.nm_senha ? "SIM" : "NÃO"}`);
+
+    const updateData: any = {
+      nm_nome_cliente: dados.nm_nome_cliente,
+      dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
+      cd_genero: Number(dados.cd_genero),
+      cd_status: Number(dados.cd_status), 
+      cd_tipo_telefone: Number(dados.cd_tipo_telefone),
+      cd_DDD: dados.cd_DDD,
+      cd_telefone: dados.cd_telefone,
+      enderecos: {
+        updateMany: {
+          where: { cd_cpf: cpf },
+          data: {
+            cd_cep: dados.cd_cep,
+            nm_logradouro: dados.nm_logradouro,
+            cd_numero: dados.cd_numero,
+            nm_bairro: dados.nm_bairro,
+            nm_cidade: dados.nm_cidade,
+            sg_estado: dados.sg_uf
           }
         }
       }
+    };
+
+    if (dados.nm_senha && dados.nm_senha.trim() !== "") {
+      updateData.cd_senha = dados.nm_senha;
+    }
+
+    const clienteAtualizado = await prisma.cliente.update({
+      where: { cd_cpf: cpf },
+      data: updateData
     });
+
+    console.log("Banco de dados atualizado com sucesso!");
     res.status(200).json(clienteAtualizado);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erro ao atualizar" });
+    console.error("ERRO CRÍTICO NO UPDATE:", error);
+    res.status(500).json({ message: "Erro ao atualizar cliente" });
   }
 });
-
 // 5. Deletar (Corrigido para remover endereços primeiro)
 app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
