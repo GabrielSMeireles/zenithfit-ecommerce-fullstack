@@ -41,7 +41,7 @@ model Endereco {
   nm_tipo       String  @default("Residencial") 
 
   // Chave estrangeira para o Cliente
-  cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf])
+  cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
   cd_cpf        String
 }
 
