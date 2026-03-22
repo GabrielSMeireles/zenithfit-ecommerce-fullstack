@@ -225,9 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
             cd_telefone: formData.get('phone-number'),
             nm_email: formData.get('register-email-address'),
             cd_senha: formData.get('password'),
-            // Ajustando o gênero para Number (como seu back pede)
+          
             cd_genero: formData.get('gender') === 'masculino' ? 1 : 2,
-            cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2
+            cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
+            cd_cep: formData.get('zip-code'),
+            nm_logradouro: formData.get('street'),
+            cd_numero: formData.get('number'),
+            nm_bairro: formData.get('neighborhood'),
+            nm_cidade: formData.get('city'),
+            sg_uf: formData.get('state')
         };
 
         try {
