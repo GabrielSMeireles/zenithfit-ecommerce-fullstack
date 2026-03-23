@@ -127,9 +127,19 @@
 <input class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent" id="birth-date" name="birth-date" required="" type="date"/>
 </div>
 <div>
+
+<!-- Validação do cpf -->
 <label class="block text-sm font-medium text-neutral-700" for="cpf">CPF</label>
-<input class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent" id="cpf" name="cpf" placeholder="000.000.000-00" required="" type="text"/>
-</div>
+<input 
+  class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent" 
+  id="cpf" 
+  name="cpf" 
+  placeholder="Somente 11 números" 
+  required="" 
+  type="text"
+  pattern="\d{11}"
+  title="O CPF deve conter exatamente 11 dígitos numéricos."
+  maxlength="11"/>
 <div>
 <label class="block text-sm font-medium text-neutral-700" for="phone">Telefone</label>
 <div class="mt-1 flex rounded-md shadow-sm">
