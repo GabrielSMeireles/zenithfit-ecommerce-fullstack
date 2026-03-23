@@ -139,7 +139,8 @@
   type="text"
   pattern="\d{11}"
   title="O CPF deve conter exatamente 11 dígitos numéricos."
-  maxlength="11"/>
+  maxlength="11"
+/>
 <div>
 <label class="block text-sm font-medium text-neutral-700" for="phone">Telefone</label>
 <div class="mt-1 flex rounded-md shadow-sm">
@@ -236,7 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nm_email: formData.get('register-email-address'),
             cd_senha: formData.get('password'),
           
-            cd_genero: formData.get('gender') === 'masculino' ? 1 : 2,
+
+            cd_genero: formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
             cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
             cd_cep: formData.get('zip-code'),
             nm_logradouro: formData.get('street'),
