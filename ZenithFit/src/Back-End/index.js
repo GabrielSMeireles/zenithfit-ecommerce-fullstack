@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(cors());
 connection();
 // --- ROTAS ---
-// 1. Criar cliente (Adicionado campos de endereço e senha)
+// 1. Criar cliente (Atualizado)
 app.post("/clientes", async (req, res) => {
     try {
         const dados = req.body;
@@ -14,7 +14,7 @@ app.post("/clientes", async (req, res) => {
             data: {
                 cd_cpf: dados.cpf,
                 nm_nome_cliente: dados.nm_nome_cliente,
-                dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : new Date(),
+                dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : new Date(), //Converte a String data pra um objeto date do JS
                 cd_telefone: dados.cd_telefone,
                 cd_DDD: dados.cd_DDD,
                 nm_email: dados.nm_email,
@@ -23,7 +23,7 @@ app.post("/clientes", async (req, res) => {
                 cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
                 cd_status: 1,
                 nm_identificacao_telefone: dados.nm_identificacao_telefone || "Principal",
-                // AQUI ESTÁ A MUDANÇA: Criando o endereço na tabela relacionada
+                // Cria o endereço na tabela endereço
                 enderecos: {
                     create: {
                         cd_cep: dados.cd_cep,
@@ -31,7 +31,7 @@ app.post("/clientes", async (req, res) => {
                         cd_numero: dados.cd_numero,
                         nm_bairro: dados.nm_bairro,
                         nm_cidade: dados.nm_cidade,
-                        sg_estado: dados.sg_uf || "SP", // No seu schema está sg_estado
+                        sg_estado: dados.sg_uf || "SP",
                     }
                 }
             },
@@ -60,17 +60,16 @@ app.get("/clientes/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
         const cliente = await prisma.cliente.findUnique({
-            where: { cd_cpf: cpf.trim() },
+            where: { cd_cpf: cpf.trim() }, //trim remove os espaços em branco
             include: {
                 genero: true,
                 tipo_telefone: true,
                 status_cliente: true,
-                enderecos: true // ADICIONE ISSO AQUI
+                enderecos: true
             },
         });
         if (!cliente)
             return res.status(404).json({ message: "Cliente não encontrado." });
-        // Como 'enderecos' é um array, vamos "achatar" para o front-end não quebrar
         const resposta = {
             ...cliente,
             cd_cep: cliente.enderecos[0]?.cd_cep || '',
@@ -89,9 +88,9 @@ app.get("/clientes/:cpf", async (req, res) => {
 // 4. ATUALIZAR (Atualizado)
 app.put("/clientes/:cpf", async (req, res) => {
     try {
-        const cpf = req.params.cpf.trim(); // Força o trim aqui também
+        const cpf = req.params.cpf.trim();
         const dados = req.body;
-        // DEBUG: Veja no terminal se o status e a senha estão chegando
+        // DEBUG
         console.log(`Atualizando CPF: ${cpf}`);
         console.log(`Status recebido: ${dados.cd_status} (${typeof dados.cd_status})`);
         console.log(`Senha recebida: ${dados.nm_senha ? "SIM" : "NÃO"}`);
@@ -132,16 +131,15 @@ app.put("/clientes/:cpf", async (req, res) => {
         res.status(500).json({ message: "Erro ao atualizar cliente" });
     }
 });
-// 5. Deletar (Corrigido para remover endereços primeiro)
+// 5. Deletar (Atualizado para remover endereço)
 app.delete("/clientes/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
-        // 1. Remove os endereços vinculados a esse CPF primeiro
-        // Isso evita o erro de restrição de chave estrangeira
+        //Remove o endereço
         await prisma.endereco.deleteMany({
             where: { cd_cpf: cpf }
         });
-        // 2. Agora remove o cliente
+        //remove o cliente
         await prisma.cliente.delete({
             where: { cd_cpf: cpf }
         });
