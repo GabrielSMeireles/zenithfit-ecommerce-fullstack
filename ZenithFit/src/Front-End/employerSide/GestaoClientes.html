@@ -128,6 +128,12 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CPF</label>
                         <input id="edit-cpf" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 dark:text-gray-400" type="text" readonly />
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                        <input id="edit-email" class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 dark:text-gray-200" type="text" />
+                    
+                </div>
+                     
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -265,6 +271,7 @@ async function editarCliente(cpf) {
         // Dados Básicos
         document.getElementById('edit-nome').value = cliente.nm_nome_cliente || '';
         document.getElementById('edit-cpf').value = cliente.cd_cpf || '';
+        document.getElementById('edit-email').value = cliente.nm_email || '';
         document.getElementById('edit-ddd').value = cliente.cd_DDD || '';
         document.getElementById('edit-telefone').value = cliente.cd_telefone || '';
         document.getElementById('edit-genero').value = cliente.cd_genero || 1;
@@ -272,9 +279,9 @@ async function editarCliente(cpf) {
         document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone || 1;
         document.getElementById('edit-senha').value = ''; // Sempre limpa o campo de senha ao abrir
 
-        if (cliente.dt_nascimento) document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
+            if (cliente.dt_nascimento) document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
 
-        // Endereço - Certifique-se que o Back-end envia esses nomes exatos:
+        // Endereço
         document.getElementById('edit-cep').value = cliente.cd_cep || '';
         document.getElementById('edit-logradouro').value = cliente.nm_logradouro || '';
         document.getElementById('edit-numero').value = cliente.cd_numero || '';
@@ -294,6 +301,7 @@ async function salvarAlteracoes() {
         nm_nome_cliente: document.getElementById('edit-nome').value,
         dt_nascimento: document.getElementById('edit-nascimento').value, 
         cd_genero: parseInt(document.getElementById('edit-genero').value),
+        nm_email: document.getElementById('edit-email').value,
         cd_status: parseInt(document.getElementById('edit-status').value),
         cd_tipo_telefone: parseInt(document.getElementById('edit-tipo-tel').value),
         cd_DDD: document.getElementById('edit-ddd').value,

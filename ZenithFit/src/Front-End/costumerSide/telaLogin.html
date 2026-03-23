@@ -219,7 +219,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Pegamos o formulário dentro da div de registro
+    // Pega o formulario na div registro
     const registerForm = document.querySelector('div[x-show="activeTab === \'register\'"] form');
 
     registerForm.addEventListener('submit', async (e) => {
@@ -227,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(e.target);
         
-        // Montando o objeto exatamente como seu Back-end espera
         const data = {
             cpf: formData.get('cpf'),
             nm_nome_cliente: formData.get('full-name'), 
