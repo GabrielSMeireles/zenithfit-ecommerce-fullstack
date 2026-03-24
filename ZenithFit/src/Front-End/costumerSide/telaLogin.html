@@ -51,7 +51,9 @@
       const formData = new FormData(e.target);
       
       // Montamos o objeto de endereços pegando os valores atuais dos inputs
+      
       const listaEnderecos = this.enderecos.map((_, index) => ({
+        nm_tipo_endereco: formData.getAll('address-type')[index],
         cd_cep: formData.getAll('zip-code')[index],
         nm_logradouro: formData.getAll('street')[index],
         cd_numero: formData.getAll('number')[index],

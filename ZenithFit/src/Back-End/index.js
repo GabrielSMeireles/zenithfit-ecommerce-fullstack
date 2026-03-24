@@ -23,7 +23,7 @@ app.post("/clientes", async (req, res) => {
                 cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
                 cd_status: 1,
                 // ADICIONE ESTA LINHA ABAIXO:
-                nm_identificacao_telefone: dados.nm_identificacao_telefone || "Principal",
+                nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular",
                 enderecos: {
                     create: dados.enderecos.map((end) => ({
                         cd_cep: end.cd_cep,
@@ -32,6 +32,7 @@ app.post("/clientes", async (req, res) => {
                         nm_bairro: end.nm_bairro,
                         nm_cidade: end.nm_cidade,
                         sg_estado: end.sg_uf || "SP",
+                        nm_tipo_endereco: end.nm_tipo_endereco || "Ambos",
                     }))
                 }
             },

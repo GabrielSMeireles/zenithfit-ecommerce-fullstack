@@ -38,9 +38,7 @@ model Endereco {
   nm_bairro     String
   nm_cidade     String
   sg_estado     String
- 
-  is_cobranca Boolean @default(false)
-  is_entrega Boolean @default(false)
+  nm_tipo_endereco String @default("Cobrança")
 
   nm_identificacao String @default("Casa")
 
