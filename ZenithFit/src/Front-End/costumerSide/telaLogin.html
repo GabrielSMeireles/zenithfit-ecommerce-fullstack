@@ -253,9 +253,20 @@
                     </button>
                   </div>
 
+
                   <template x-for="(endereco, index) in enderecos" :key="endereco.id">
+
                     <div :class="{ 'mt-8 pt-6 border-t border-dashed border-neutral-300': index > 0 }">
+
                       <div class="mt-4 grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-4">
+
+                        <button type="button" x-show="enderecos.length > 1"
+                          @click="enderecos = enderecos.filter(i => i.id !== endereco.id)"
+                          class="text-red-500 hover:text-red-700 flex items-center gap-1 text-xs font-medium transition-colors">
+                          <span class="material-symbols-outlined text-[16px]">delete</span>
+                          Remover
+                        </button>
+
                         <div class="md:col-span-6">
                           <label class="block text-sm font-medium text-neutral-700">Tipo de Endereço</label>
                           <select name="address-type" required
@@ -266,49 +277,51 @@
                           </select>
                         </div>
 
+                        <div class="md:col-span-2">
+                          <label class="block text-sm font-medium text-neutral-700">CEP</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="zip-code" required type="text" />
+                        </div>
+
+                        <div class="md:col-span-4">
+                          <label class="block text-sm font-medium text-neutral-700">Rua / Logradouro</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="street" required type="text" />
+                        </div>
+
+                        <div class="md:col-span-2">
+                          <label class="block text-sm font-medium text-neutral-700">Número</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="number" required type="text" />
+                        </div>
+
+                        <div class="md:col-span-4">
+                          <label class="block text-sm font-medium text-neutral-700">Bairro</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="neighborhood" required type="text" />
+                        </div>
+
+                        <div class="md:col-span-3">
+                          <label class="block text-sm font-medium text-neutral-700">Cidade</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="city" required type="text" />
+                        </div>
+
+                        <div class="md:col-span-3">
+                          <label class="block text-sm font-medium text-neutral-700">Estado</label>
+                          <input
+                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
+                            name="state" required type="text" />
+                        </div>
                       </div>
                     </div>
                   </template>
-                  <div class="mt-4 grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-4">
-                    <div class="md:col-span-2">
-                      <label class="block text-sm font-medium text-neutral-700">CEP</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="zip-code" required type="text" />
-                    </div>
-                    <div class="md:col-span-4">
-                      <label class="block text-sm font-medium text-neutral-700">Rua / Logradouro</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="street" required type="text" />
-                    </div>
-                    <div class="md:col-span-2">
-                      <label class="block text-sm font-medium text-neutral-700">Número</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="number" required type="text" />
-                    </div>
-                    <div class="md:col-span-4">
-                      <label class="block text-sm font-medium text-neutral-700">Bairro</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="neighborhood" required type="text" />
-                    </div>
-                    <div class="md:col-span-3">
-                      <label class="block text-sm font-medium text-neutral-700">Cidade</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="city" required type="text" />
-                    </div>
-                    <div class="md:col-span-3">
-                      <label class="block text-sm font-medium text-neutral-700">Estado</label>
-                      <input
-                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-transparent"
-                        name="state" required type="text" />
-                    </div>
-                  </div>
                 </div>
-                </template>
               </div>
               <div>
                 <h3 class="text-lg font-semibold leading-6 text-neutral-900">Credenciais de Acesso</h3>
@@ -355,65 +368,6 @@
   </div>
   <script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Pega o formulario na div registro
-      const registerForm = document.querySelector('div[x-show="activeTab === \'register\'"] form');
-
-      registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Pegamos os dados do Alpine.js para os endereços
-        const alpineData = Alpine.store('document').__x.$data;
-        const listaEnderecos = alpineData.enderecos;
-
-        const formData = new FormData(e.target);
-
-        const data = {
-          cpf: formData.get('cpf'),
-          nm_nome_cliente: formData.get('full-name'),
-          dt_nascimento: formData.get('birth-date'),
-          cd_DDD: formData.get('ddd'),
-          cd_telefone: formData.get('phone-number'),
-          nm_email: formData.get('register-email-address'),
-          cd_senha: formData.get('password'),
-          cd_genero: formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
-          cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
-
-          // Mapeamos todos os endereços da tela
-          enderecos: listaEnderecos.map((_, index) => ({
-            cd_cep: formData.getAll('zip-code')[index],
-            nm_logradouro: formData.getAll('street')[index],
-            cd_numero: formData.getAll('number')[index],
-            nm_bairro: formData.getAll('neighborhood')[index],
-            nm_cidade: formData.getAll('city')[index],
-            sg_uf: formData.getAll('state')[index]
-          }))
-        };
-
-        try {
-          const response = await fetch('http://localhost:3000/clientes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          const result = await response.json();
-
-          if (response.ok) {
-            alert('Cadastro realizado com sucesso!');
-            // Redireciona via JS após a confirmação do banco
-            window.location.href = 'homepage.html';
-          } else {
-            alert('Erro ao cadastrar: ' + (result.message || 'Erro desconhecido'));
-          }
-        } catch (error) {
-          console.error("Erro na requisição:", error);
-          alert('Não foi possível conectar ao servidor.');
-        }
-      });
-    });
-  </script>
 </body>
 
 </html>
