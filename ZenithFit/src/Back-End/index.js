@@ -112,7 +112,8 @@ app.put("/clientes/:cpf", async (req, res) => {
                         cd_numero: dados.cd_numero,
                         nm_bairro: dados.nm_bairro,
                         nm_cidade: dados.nm_cidade,
-                        sg_estado: dados.sg_uf
+                        sg_estado: dados.sg_uf,
+                        nm_tipo_endereco: dados.nm_tipo_endereco
                     }
                 }
             }
