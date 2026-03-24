@@ -38,7 +38,11 @@ model Endereco {
   nm_bairro     String
   nm_cidade     String
   sg_estado     String
-  nm_tipo       String  @default("Residencial") 
+ 
+  is_cobranca Boolean @default(false)
+  is_entrega Boolean @default(false)
+
+  nm_identificacao String @default("Casa")
 
   // Chave estrangeira para o Cliente
   cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
