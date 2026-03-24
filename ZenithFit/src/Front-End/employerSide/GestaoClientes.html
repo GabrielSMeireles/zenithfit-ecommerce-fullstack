@@ -239,54 +239,10 @@
                         </div>
 
                         <fieldset class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                            <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Endereço
-                            </legend>
-                            <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
-                                <div class="sm:col-span-6">
-                                    <label class="block text-xs text-gray-500">Tipo de Endereço</label>
-                                    <select id="edit-tipo-endereco"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white">
-                                        <option value="Cobrança">Cobrança</option>
-                                        <option value="Entrega">Entrega</option>
-                                        <option value="Ambos">Ambos</option>
-                                    </select>
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label class="block text-xs text-gray-500">CEP</label>
-                                    <input id="edit-cep"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" />
-                                </div>
-                                <div class="sm:col-span-4">
-                                    <label class="block text-xs text-gray-500">Logradouro</label>
-                                    <input id="edit-logradouro"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" />
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label class="block text-xs text-gray-500">Número</label>
-                                    <input id="edit-numero"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" />
-                                </div>
-                                <div class="sm:col-span-4">
-                                    <label class="block text-xs text-gray-500">Bairro</label>
-                                    <input id="edit-bairro"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" />
-                                </div>
-                                <div class="sm:col-span-4">
-                                    <label class="block text-xs text-gray-500">Cidade</label>
-                                    <input id="edit-cidade"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" />
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label class="block text-xs text-gray-500">UF</label>
-                                    <input id="edit-uf"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md px-3 py-2 text-sm dark:text-white"
-                                        type="text" maxlength="2" />
-                                </div>
+                            <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Endereços
+                                Cadastrados</legend>
+
+                            <div id="container-enderecos-edit" class="space-y-6">
                             </div>
                         </fieldset>
                     </div>
@@ -302,156 +258,196 @@
             </div>
         </div>
 
-        <script>
-            let todosOsClientes = [];
+       <script>
+    let todosOsClientes = [];
 
-            async function carregarClientes() {
-                try {
-                    const resposta = await fetch('http://localhost:3000/clientes');
-                    todosOsClientes = await resposta.json();
-                    renderizarTabela(todosOsClientes);
-                } catch (erro) { console.error("Erro:", erro); }
+    async function carregarClientes() {
+        try {
+            const resposta = await fetch('http://localhost:3000/clientes');
+            todosOsClientes = await resposta.json();
+            renderizarTabela(todosOsClientes);
+        } catch (erro) { console.error("Erro:", erro); }
+    }
+
+    function renderizarTabela(lista) {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = '';
+        lista.forEach(cliente => {
+            const statusAtivo = cliente.cd_status === 1;
+            const statusClass = statusAtivo ? 'bg-green-100 text-green-800 dark:bg-green-900/50' : 'bg-gray-100 text-gray-800 dark:bg-gray-700';
+            const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
+
+            tbody.innerHTML += `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">${cliente.nm_nome_cliente}</td>
+                    <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.nm_email}</td>
+                    <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.cd_cpf}</td>
+                    <td class="whitespace-nowrap px-6 py-4">
+                        <span class="inline-flex items-center gap-1.5 rounded-full ${statusClass} px-2 py-1 text-xs font-medium">
+                            <span class="size-1.5 rounded-full ${dotClass}"></span>
+                            ${statusAtivo ? 'Ativo' : 'Inativo'}
+                        </span>
+                    </td>
+                    <td class="whitespace-nowrap px-6 py-4">
+                        <div class="flex items-center gap-4">
+                            <button onclick="editarCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300">
+                                <span class="material-symbols-outlined text-base">edit</span> Editar
+                            </button>
+                            <button onclick="excluirCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-red-600 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-base">delete</span> Excluir
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    async function editarCliente(cpf) {
+        try {
+            const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
+            const cliente = await resposta.json();
+
+            // Preenche dados básicos
+            document.getElementById('edit-nome').value = cliente.nm_nome_cliente || '';
+            document.getElementById('edit-cpf').value = cliente.cd_cpf || '';
+            document.getElementById('edit-email').value = cliente.nm_email || '';
+            document.getElementById('edit-ddd').value = cliente.cd_DDD || '';
+            document.getElementById('edit-telefone').value = cliente.cd_telefone || '';
+            document.getElementById('edit-genero').value = cliente.cd_genero || 1;
+            document.getElementById('edit-status').value = cliente.cd_status ?? 1;
+            document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone || 1;
+            document.getElementById('edit-senha').value = '';
+
+            // Formata data para o input date (YYYY-MM-DD)
+            if (cliente.dt_nascimento) {
+                document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
             }
 
-            function renderizarTabela(lista) {
-                const tbody = document.querySelector('table tbody');
-                tbody.innerHTML = '';
-                lista.forEach(cliente => {
-                    const statusAtivo = cliente.cd_status === 1;
-                    const statusClass = statusAtivo ? 'bg-green-100 text-green-800 dark:bg-green-900/50' : 'bg-gray-100 text-gray-800 dark:bg-gray-700';
-                    const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
+            const container = document.getElementById('container-enderecos-edit');
+            container.innerHTML = ''; 
 
-                    tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-            <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">${cliente.nm_nome_cliente}</td>
-            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.nm_email}</td>
-            <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.cd_cpf}</td>
-            <td class="whitespace-nowrap px-6 py-4">
-              <span class="inline-flex items-center gap-1.5 rounded-full ${statusClass} px-2 py-1 text-xs font-medium">
-                <span class="size-1.5 rounded-full ${dotClass}"></span>
-                ${statusAtivo ? 'Ativo' : 'Inativo'}
-              </span>
-            </td>
-            <td class="whitespace-nowrap px-6 py-4">
-                <div class="flex items-center gap-4">
-                    <button onclick="editarCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300">
-                        <span class="material-symbols-outlined text-base">edit</span> Editar
-                    </button>
-                    <button onclick="excluirCliente('${cliente.cd_cpf}')" class="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-red-600 dark:text-gray-300">
-                        <span class="material-symbols-outlined text-base">delete</span> Excluir
-                    </button>
-                </div>
-            </td>
-          </tr>`;
+            if (cliente.enderecos && cliente.enderecos.length > 0) {
+                cliente.enderecos.forEach((end, index) => {
+                    const htmlEndereco = `
+                        <div class="endereco-item p-4 border rounded-lg bg-gray-50 dark:bg-gray-800/50 relative mb-4">
+                            <p class="text-xs font-bold text-primary mb-2 uppercase">Endereço ${index + 1}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+                                <div class="sm:col-span-6">
+                                    <label class="block text-xs text-gray-500">Tipo</label>
+                                    <select class="edit-tipo-endereco w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white">
+                                        <option value="Cobrança" ${end.nm_tipo_endereco === 'Cobrança' ? 'selected' : ''}>Cobrança</option>
+                                        <option value="Entrega" ${end.nm_tipo_endereco === 'Entrega' ? 'selected' : ''}>Entrega</option>
+                                        <option value="Ambos" ${end.nm_tipo_endereco === 'Ambos' ? 'selected' : ''}>Ambos</option>
+                                    </select>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs text-gray-500">CEP</label>
+                                    <input class="edit-cep w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${end.cd_cep || ''}" />
+                                </div>
+                                <div class="sm:col-span-4">
+                                    <label class="block text-xs text-gray-500">Logradouro</label>
+                                    <input class="edit-logradouro w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${end.nm_logradouro || ''}" />
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs text-gray-500">Número</label>
+                                    <input class="edit-numero w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${end.cd_numero || ''}" />
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs text-gray-500">Bairro</label>
+                                    <input class="edit-bairro w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${end.nm_bairro || ''}" />
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs text-gray-500">Cidade</label>
+                                    <input class="edit-cidade w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${end.nm_cidade || ''}" />
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs text-gray-500">UF</label>
+                                    <input class="edit-uf w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" maxlength="2" value="${end.sg_estado || ''}" />
+                                </div>
+                            </div>
+                        </div>`;
+                    container.innerHTML += htmlEndereco;
                 });
             }
 
-            async function editarCliente(cpf) {
-                try {
-                    const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
-                    const cliente = await resposta.json();
+            document.getElementById('personalDataModal').classList.remove('hidden');
+        } catch (erro) { 
+            console.error(erro);
+            alert("Erro ao carregar dados do cliente."); 
+        }
+    }
 
-                    // Dados Básicos
-                    document.getElementById('edit-nome').value = cliente.nm_nome_cliente || '';
-                    document.getElementById('edit-cpf').value = cliente.cd_cpf || '';
-                    document.getElementById('edit-email').value = cliente.nm_email || '';
-                    document.getElementById('edit-ddd').value = cliente.cd_DDD || '';
-                    document.getElementById('edit-telefone').value = cliente.cd_telefone || '';
-                    document.getElementById('edit-genero').value = cliente.cd_genero || 1;
-                    document.getElementById('edit-status').value = cliente.cd_status ?? 1;
-                    document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone || 1;
-                    document.getElementById('edit-senha').value = ''; // Sempre limpa o campo de senha ao abrir
-                    if (cliente.enderecos && cliente.enderecos.length > 0) {
-                        const end = cliente.enderecos[0];
-                        document.getElementById('edit-cep').value = end.cd_cep || '';
-                        document.getElementById('edit-logradouro').value = end.nm_logradouro || '';
-                        document.getElementById('edit-numero').value = end.cd_numero || '';
-                        document.getElementById('edit-bairro').value = end.nm_bairro || '';
-                        document.getElementById('edit-cidade').value = end.nm_cidade || '';
-                        document.getElementById('edit-uf').value = end.sg_estado || '';
-                        // Preenchendo o novo campo de tipo:
-                        document.getElementById('edit-tipo-endereco').value = end.nm_tipo_endereco || 'Cobrança';
-                    }
+    async function salvarAlteracoes() {
+        const cpf = document.getElementById('edit-cpf').value;
+        const novaSenha = document.getElementById('edit-senha').value;
 
-                    document.getElementById('personalDataModal').classList.remove('hidden');
-                } catch (erro) { alert("Erro ao carregar dados do cliente."); }
-            } "Erro ao carregar dados do cliente.";
+        // Captura todos os endereços do modal
+        const blocosEndereco = document.querySelectorAll('.endereco-item');
+        const listaEnderecos = Array.from(blocosEndereco).map(bloco => ({
+            nm_tipo_endereco: bloco.querySelector('.edit-tipo-endereco').value,
+            cd_cep: bloco.querySelector('.edit-cep').value,
+            nm_logradouro: bloco.querySelector('.edit-logradouro').value,
+            cd_numero: bloco.querySelector('.edit-numero').value,
+            nm_bairro: bloco.querySelector('.edit-bairro').value,
+            nm_cidade: bloco.querySelector('.edit-cidade').value,
+            sg_uf: bloco.querySelector('.edit-uf').value
+        }));
 
+        const dadosAtualizados = {
+            nm_nome_cliente: document.getElementById('edit-nome').value,
+            dt_nascimento: document.getElementById('edit-nascimento').value,
+            cd_genero: parseInt(document.getElementById('edit-genero').value),
+            nm_email: document.getElementById('edit-email').value,
+            cd_status: parseInt(document.getElementById('edit-status').value),
+            cd_tipo_telefone: parseInt(document.getElementById('edit-tipo-tel').value),
+            cd_DDD: document.getElementById('edit-ddd').value,
+            cd_telefone: document.getElementById('edit-telefone').value,
+            enderecos: listaEnderecos // Enviando o array completo
+        };
 
-            async function salvarAlteracoes() {
-                const cpf = document.getElementById('edit-cpf').value;
-                const novaSenha = document.getElementById('edit-senha').value;
+        if (novaSenha.trim() !== "") {
+            dadosAtualizados.nm_senha = novaSenha;
+        }
 
-                const dadosAtualizados = {
-                    nm_tipo_endereco: document.getElementById('edit-tipo-endereco').value, // Adicione aqui
-                    nm_nome_cliente: document.getElementById('edit-nome').value,
-                    dt_nascimento: document.getElementById('edit-nascimento').value,
-                    cd_genero: parseInt(document.getElementById('edit-genero').value),
-                    nm_email: document.getElementById('edit-email').value,
-                    cd_status: parseInt(document.getElementById('edit-status').value),
-                    cd_tipo_telefone: parseInt(document.getElementById('edit-tipo-tel').value),
-                    cd_DDD: document.getElementById('edit-ddd').value,
-                    cd_telefone: document.getElementById('edit-telefone').value,
-                    cd_cep: document.getElementById('edit-cep').value,
-                    nm_logradouro: document.getElementById('edit-logradouro').value,
-                    cd_numero: document.getElementById('edit-numero').value,
-                    nm_bairro: document.getElementById('edit-bairro').value,
-                    nm_cidade: document.getElementById('edit-cidade').value,
-                    sg_uf: document.getElementById('edit-uf').value
-                };
+        try {
+            const res = await fetch(`http://localhost:3000/clientes/${cpf}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosAtualizados)
+            });
 
-                // Só adiciona a senha ao objeto se o usuário digitou algo
-                if (novaSenha.trim() !== "") {
-                    dadosAtualizados.nm_senha = novaSenha;
+            if (res.ok) {
+                alert("Dados atualizados com sucesso!");
+                closeModal('personalDataModal');
+                carregarClientes();
+            } else {
+                alert("Erro ao salvar no servidor.");
+            }
+        } catch (e) { alert("Erro de conexão com o servidor."); }
+    }
+
+    function filtrarClientes() {
+        const termo = document.getElementById('input-busca').value.toLowerCase();
+        renderizarTabela(todosOsClientes.filter(c =>
+            c.nm_nome_cliente.toLowerCase().includes(termo) || c.cd_cpf.includes(termo)
+        ));
+    }
+
+    async function excluirCliente(cpf) {
+        if (confirm("Tem certeza que deseja excluir este cliente?")) {
+            try {
+                const response = await fetch(`http://localhost:3000/clientes/${cpf}`, { method: 'DELETE' });
+                if (response.ok) {
+                    alert("Cliente removido!");
+                    carregarClientes();
                 }
+            } catch (e) { alert("Erro ao conectar ao servidor."); }
+        }
+    }
 
-                try {
-                    const res = await fetch(`http://localhost:3000/clientes/${cpf}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(dadosAtualizados)
-                    });
-
-                    if (res.ok) {
-                        alert("Dados atualizados com sucesso!");
-                        closeModal('personalDataModal');
-                        carregarClientes();
-                    } else {
-                        alert("Erro ao salvar no servidor.");
-                    }
-                } catch (e) { alert("Erro de conexão com o servidor."); }
-            }
-
-            function filtrarClientes() {
-                const termo = document.getElementById('input-busca').value.toLowerCase();
-                renderizarTabela(todosOsClientes.filter(c =>
-                    c.nm_nome_cliente.toLowerCase().includes(termo) || c.cd_cpf.includes(termo)
-                ));
-            }
-
-            async function excluirCliente(cpf) {
-                if (confirm("Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.")) {
-                    try {
-                        const response = await fetch(`http://localhost:3000/clientes/${cpf}`, {
-                            method: 'DELETE'
-                        });
-
-                        if (response.ok) {
-                            alert("Cliente removido com sucesso!");
-                            carregarClientes(); // Recarrega a lista
-                        } else {
-                            const erro = await response.json();
-                            alert("Erro: " + erro.message);
-                        }
-                    } catch (e) {
-                        alert("Não foi possível conectar ao servidor.");
-                    }
-                }
-            }
-
-            function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-            window.onload = carregarClientes;
-        </script>
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    window.onload = carregarClientes;
+</script>
 </body>
 
 </html>

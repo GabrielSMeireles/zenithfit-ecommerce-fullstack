@@ -100,49 +100,54 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
     const cpf = req.params.cpf.trim();
     const dados = req.body;
 
-    // DEBUG
-    console.log(`Atualizando CPF: ${cpf}`);
-    console.log(`Status recebido: ${dados.cd_status} (${typeof dados.cd_status})`);
-    console.log(`Senha recebida: ${dados.nm_senha ? "SIM" : "NÃO"}`);
-
+    // 1. Criamos o objeto de atualização do Cliente (dados básicos)
     const updateData: any = {
       nm_nome_cliente: dados.nm_nome_cliente,
       dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
       cd_genero: Number(dados.cd_genero),
-      cd_status: Number(dados.cd_status), 
+      cd_status: Number(dados.cd_status),
       cd_tipo_telefone: Number(dados.cd_tipo_telefone),
       cd_DDD: dados.cd_DDD,
       cd_telefone: dados.cd_telefone,
-      enderecos: {
-        updateMany: {
-          where: { cd_cpf: cpf },
-          data: {
-            cd_cep: dados.cd_cep,
-            nm_logradouro: dados.nm_logradouro,
-            cd_numero: dados.cd_numero,
-            nm_bairro: dados.nm_bairro,
-            nm_cidade: dados.nm_cidade,
-            sg_estado: dados.sg_uf,
-            nm_tipo_endereco: dados.nm_tipo_endereco
-          }
-        }
-      }
     };
 
     if (dados.nm_senha && dados.nm_senha.trim() !== "") {
       updateData.cd_senha = dados.nm_senha;
     }
 
-    const clienteAtualizado = await prisma.cliente.update({
-      where: { cd_cpf: cpf },
-      data: updateData
+    // 2. EXCUÇÃO EM TRANSAÇÃO (Garante que ou faz tudo ou não faz nada)
+    const resultado = await prisma.$transaction(async (tx) => {
+      
+      // Deleta todos os endereços atuais do cliente
+      await tx.endereco.deleteMany({
+        where: { cd_cpf: cpf }
+      });
+
+      // Atualiza o cliente e RECRIA os endereços enviados pelo Front-end
+      return await tx.cliente.update({
+        where: { cd_cpf: cpf },
+        data: {
+          ...updateData,
+          enderecos: {
+            create: dados.enderecos.map((end: any) => ({
+              cd_cep: end.cd_cep,
+              nm_logradouro: end.nm_logradouro,
+              cd_numero: end.cd_numero,
+              nm_bairro: end.nm_bairro,
+              nm_cidade: end.nm_cidade,
+              sg_estado: end.sg_uf,
+              nm_tipo_endereco: end.nm_tipo_endereco
+            }))
+          }
+        }
+      });
     });
 
-    console.log("Banco de dados atualizado com sucesso!");
-    res.status(200).json(clienteAtualizado);
+    console.log("Cliente e múltiplos endereços atualizados com sucesso!");
+    res.status(200).json(resultado);
   } catch (error) {
-    console.error("ERRO CRÍTICO NO UPDATE:", error);
-    res.status(500).json({ message: "Erro ao atualizar cliente" });
+    console.error("ERRO NO UPDATE:", error);
+    res.status(500).json({ message: "Erro ao atualizar cliente e endereços" });
   }
 });
 // 5. Deletar (Atualizado para remover endereço)
