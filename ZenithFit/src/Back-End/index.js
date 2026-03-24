@@ -14,25 +14,25 @@ app.post("/clientes", async (req, res) => {
             data: {
                 cd_cpf: dados.cpf,
                 nm_nome_cliente: dados.nm_nome_cliente,
-                dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : new Date(), //Converte a String data pra um objeto date do JS
+                dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : new Date(),
                 cd_telefone: dados.cd_telefone,
                 cd_DDD: dados.cd_DDD,
                 nm_email: dados.nm_email,
-                cd_senha: dados.nm_senha || "123456",
+                cd_senha: dados.cd_senha || "123456",
                 cd_genero: Number(dados.cd_genero) || 1,
                 cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
                 cd_status: 1,
+                // ADICIONE ESTA LINHA ABAIXO:
                 nm_identificacao_telefone: dados.nm_identificacao_telefone || "Principal",
-                // Cria o endereço na tabela endereço
                 enderecos: {
-                    create: {
-                        cd_cep: dados.cd_cep,
-                        nm_logradouro: dados.nm_logradouro,
-                        cd_numero: dados.cd_numero,
-                        nm_bairro: dados.nm_bairro,
-                        nm_cidade: dados.nm_cidade,
-                        sg_estado: dados.sg_uf || "SP",
-                    }
+                    create: dados.enderecos.map((end) => ({
+                        cd_cep: end.cd_cep,
+                        nm_logradouro: end.nm_logradouro,
+                        cd_numero: end.cd_numero,
+                        nm_bairro: end.nm_bairro,
+                        nm_cidade: end.nm_cidade,
+                        sg_estado: end.sg_uf || "SP",
+                    }))
                 }
             },
         });
