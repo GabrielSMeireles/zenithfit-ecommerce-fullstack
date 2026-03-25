@@ -139,17 +139,23 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
 
     // 2. EXCUÇÃO EM TRANSAÇÃO (Garante que ou faz tudo ou não faz nada)
     const resultado = await prisma.$transaction(async (tx) => {
-      
-      // Deleta todos os endereços atuais do cliente
+
+      // 🔥 remove endereços
       await tx.endereco.deleteMany({
         where: { cd_cpf: cpf }
       });
 
-      // Atualiza o cliente e RECRIA os endereços enviados pelo Front-end
+      // 🔥 remove cartões
+      await tx.cartao_credito.deleteMany({
+        where: { cd_cpf: cpf }
+      });
+
+      // 🔥 atualiza cliente + recria tudo
       return await tx.cliente.update({
         where: { cd_cpf: cpf },
         data: {
           ...updateData,
+
           enderecos: {
             create: dados.enderecos.map((end: any) => ({
               cd_cep: end.cd_cep,
@@ -160,25 +166,22 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
               sg_estado: end.sg_uf,
               nm_tipo_endereco: end.nm_tipo_endereco
             }))
+          },
+
+          cartoes: {
+            create: dados.cartoes.map((c: any) => ({
+              cd_numero_cartao: c.cd_numero_cartao,
+              nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
+              cd_seguranca: c.cd_seguranca,
+              dt_validade_cartao: new Date(c.dt_validade_cartao),
+              cd_bandeira: Number(c.cd_bandeira),
+              cartao_preferencial: c.cartao_preferencial
+            }))
           }
         }
       });
+
     });
-
-      await tx.cartao_credito.deleteMany({
-        where: { cd_cpf: cpf }
-      });
-
-      cartoes: {
-        create: dados.cartoes.map((c: any) => ({
-          cd_numero_cartao: c.cd_numero_cartao,
-          nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
-          cd_seguranca: c.cd_seguranca,
-          dt_validade_cartao: new Date(c.dt_validade_cartao),
-          cd_bandeira: Number(c.cd_bandeira),
-          cartao_preferencial: c.cartao_preferencial
-        }))
-      }
 
     console.log("Cliente e múltiplos endereços atualizados com sucesso!");
     res.status(200).json(resultado);
@@ -194,18 +197,20 @@ app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response
     const { cpf } = req.params;
 
     // 🔥 remove cartões primeiro
-    await tx.cartao_credito.deleteMany({
-      where: { cd_cpf: cpf }
-    });
+    await prisma.$transaction(async (tx) => {
 
-   //Remove o endereço
-    await prisma.endereco.deleteMany({
-      where: { cd_cpf: cpf }
-    });
+      await tx.cartao_credito.deleteMany({
+        where: { cd_cpf: cpf }
+      });
 
-    //remove o cliente
-    await prisma.cliente.delete({ 
-      where: { cd_cpf: cpf } 
+      await tx.endereco.deleteMany({
+        where: { cd_cpf: cpf }
+      });
+
+      await tx.cliente.delete({
+        where: { cd_cpf: cpf }
+      });
+
     });
 
     res.status(200).json({
