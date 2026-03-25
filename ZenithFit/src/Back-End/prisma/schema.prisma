@@ -26,8 +26,9 @@ model Cliente {
   status_cliente            Status_cliente @relation(fields: [cd_status], references: [cd_status])
   cd_status                 Int
 
-  // Relação: Um cliente tem muitos endereços
+  // Relações 1:N
   enderecos                 Endereco[]
+  cartoes                   Cartao_credito[]
 }
 
 model Endereco {
@@ -45,6 +46,27 @@ model Endereco {
   // Chave estrangeira para o Cliente
   cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
   cd_cpf        String
+}
+
+model Cartao_credito {
+  cd_cartao               Int             @id @default(autoincrement())
+  cd_numero_cartao        String
+  nm_nome_impresso_cartao String
+  cd_seguranca            String
+  dt_validade_cartao      DateTime
+  cartao_preferencial     Boolean         @default(false)
+
+  // Relações
+  bandeira                Bandeira_cartao @relation(fields: [cd_bandeira], references: [cd_bandeira])
+  cd_bandeira             Int
+  cliente                 Cliente         @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
+  cd_cpf                  String
+}
+
+model Bandeira_cartao {
+  cd_bandeira  Int              @id @default(autoincrement())
+  nm_bandeira  String
+  cartoes      Cartao_credito[]
 }
 
 model Genero {

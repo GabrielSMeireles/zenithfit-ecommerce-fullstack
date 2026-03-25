@@ -39,7 +39,19 @@ app.post("/clientes", async (req: Request, res: Response) => {
             sg_estado: end.sg_uf || "SP",
             nm_tipo_endereco: end.nm_tipo_endereco || "Ambos",
           }))
+        },
+        cartoes: {
+          create: dados.cartoes.map((c: any) => ({
+            cd_numero_cartao: c.cd_numero_cartao,
+            nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
+            cd_seguranca: c.cd_seguranca,
+            dt_validade_cartao: new Date(c.dt_validade_cartao),
+            cd_bandeira: Number(c.cd_bandeira),
+            cartao_preferencial: c.cartao_preferencial ?? false
+          }))
         }
+
+        
       },
     });
 
@@ -54,7 +66,21 @@ app.post("/clientes", async (req: Request, res: Response) => {
 app.get("/clientes", async (req: Request, res: Response) => {
   try {
     const clientes = await prisma.cliente.findMany({
-      include: { genero: true, tipo_telefone: true, status_cliente: true },
+      include: {
+        genero: true,
+        tipo_telefone: true,
+        status_cliente: true,
+
+        // 🔥 adicionando endereços
+        enderecos: true,
+
+        // 🔥 adicionando cartões + bandeira
+        cartoes: {
+          include: {
+            bandeira: true
+          }
+        }
+      },
     });
     res.status(200).json(clientes);
   } catch (error) {
@@ -72,27 +98,23 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
         genero: true, 
         tipo_telefone: true, 
         status_cliente: true,
-        enderecos: true
+        enderecos: true,
+        cartoes: {
+          include: {
+            bandeira: true
+          }
+        }
       },
     });
 
     if (!cliente) return res.status(404).json({ message: "Cliente não encontrado." });
-    
-    const resposta = {
-      ...cliente,
-      cd_cep: cliente.enderecos[0]?.cd_cep || '',
-      nm_logradouro: cliente.enderecos[0]?.nm_logradouro || '',
-      cd_numero: cliente.enderecos[0]?.cd_numero || '',
-      nm_bairro: cliente.enderecos[0]?.nm_bairro || '',
-      nm_cidade: cliente.enderecos[0]?.nm_cidade || '',
-      sg_uf: cliente.enderecos[0]?.sg_estado || ''
-    };
 
-    res.status(200).json(resposta);
+    res.status(200).json(cliente);
   } catch (error) {
     res.status(500).json({ message: "Erro ao buscar cliente" });
   }
 });
+
 // 4. ATUALIZAR (Atualizado)
 
 app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
@@ -143,6 +165,21 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
       });
     });
 
+      await tx.cartao_credito.deleteMany({
+        where: { cd_cpf: cpf }
+      });
+
+      cartoes: {
+        create: dados.cartoes.map((c: any) => ({
+          cd_numero_cartao: c.cd_numero_cartao,
+          nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
+          cd_seguranca: c.cd_seguranca,
+          dt_validade_cartao: new Date(c.dt_validade_cartao),
+          cd_bandeira: Number(c.cd_bandeira),
+          cartao_preferencial: c.cartao_preferencial
+        }))
+      }
+
     console.log("Cliente e múltiplos endereços atualizados com sucesso!");
     res.status(200).json(resultado);
   } catch (error) {
@@ -150,10 +187,16 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
     res.status(500).json({ message: "Erro ao atualizar cliente e endereços" });
   }
 });
+
 // 5. Deletar (Atualizado para remover endereço)
 app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
     const { cpf } = req.params;
+
+    // 🔥 remove cartões primeiro
+    await tx.cartao_credito.deleteMany({
+      where: { cd_cpf: cpf }
+    });
 
    //Remove o endereço
     await prisma.endereco.deleteMany({
@@ -165,7 +208,10 @@ app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response
       where: { cd_cpf: cpf } 
     });
 
-    res.status(200).json({ message: "Cliente e endereços deletados com sucesso." });
+    res.status(200).json({
+      message: "Cliente, endereços e cartões deletados com sucesso."
+    });
+
   } catch (error) {
     console.error("Erro ao deletar:", error);
     res.status(500).json({ message: "Erro ao deletar. Verifique se o cliente possui pedidos vinculados." });
