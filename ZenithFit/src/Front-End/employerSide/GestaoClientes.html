@@ -245,6 +245,12 @@
                             <div id="container-enderecos-edit" class="space-y-6">
                             </div>
                         </fieldset>
+                        <fieldset class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <legend class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cartões
+                                Cadastrados</legend>
+                            <div id="container-cartoes-edit" class="space-y-6">
+                            </div>
+                        </fieldset>
                     </div>
 
                     <div
@@ -258,26 +264,26 @@
             </div>
         </div>
 
-       <script>
-    let todosOsClientes = [];
+        <script>
+            let todosOsClientes = [];
 
-    async function carregarClientes() {
-        try {
-            const resposta = await fetch('http://localhost:3000/clientes');
-            todosOsClientes = await resposta.json();
-            renderizarTabela(todosOsClientes);
-        } catch (erro) { console.error("Erro:", erro); }
-    }
+            async function carregarClientes() {
+                try {
+                    const resposta = await fetch('http://localhost:3000/clientes');
+                    todosOsClientes = await resposta.json();
+                    renderizarTabela(todosOsClientes);
+                } catch (erro) { console.error("Erro:", erro); }
+            }
 
-    function renderizarTabela(lista) {
-        const tbody = document.querySelector('table tbody');
-        tbody.innerHTML = '';
-        lista.forEach(cliente => {
-            const statusAtivo = cliente.cd_status === 1;
-            const statusClass = statusAtivo ? 'bg-green-100 text-green-800 dark:bg-green-900/50' : 'bg-gray-100 text-gray-800 dark:bg-gray-700';
-            const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
+            function renderizarTabela(lista) {
+                const tbody = document.querySelector('table tbody');
+                tbody.innerHTML = '';
+                lista.forEach(cliente => {
+                    const statusAtivo = cliente.cd_status === 1;
+                    const statusClass = statusAtivo ? 'bg-green-100 text-green-800 dark:bg-green-900/50' : 'bg-gray-100 text-gray-800 dark:bg-gray-700';
+                    const dotClass = statusAtivo ? 'bg-green-500' : 'bg-gray-500';
 
-            tbody.innerHTML += `
+                    tbody.innerHTML += `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">${cliente.nm_nome_cliente}</td>
                     <td class="whitespace-nowrap px-6 py-4 text-gray-500 dark:text-gray-300">${cliente.nm_email}</td>
@@ -299,36 +305,36 @@
                         </div>
                     </td>
                 </tr>`;
-        });
-    }
-
-    async function editarCliente(cpf) {
-        try {
-            const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
-            const cliente = await resposta.json();
-
-            // Preenche dados básicos
-            document.getElementById('edit-nome').value = cliente.nm_nome_cliente || '';
-            document.getElementById('edit-cpf').value = cliente.cd_cpf || '';
-            document.getElementById('edit-email').value = cliente.nm_email || '';
-            document.getElementById('edit-ddd').value = cliente.cd_DDD || '';
-            document.getElementById('edit-telefone').value = cliente.cd_telefone || '';
-            document.getElementById('edit-genero').value = cliente.cd_genero || 1;
-            document.getElementById('edit-status').value = cliente.cd_status ?? 1;
-            document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone || 1;
-            document.getElementById('edit-senha').value = '';
-
-            // Formata data para o input date (YYYY-MM-DD)
-            if (cliente.dt_nascimento) {
-                document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
+                });
             }
 
-            const container = document.getElementById('container-enderecos-edit');
-            container.innerHTML = ''; 
+            async function editarCliente(cpf) {
+                try {
+                    const resposta = await fetch(`http://localhost:3000/clientes/${cpf}`);
+                    const cliente = await resposta.json();
 
-            if (cliente.enderecos && cliente.enderecos.length > 0) {
-                cliente.enderecos.forEach((end, index) => {
-                    const htmlEndereco = `
+                    // Preenche dados básicos
+                    document.getElementById('edit-nome').value = cliente.nm_nome_cliente || '';
+                    document.getElementById('edit-cpf').value = cliente.cd_cpf || '';
+                    document.getElementById('edit-email').value = cliente.nm_email || '';
+                    document.getElementById('edit-ddd').value = cliente.cd_DDD || '';
+                    document.getElementById('edit-telefone').value = cliente.cd_telefone || '';
+                    document.getElementById('edit-genero').value = cliente.cd_genero || 1;
+                    document.getElementById('edit-status').value = cliente.cd_status ?? 1;
+                    document.getElementById('edit-tipo-tel').value = cliente.cd_tipo_telefone || 1;
+                    document.getElementById('edit-senha').value = '';
+
+                    // Formata data para o input date (YYYY-MM-DD)
+                    if (cliente.dt_nascimento) {
+                        document.getElementById('edit-nascimento').value = cliente.dt_nascimento.split('T')[0];
+                    }
+
+                    const container = document.getElementById('container-enderecos-edit');
+                    container.innerHTML = '';
+
+                    if (cliente.enderecos && cliente.enderecos.length > 0) {
+                        cliente.enderecos.forEach((end, index) => {
+                            const htmlEndereco = `
                         <div class="endereco-item p-4 border rounded-lg bg-gray-50 dark:bg-gray-800/50 relative mb-4">
                             <p class="text-xs font-bold text-primary mb-2 uppercase">Endereço ${index + 1}</p>
                             <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
@@ -366,88 +372,147 @@
                                 </div>
                             </div>
                         </div>`;
-                    container.innerHTML += htmlEndereco;
-                });
-            }
+                            container.innerHTML += htmlEndereco;
+                        });
+                    }
 
-            document.getElementById('personalDataModal').classList.remove('hidden');
-        } catch (erro) { 
-            console.error(erro);
-            alert("Erro ao carregar dados do cliente."); 
-        }
-    }
+                    // ... (dentro da função editarCliente, após o container de endereços)
 
-    async function salvarAlteracoes() {
-        const cpf = document.getElementById('edit-cpf').value;
-        const novaSenha = document.getElementById('edit-senha').value;
+                    const containerCartoes = document.getElementById('container-cartoes-edit');
+                    containerCartoes.innerHTML = '';
 
-        // Captura todos os endereços do modal
-        const blocosEndereco = document.querySelectorAll('.endereco-item');
-        const listaEnderecos = Array.from(blocosEndereco).map(bloco => ({
-            nm_tipo_endereco: bloco.querySelector('.edit-tipo-endereco').value,
-            cd_cep: bloco.querySelector('.edit-cep').value,
-            nm_logradouro: bloco.querySelector('.edit-logradouro').value,
-            cd_numero: bloco.querySelector('.edit-numero').value,
-            nm_bairro: bloco.querySelector('.edit-bairro').value,
-            nm_cidade: bloco.querySelector('.edit-cidade').value,
-            sg_uf: bloco.querySelector('.edit-uf').value
-        }));
+                    if (cliente.cartoes && cliente.cartoes.length > 0) {
+                        cliente.cartoes.forEach((cartao, index) => {
+                            const htmlCartao = `
+            <div class="cartao-item p-4 border rounded-lg bg-gray-50 dark:bg-gray-800/50 relative mb-4">
+                <p class="text-xs font-bold text-primary mb-2 uppercase">Cartão ${index + 1}</p>
+                <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+                    <div class="sm:col-span-4">
+                        <label class="block text-xs text-gray-500">Número do Cartão</label>
+                        <input class="edit-numero-cartao w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${cartao.cd_numero_cartao || ''}" />
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-gray-500">Bandeira</label>
+                        <select class="edit-bandeira-cartao w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white">
+                            <option value="1" ${cartao.cd_bandeira == 1 ? 'selected' : ''}>Visa</option>
+                            <option value="2" ${cartao.cd_bandeira == 2 ? 'selected' : ''}>Mastercard</option>
+                            <option value="3" ${cartao.cd_bandeira == 3 ? 'selected' : ''}>Elo</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-4">
+                        <label class="block text-xs text-gray-500">Nome Impresso</label>
+                        <input class="edit-nome-cartao w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="text" value="${cartao.nm_nome_impresso_cartao || ''}" />
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-gray-500">Validade</label>
+                        <input class="edit-validade-cartao w-full bg-white dark:bg-gray-800 border rounded-md px-3 py-2 text-sm dark:text-white" type="month" value="${cartao.dt_validade_cartao ? cartao.dt_validade_cartao.substring(0, 7) : ''}" />
+                    </div>
+                    <div class="sm:col-span-6 flex items-center gap-2">
+                        <input type="checkbox" class="edit-preferencial-cartao" ${cartao.cartao_preferencial ? 'checked' : ''} />
+                        <label class="text-xs text-gray-500">Definir como cartão preferencial</label>
+                    </div>
+                </div>
+            </div>`;
+                            containerCartoes.innerHTML += htmlCartao;
+                        });
+                    }
 
-        const dadosAtualizados = {
-            nm_nome_cliente: document.getElementById('edit-nome').value,
-            dt_nascimento: document.getElementById('edit-nascimento').value,
-            cd_genero: parseInt(document.getElementById('edit-genero').value),
-            nm_email: document.getElementById('edit-email').value,
-            cd_status: parseInt(document.getElementById('edit-status').value),
-            cd_tipo_telefone: parseInt(document.getElementById('edit-tipo-tel').value),
-            cd_DDD: document.getElementById('edit-ddd').value,
-            cd_telefone: document.getElementById('edit-telefone').value,
-            enderecos: listaEnderecos // Enviando o array completo
-        };
-
-        if (novaSenha.trim() !== "") {
-            dadosAtualizados.nm_senha = novaSenha;
-        }
-
-        try {
-            const res = await fetch(`http://localhost:3000/clientes/${cpf}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dadosAtualizados)
-            });
-
-            if (res.ok) {
-                alert("Dados atualizados com sucesso!");
-                closeModal('personalDataModal');
-                carregarClientes();
-            } else {
-                alert("Erro ao salvar no servidor.");
-            }
-        } catch (e) { alert("Erro de conexão com o servidor."); }
-    }
-
-    function filtrarClientes() {
-        const termo = document.getElementById('input-busca').value.toLowerCase();
-        renderizarTabela(todosOsClientes.filter(c =>
-            c.nm_nome_cliente.toLowerCase().includes(termo) || c.cd_cpf.includes(termo)
-        ));
-    }
-
-    async function excluirCliente(cpf) {
-        if (confirm("Tem certeza que deseja excluir este cliente?")) {
-            try {
-                const response = await fetch(`http://localhost:3000/clientes/${cpf}`, { method: 'DELETE' });
-                if (response.ok) {
-                    alert("Cliente removido!");
-                    carregarClientes();
+                    document.getElementById('personalDataModal').classList.remove('hidden');
+                } catch (erro) {
+                    console.error(erro);
+                    alert("Erro ao carregar dados do cliente.");
                 }
-            } catch (e) { alert("Erro ao conectar ao servidor."); }
-        }
+            }
+
+            async function salvarAlteracoes() {
+    const cpf = document.getElementById('edit-cpf').value;
+    const novaSenha = document.getElementById('edit-senha').value;
+
+    // 1. Captura todos os endereços do modal (Você já tinha isso)
+    const blocosEndereco = document.querySelectorAll('.endereco-item');
+    const listaEnderecos = Array.from(blocosEndereco).map(bloco => ({
+        nm_tipo_endereco: bloco.querySelector('.edit-tipo-endereco').value,
+        cd_cep: bloco.querySelector('.edit-cep').value,
+        nm_logradouro: bloco.querySelector('.edit-logradouro').value,
+        cd_numero: bloco.querySelector('.edit-numero').value,
+        nm_bairro: bloco.querySelector('.edit-bairro').value,
+        nm_cidade: bloco.querySelector('.edit-cidade').value,
+        sg_uf: bloco.querySelector('.edit-uf').value
+    }));
+
+    // 2. ADICIONADO: Captura todos os cartões do modal
+    const blocosCartao = document.querySelectorAll('.cartao-item');
+    const listaCartoes = Array.from(blocosCartao).map(bloco => ({
+        cd_numero_cartao: bloco.querySelector('.edit-numero-cartao').value,
+        nm_nome_impresso_cartao: bloco.querySelector('.edit-nome-cartao').value,
+        // Garante o formato de data que o Prisma/DB aceita (YYYY-MM-DD)
+        dt_validade_cartao: bloco.querySelector('.edit-validade-cartao').value + "-01T00:00:00.000Z",
+        cd_bandeira: parseInt(bloco.querySelector('.edit-bandeira-cartao').value),
+        cartao_preferencial: bloco.querySelector('.edit-preferencial-cartao').checked,
+        cd_seguranca: "000" // Valor temporário já que não editamos CVV por segurança
+    }));
+
+    // 3. Monta o objeto final incluindo 'cartoes'
+    const dadosAtualizados = {
+        nm_nome_cliente: document.getElementById('edit-nome').value,
+        dt_nascimento: document.getElementById('edit-nascimento').value,
+        cd_genero: parseInt(document.getElementById('edit-genero').value),
+        nm_email: document.getElementById('edit-email').value,
+        cd_status: parseInt(document.getElementById('edit-status').value),
+        cd_tipo_telefone: parseInt(document.getElementById('edit-tipo-tel').value),
+        cd_DDD: document.getElementById('edit-ddd').value,
+        cd_telefone: document.getElementById('edit-telefone').value,
+        enderecos: listaEnderecos,
+        cartoes: listaCartoes // <-- AGORA OS CARTÕES SÃO ENVIADOS!
+    };
+
+    if (novaSenha.trim() !== "") {
+        dadosAtualizados.nm_senha = novaSenha;
     }
 
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    window.onload = carregarClientes;
-</script>
+    try {
+        const res = await fetch(`http://localhost:3000/clientes/${cpf}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosAtualizados)
+        });
+
+        if (res.ok) {
+            alert("Dados atualizados com sucesso!");
+            closeModal('personalDataModal');
+            carregarClientes();
+        } else {
+            const erroTxt = await res.text();
+            console.error("Erro do servidor:", erroTxt);
+            alert("Erro ao salvar no servidor.");
+        }
+    } catch (e) { 
+        alert("Erro de conexão com o servidor."); 
+    }
+}
+
+            function filtrarClientes() {
+                const termo = document.getElementById('input-busca').value.toLowerCase();
+                renderizarTabela(todosOsClientes.filter(c =>
+                    c.nm_nome_cliente.toLowerCase().includes(termo) || c.cd_cpf.includes(termo)
+                ));
+            }
+
+            async function excluirCliente(cpf) {
+                if (confirm("Tem certeza que deseja excluir este cliente?")) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/clientes/${cpf}`, { method: 'DELETE' });
+                        if (response.ok) {
+                            alert("Cliente removido!");
+                            carregarClientes();
+                        }
+                    } catch (e) { alert("Erro ao conectar ao servidor."); }
+                }
+            }
+
+            function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+            window.onload = carregarClientes;
+        </script>\
 </body>
 
 </html>

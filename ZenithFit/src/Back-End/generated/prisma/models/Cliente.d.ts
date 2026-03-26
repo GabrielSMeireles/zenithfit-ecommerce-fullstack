@@ -1,0 +1,1785 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model Cliente
+ *
+ */
+export type ClienteModel = runtime.Types.Result.DefaultSelection<Prisma.$ClientePayload>;
+export type AggregateCliente = {
+    _count: ClienteCountAggregateOutputType | null;
+    _avg: ClienteAvgAggregateOutputType | null;
+    _sum: ClienteSumAggregateOutputType | null;
+    _min: ClienteMinAggregateOutputType | null;
+    _max: ClienteMaxAggregateOutputType | null;
+};
+export type ClienteAvgAggregateOutputType = {
+    cd_rank_cliente: number | null;
+    cd_genero: number | null;
+    cd_tipo_telefone: number | null;
+    cd_status: number | null;
+};
+export type ClienteSumAggregateOutputType = {
+    cd_rank_cliente: number | null;
+    cd_genero: number | null;
+    cd_tipo_telefone: number | null;
+    cd_status: number | null;
+};
+export type ClienteMinAggregateOutputType = {
+    cd_cpf: string | null;
+    nm_nome_cliente: string | null;
+    dt_nascimento: Date | null;
+    cd_telefone: string | null;
+    cd_DDD: string | null;
+    nm_identificacao_telefone: string | null;
+    nm_email: string | null;
+    cd_senha: string | null;
+    cd_rank_cliente: number | null;
+    cd_genero: number | null;
+    cd_tipo_telefone: number | null;
+    cd_status: number | null;
+};
+export type ClienteMaxAggregateOutputType = {
+    cd_cpf: string | null;
+    nm_nome_cliente: string | null;
+    dt_nascimento: Date | null;
+    cd_telefone: string | null;
+    cd_DDD: string | null;
+    nm_identificacao_telefone: string | null;
+    nm_email: string | null;
+    cd_senha: string | null;
+    cd_rank_cliente: number | null;
+    cd_genero: number | null;
+    cd_tipo_telefone: number | null;
+    cd_status: number | null;
+};
+export type ClienteCountAggregateOutputType = {
+    cd_cpf: number;
+    nm_nome_cliente: number;
+    dt_nascimento: number;
+    cd_telefone: number;
+    cd_DDD: number;
+    nm_identificacao_telefone: number;
+    nm_email: number;
+    cd_senha: number;
+    cd_rank_cliente: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+    _all: number;
+};
+export type ClienteAvgAggregateInputType = {
+    cd_rank_cliente?: true;
+    cd_genero?: true;
+    cd_tipo_telefone?: true;
+    cd_status?: true;
+};
+export type ClienteSumAggregateInputType = {
+    cd_rank_cliente?: true;
+    cd_genero?: true;
+    cd_tipo_telefone?: true;
+    cd_status?: true;
+};
+export type ClienteMinAggregateInputType = {
+    cd_cpf?: true;
+    nm_nome_cliente?: true;
+    dt_nascimento?: true;
+    cd_telefone?: true;
+    cd_DDD?: true;
+    nm_identificacao_telefone?: true;
+    nm_email?: true;
+    cd_senha?: true;
+    cd_rank_cliente?: true;
+    cd_genero?: true;
+    cd_tipo_telefone?: true;
+    cd_status?: true;
+};
+export type ClienteMaxAggregateInputType = {
+    cd_cpf?: true;
+    nm_nome_cliente?: true;
+    dt_nascimento?: true;
+    cd_telefone?: true;
+    cd_DDD?: true;
+    nm_identificacao_telefone?: true;
+    nm_email?: true;
+    cd_senha?: true;
+    cd_rank_cliente?: true;
+    cd_genero?: true;
+    cd_tipo_telefone?: true;
+    cd_status?: true;
+};
+export type ClienteCountAggregateInputType = {
+    cd_cpf?: true;
+    nm_nome_cliente?: true;
+    dt_nascimento?: true;
+    cd_telefone?: true;
+    cd_DDD?: true;
+    nm_identificacao_telefone?: true;
+    nm_email?: true;
+    cd_senha?: true;
+    cd_rank_cliente?: true;
+    cd_genero?: true;
+    cd_tipo_telefone?: true;
+    cd_status?: true;
+    _all?: true;
+};
+export type ClienteAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Cliente to aggregate.
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Clientes to fetch.
+     */
+    orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.ClienteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Clientes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Clientes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned Clientes
+    **/
+    _count?: true | ClienteCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: ClienteAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: ClienteSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClienteMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClienteMaxAggregateInputType;
+};
+export type GetClienteAggregateType<T extends ClienteAggregateArgs> = {
+    [P in keyof T & keyof AggregateCliente]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateCliente[P]> : Prisma.GetScalarType<T[P], AggregateCliente[P]>;
+};
+export type ClienteGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ClienteWhereInput;
+    orderBy?: Prisma.ClienteOrderByWithAggregationInput | Prisma.ClienteOrderByWithAggregationInput[];
+    by: Prisma.ClienteScalarFieldEnum[] | Prisma.ClienteScalarFieldEnum;
+    having?: Prisma.ClienteScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: ClienteCountAggregateInputType | true;
+    _avg?: ClienteAvgAggregateInputType;
+    _sum?: ClienteSumAggregateInputType;
+    _min?: ClienteMinAggregateInputType;
+    _max?: ClienteMaxAggregateInputType;
+};
+export type ClienteGroupByOutputType = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+    _count: ClienteCountAggregateOutputType | null;
+    _avg: ClienteAvgAggregateOutputType | null;
+    _sum: ClienteSumAggregateOutputType | null;
+    _min: ClienteMinAggregateOutputType | null;
+    _max: ClienteMaxAggregateOutputType | null;
+};
+type GetClienteGroupByPayload<T extends ClienteGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<ClienteGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof ClienteGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], ClienteGroupByOutputType[P]> : Prisma.GetScalarType<T[P], ClienteGroupByOutputType[P]>;
+}>>;
+export type ClienteWhereInput = {
+    AND?: Prisma.ClienteWhereInput | Prisma.ClienteWhereInput[];
+    OR?: Prisma.ClienteWhereInput[];
+    NOT?: Prisma.ClienteWhereInput | Prisma.ClienteWhereInput[];
+    cd_cpf?: Prisma.StringFilter<"Cliente"> | string;
+    nm_nome_cliente?: Prisma.StringFilter<"Cliente"> | string;
+    dt_nascimento?: Prisma.DateTimeFilter<"Cliente"> | Date | string;
+    cd_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    cd_DDD?: Prisma.StringFilter<"Cliente"> | string;
+    nm_identificacao_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    nm_email?: Prisma.StringFilter<"Cliente"> | string;
+    cd_senha?: Prisma.StringFilter<"Cliente"> | string;
+    cd_rank_cliente?: Prisma.IntFilter<"Cliente"> | number;
+    cd_genero?: Prisma.IntFilter<"Cliente"> | number;
+    cd_tipo_telefone?: Prisma.IntFilter<"Cliente"> | number;
+    cd_status?: Prisma.IntFilter<"Cliente"> | number;
+    genero?: Prisma.XOR<Prisma.GeneroScalarRelationFilter, Prisma.GeneroWhereInput>;
+    tipo_telefone?: Prisma.XOR<Prisma.Tipo_telefoneScalarRelationFilter, Prisma.Tipo_telefoneWhereInput>;
+    status_cliente?: Prisma.XOR<Prisma.Status_clienteScalarRelationFilter, Prisma.Status_clienteWhereInput>;
+};
+export type ClienteOrderByWithRelationInput = {
+    cd_cpf?: Prisma.SortOrder;
+    nm_nome_cliente?: Prisma.SortOrder;
+    dt_nascimento?: Prisma.SortOrder;
+    cd_telefone?: Prisma.SortOrder;
+    cd_DDD?: Prisma.SortOrder;
+    nm_identificacao_telefone?: Prisma.SortOrder;
+    nm_email?: Prisma.SortOrder;
+    cd_senha?: Prisma.SortOrder;
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+    genero?: Prisma.GeneroOrderByWithRelationInput;
+    tipo_telefone?: Prisma.Tipo_telefoneOrderByWithRelationInput;
+    status_cliente?: Prisma.Status_clienteOrderByWithRelationInput;
+};
+export type ClienteWhereUniqueInput = Prisma.AtLeast<{
+    cd_cpf?: string;
+    nm_email?: string;
+    AND?: Prisma.ClienteWhereInput | Prisma.ClienteWhereInput[];
+    OR?: Prisma.ClienteWhereInput[];
+    NOT?: Prisma.ClienteWhereInput | Prisma.ClienteWhereInput[];
+    nm_nome_cliente?: Prisma.StringFilter<"Cliente"> | string;
+    dt_nascimento?: Prisma.DateTimeFilter<"Cliente"> | Date | string;
+    cd_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    cd_DDD?: Prisma.StringFilter<"Cliente"> | string;
+    nm_identificacao_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    cd_senha?: Prisma.StringFilter<"Cliente"> | string;
+    cd_rank_cliente?: Prisma.IntFilter<"Cliente"> | number;
+    cd_genero?: Prisma.IntFilter<"Cliente"> | number;
+    cd_tipo_telefone?: Prisma.IntFilter<"Cliente"> | number;
+    cd_status?: Prisma.IntFilter<"Cliente"> | number;
+    genero?: Prisma.XOR<Prisma.GeneroScalarRelationFilter, Prisma.GeneroWhereInput>;
+    tipo_telefone?: Prisma.XOR<Prisma.Tipo_telefoneScalarRelationFilter, Prisma.Tipo_telefoneWhereInput>;
+    status_cliente?: Prisma.XOR<Prisma.Status_clienteScalarRelationFilter, Prisma.Status_clienteWhereInput>;
+}, "cd_cpf" | "nm_email">;
+export type ClienteOrderByWithAggregationInput = {
+    cd_cpf?: Prisma.SortOrder;
+    nm_nome_cliente?: Prisma.SortOrder;
+    dt_nascimento?: Prisma.SortOrder;
+    cd_telefone?: Prisma.SortOrder;
+    cd_DDD?: Prisma.SortOrder;
+    nm_identificacao_telefone?: Prisma.SortOrder;
+    nm_email?: Prisma.SortOrder;
+    cd_senha?: Prisma.SortOrder;
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+    _count?: Prisma.ClienteCountOrderByAggregateInput;
+    _avg?: Prisma.ClienteAvgOrderByAggregateInput;
+    _max?: Prisma.ClienteMaxOrderByAggregateInput;
+    _min?: Prisma.ClienteMinOrderByAggregateInput;
+    _sum?: Prisma.ClienteSumOrderByAggregateInput;
+};
+export type ClienteScalarWhereWithAggregatesInput = {
+    AND?: Prisma.ClienteScalarWhereWithAggregatesInput | Prisma.ClienteScalarWhereWithAggregatesInput[];
+    OR?: Prisma.ClienteScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.ClienteScalarWhereWithAggregatesInput | Prisma.ClienteScalarWhereWithAggregatesInput[];
+    cd_cpf?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    nm_nome_cliente?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    dt_nascimento?: Prisma.DateTimeWithAggregatesFilter<"Cliente"> | Date | string;
+    cd_telefone?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    cd_DDD?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    nm_identificacao_telefone?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    nm_email?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    cd_senha?: Prisma.StringWithAggregatesFilter<"Cliente"> | string;
+    cd_rank_cliente?: Prisma.IntWithAggregatesFilter<"Cliente"> | number;
+    cd_genero?: Prisma.IntWithAggregatesFilter<"Cliente"> | number;
+    cd_tipo_telefone?: Prisma.IntWithAggregatesFilter<"Cliente"> | number;
+    cd_status?: Prisma.IntWithAggregatesFilter<"Cliente"> | number;
+};
+export type ClienteCreateInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    genero: Prisma.GeneroCreateNestedOneWithoutClientesInput;
+    tipo_telefone: Prisma.Tipo_telefoneCreateNestedOneWithoutClientesInput;
+    status_cliente: Prisma.Status_clienteCreateNestedOneWithoutClientesInput;
+};
+export type ClienteUncheckedCreateInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+};
+export type ClienteUpdateInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    genero?: Prisma.GeneroUpdateOneRequiredWithoutClientesNestedInput;
+    tipo_telefone?: Prisma.Tipo_telefoneUpdateOneRequiredWithoutClientesNestedInput;
+    status_cliente?: Prisma.Status_clienteUpdateOneRequiredWithoutClientesNestedInput;
+};
+export type ClienteUncheckedUpdateInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteCreateManyInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+};
+export type ClienteUpdateManyMutationInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteUncheckedUpdateManyInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteCountOrderByAggregateInput = {
+    cd_cpf?: Prisma.SortOrder;
+    nm_nome_cliente?: Prisma.SortOrder;
+    dt_nascimento?: Prisma.SortOrder;
+    cd_telefone?: Prisma.SortOrder;
+    cd_DDD?: Prisma.SortOrder;
+    nm_identificacao_telefone?: Prisma.SortOrder;
+    nm_email?: Prisma.SortOrder;
+    cd_senha?: Prisma.SortOrder;
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+};
+export type ClienteAvgOrderByAggregateInput = {
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+};
+export type ClienteMaxOrderByAggregateInput = {
+    cd_cpf?: Prisma.SortOrder;
+    nm_nome_cliente?: Prisma.SortOrder;
+    dt_nascimento?: Prisma.SortOrder;
+    cd_telefone?: Prisma.SortOrder;
+    cd_DDD?: Prisma.SortOrder;
+    nm_identificacao_telefone?: Prisma.SortOrder;
+    nm_email?: Prisma.SortOrder;
+    cd_senha?: Prisma.SortOrder;
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+};
+export type ClienteMinOrderByAggregateInput = {
+    cd_cpf?: Prisma.SortOrder;
+    nm_nome_cliente?: Prisma.SortOrder;
+    dt_nascimento?: Prisma.SortOrder;
+    cd_telefone?: Prisma.SortOrder;
+    cd_DDD?: Prisma.SortOrder;
+    nm_identificacao_telefone?: Prisma.SortOrder;
+    nm_email?: Prisma.SortOrder;
+    cd_senha?: Prisma.SortOrder;
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+};
+export type ClienteSumOrderByAggregateInput = {
+    cd_rank_cliente?: Prisma.SortOrder;
+    cd_genero?: Prisma.SortOrder;
+    cd_tipo_telefone?: Prisma.SortOrder;
+    cd_status?: Prisma.SortOrder;
+};
+export type ClienteListRelationFilter = {
+    every?: Prisma.ClienteWhereInput;
+    some?: Prisma.ClienteWhereInput;
+    none?: Prisma.ClienteWhereInput;
+};
+export type ClienteOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type StringFieldUpdateOperationsInput = {
+    set?: string;
+};
+export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string;
+};
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type ClienteCreateNestedManyWithoutGeneroInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput> | Prisma.ClienteCreateWithoutGeneroInput[] | Prisma.ClienteUncheckedCreateWithoutGeneroInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutGeneroInput | Prisma.ClienteCreateOrConnectWithoutGeneroInput[];
+    createMany?: Prisma.ClienteCreateManyGeneroInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUncheckedCreateNestedManyWithoutGeneroInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput> | Prisma.ClienteCreateWithoutGeneroInput[] | Prisma.ClienteUncheckedCreateWithoutGeneroInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutGeneroInput | Prisma.ClienteCreateOrConnectWithoutGeneroInput[];
+    createMany?: Prisma.ClienteCreateManyGeneroInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUpdateManyWithoutGeneroNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput> | Prisma.ClienteCreateWithoutGeneroInput[] | Prisma.ClienteUncheckedCreateWithoutGeneroInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutGeneroInput | Prisma.ClienteCreateOrConnectWithoutGeneroInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutGeneroInput | Prisma.ClienteUpsertWithWhereUniqueWithoutGeneroInput[];
+    createMany?: Prisma.ClienteCreateManyGeneroInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutGeneroInput | Prisma.ClienteUpdateWithWhereUniqueWithoutGeneroInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutGeneroInput | Prisma.ClienteUpdateManyWithWhereWithoutGeneroInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteUncheckedUpdateManyWithoutGeneroNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput> | Prisma.ClienteCreateWithoutGeneroInput[] | Prisma.ClienteUncheckedCreateWithoutGeneroInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutGeneroInput | Prisma.ClienteCreateOrConnectWithoutGeneroInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutGeneroInput | Prisma.ClienteUpsertWithWhereUniqueWithoutGeneroInput[];
+    createMany?: Prisma.ClienteCreateManyGeneroInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutGeneroInput | Prisma.ClienteUpdateWithWhereUniqueWithoutGeneroInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutGeneroInput | Prisma.ClienteUpdateManyWithWhereWithoutGeneroInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteCreateNestedManyWithoutTipo_telefoneInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput> | Prisma.ClienteCreateWithoutTipo_telefoneInput[] | Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput | Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput[];
+    createMany?: Prisma.ClienteCreateManyTipo_telefoneInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUncheckedCreateNestedManyWithoutTipo_telefoneInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput> | Prisma.ClienteCreateWithoutTipo_telefoneInput[] | Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput | Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput[];
+    createMany?: Prisma.ClienteCreateManyTipo_telefoneInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUpdateManyWithoutTipo_telefoneNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput> | Prisma.ClienteCreateWithoutTipo_telefoneInput[] | Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput | Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutTipo_telefoneInput | Prisma.ClienteUpsertWithWhereUniqueWithoutTipo_telefoneInput[];
+    createMany?: Prisma.ClienteCreateManyTipo_telefoneInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutTipo_telefoneInput | Prisma.ClienteUpdateWithWhereUniqueWithoutTipo_telefoneInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutTipo_telefoneInput | Prisma.ClienteUpdateManyWithWhereWithoutTipo_telefoneInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteUncheckedUpdateManyWithoutTipo_telefoneNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput> | Prisma.ClienteCreateWithoutTipo_telefoneInput[] | Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput | Prisma.ClienteCreateOrConnectWithoutTipo_telefoneInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutTipo_telefoneInput | Prisma.ClienteUpsertWithWhereUniqueWithoutTipo_telefoneInput[];
+    createMany?: Prisma.ClienteCreateManyTipo_telefoneInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutTipo_telefoneInput | Prisma.ClienteUpdateWithWhereUniqueWithoutTipo_telefoneInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutTipo_telefoneInput | Prisma.ClienteUpdateManyWithWhereWithoutTipo_telefoneInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteCreateNestedManyWithoutStatus_clienteInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput> | Prisma.ClienteCreateWithoutStatus_clienteInput[] | Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput | Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput[];
+    createMany?: Prisma.ClienteCreateManyStatus_clienteInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUncheckedCreateNestedManyWithoutStatus_clienteInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput> | Prisma.ClienteCreateWithoutStatus_clienteInput[] | Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput | Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput[];
+    createMany?: Prisma.ClienteCreateManyStatus_clienteInputEnvelope;
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+};
+export type ClienteUpdateManyWithoutStatus_clienteNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput> | Prisma.ClienteCreateWithoutStatus_clienteInput[] | Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput | Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutStatus_clienteInput | Prisma.ClienteUpsertWithWhereUniqueWithoutStatus_clienteInput[];
+    createMany?: Prisma.ClienteCreateManyStatus_clienteInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutStatus_clienteInput | Prisma.ClienteUpdateWithWhereUniqueWithoutStatus_clienteInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutStatus_clienteInput | Prisma.ClienteUpdateManyWithWhereWithoutStatus_clienteInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteUncheckedUpdateManyWithoutStatus_clienteNestedInput = {
+    create?: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput> | Prisma.ClienteCreateWithoutStatus_clienteInput[] | Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput[];
+    connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput | Prisma.ClienteCreateOrConnectWithoutStatus_clienteInput[];
+    upsert?: Prisma.ClienteUpsertWithWhereUniqueWithoutStatus_clienteInput | Prisma.ClienteUpsertWithWhereUniqueWithoutStatus_clienteInput[];
+    createMany?: Prisma.ClienteCreateManyStatus_clienteInputEnvelope;
+    set?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    disconnect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    delete?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    connect?: Prisma.ClienteWhereUniqueInput | Prisma.ClienteWhereUniqueInput[];
+    update?: Prisma.ClienteUpdateWithWhereUniqueWithoutStatus_clienteInput | Prisma.ClienteUpdateWithWhereUniqueWithoutStatus_clienteInput[];
+    updateMany?: Prisma.ClienteUpdateManyWithWhereWithoutStatus_clienteInput | Prisma.ClienteUpdateManyWithWhereWithoutStatus_clienteInput[];
+    deleteMany?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+};
+export type ClienteCreateWithoutGeneroInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    tipo_telefone: Prisma.Tipo_telefoneCreateNestedOneWithoutClientesInput;
+    status_cliente: Prisma.Status_clienteCreateNestedOneWithoutClientesInput;
+};
+export type ClienteUncheckedCreateWithoutGeneroInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+};
+export type ClienteCreateOrConnectWithoutGeneroInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput>;
+};
+export type ClienteCreateManyGeneroInputEnvelope = {
+    data: Prisma.ClienteCreateManyGeneroInput | Prisma.ClienteCreateManyGeneroInput[];
+    skipDuplicates?: boolean;
+};
+export type ClienteUpsertWithWhereUniqueWithoutGeneroInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ClienteUpdateWithoutGeneroInput, Prisma.ClienteUncheckedUpdateWithoutGeneroInput>;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutGeneroInput, Prisma.ClienteUncheckedCreateWithoutGeneroInput>;
+};
+export type ClienteUpdateWithWhereUniqueWithoutGeneroInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateWithoutGeneroInput, Prisma.ClienteUncheckedUpdateWithoutGeneroInput>;
+};
+export type ClienteUpdateManyWithWhereWithoutGeneroInput = {
+    where: Prisma.ClienteScalarWhereInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateManyMutationInput, Prisma.ClienteUncheckedUpdateManyWithoutGeneroInput>;
+};
+export type ClienteScalarWhereInput = {
+    AND?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+    OR?: Prisma.ClienteScalarWhereInput[];
+    NOT?: Prisma.ClienteScalarWhereInput | Prisma.ClienteScalarWhereInput[];
+    cd_cpf?: Prisma.StringFilter<"Cliente"> | string;
+    nm_nome_cliente?: Prisma.StringFilter<"Cliente"> | string;
+    dt_nascimento?: Prisma.DateTimeFilter<"Cliente"> | Date | string;
+    cd_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    cd_DDD?: Prisma.StringFilter<"Cliente"> | string;
+    nm_identificacao_telefone?: Prisma.StringFilter<"Cliente"> | string;
+    nm_email?: Prisma.StringFilter<"Cliente"> | string;
+    cd_senha?: Prisma.StringFilter<"Cliente"> | string;
+    cd_rank_cliente?: Prisma.IntFilter<"Cliente"> | number;
+    cd_genero?: Prisma.IntFilter<"Cliente"> | number;
+    cd_tipo_telefone?: Prisma.IntFilter<"Cliente"> | number;
+    cd_status?: Prisma.IntFilter<"Cliente"> | number;
+};
+export type ClienteCreateWithoutTipo_telefoneInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    genero: Prisma.GeneroCreateNestedOneWithoutClientesInput;
+    status_cliente: Prisma.Status_clienteCreateNestedOneWithoutClientesInput;
+};
+export type ClienteUncheckedCreateWithoutTipo_telefoneInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_status: number;
+};
+export type ClienteCreateOrConnectWithoutTipo_telefoneInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput>;
+};
+export type ClienteCreateManyTipo_telefoneInputEnvelope = {
+    data: Prisma.ClienteCreateManyTipo_telefoneInput | Prisma.ClienteCreateManyTipo_telefoneInput[];
+    skipDuplicates?: boolean;
+};
+export type ClienteUpsertWithWhereUniqueWithoutTipo_telefoneInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ClienteUpdateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedUpdateWithoutTipo_telefoneInput>;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedCreateWithoutTipo_telefoneInput>;
+};
+export type ClienteUpdateWithWhereUniqueWithoutTipo_telefoneInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateWithoutTipo_telefoneInput, Prisma.ClienteUncheckedUpdateWithoutTipo_telefoneInput>;
+};
+export type ClienteUpdateManyWithWhereWithoutTipo_telefoneInput = {
+    where: Prisma.ClienteScalarWhereInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateManyMutationInput, Prisma.ClienteUncheckedUpdateManyWithoutTipo_telefoneInput>;
+};
+export type ClienteCreateWithoutStatus_clienteInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    genero: Prisma.GeneroCreateNestedOneWithoutClientesInput;
+    tipo_telefone: Prisma.Tipo_telefoneCreateNestedOneWithoutClientesInput;
+};
+export type ClienteUncheckedCreateWithoutStatus_clienteInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+};
+export type ClienteCreateOrConnectWithoutStatus_clienteInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput>;
+};
+export type ClienteCreateManyStatus_clienteInputEnvelope = {
+    data: Prisma.ClienteCreateManyStatus_clienteInput | Prisma.ClienteCreateManyStatus_clienteInput[];
+    skipDuplicates?: boolean;
+};
+export type ClienteUpsertWithWhereUniqueWithoutStatus_clienteInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ClienteUpdateWithoutStatus_clienteInput, Prisma.ClienteUncheckedUpdateWithoutStatus_clienteInput>;
+    create: Prisma.XOR<Prisma.ClienteCreateWithoutStatus_clienteInput, Prisma.ClienteUncheckedCreateWithoutStatus_clienteInput>;
+};
+export type ClienteUpdateWithWhereUniqueWithoutStatus_clienteInput = {
+    where: Prisma.ClienteWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateWithoutStatus_clienteInput, Prisma.ClienteUncheckedUpdateWithoutStatus_clienteInput>;
+};
+export type ClienteUpdateManyWithWhereWithoutStatus_clienteInput = {
+    where: Prisma.ClienteScalarWhereInput;
+    data: Prisma.XOR<Prisma.ClienteUpdateManyMutationInput, Prisma.ClienteUncheckedUpdateManyWithoutStatus_clienteInput>;
+};
+export type ClienteCreateManyGeneroInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_tipo_telefone: number;
+    cd_status: number;
+};
+export type ClienteUpdateWithoutGeneroInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    tipo_telefone?: Prisma.Tipo_telefoneUpdateOneRequiredWithoutClientesNestedInput;
+    status_cliente?: Prisma.Status_clienteUpdateOneRequiredWithoutClientesNestedInput;
+};
+export type ClienteUncheckedUpdateWithoutGeneroInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteUncheckedUpdateManyWithoutGeneroInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteCreateManyTipo_telefoneInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_status: number;
+};
+export type ClienteUpdateWithoutTipo_telefoneInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    genero?: Prisma.GeneroUpdateOneRequiredWithoutClientesNestedInput;
+    status_cliente?: Prisma.Status_clienteUpdateOneRequiredWithoutClientesNestedInput;
+};
+export type ClienteUncheckedUpdateWithoutTipo_telefoneInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteUncheckedUpdateManyWithoutTipo_telefoneInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_status?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteCreateManyStatus_clienteInput = {
+    cd_cpf: string;
+    nm_nome_cliente: string;
+    dt_nascimento: Date | string;
+    cd_telefone: string;
+    cd_DDD: string;
+    nm_identificacao_telefone: string;
+    nm_email: string;
+    cd_senha: string;
+    cd_rank_cliente?: number;
+    cd_genero: number;
+    cd_tipo_telefone: number;
+};
+export type ClienteUpdateWithoutStatus_clienteInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    genero?: Prisma.GeneroUpdateOneRequiredWithoutClientesNestedInput;
+    tipo_telefone?: Prisma.Tipo_telefoneUpdateOneRequiredWithoutClientesNestedInput;
+};
+export type ClienteUncheckedUpdateWithoutStatus_clienteInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteUncheckedUpdateManyWithoutStatus_clienteInput = {
+    cd_cpf?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_nome_cliente?: Prisma.StringFieldUpdateOperationsInput | string;
+    dt_nascimento?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cd_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_DDD?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_identificacao_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    nm_email?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_senha?: Prisma.StringFieldUpdateOperationsInput | string;
+    cd_rank_cliente?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_genero?: Prisma.IntFieldUpdateOperationsInput | number;
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+};
+export type ClienteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_cpf?: boolean;
+    nm_nome_cliente?: boolean;
+    dt_nascimento?: boolean;
+    cd_telefone?: boolean;
+    cd_DDD?: boolean;
+    nm_identificacao_telefone?: boolean;
+    nm_email?: boolean;
+    cd_senha?: boolean;
+    cd_rank_cliente?: boolean;
+    cd_genero?: boolean;
+    cd_tipo_telefone?: boolean;
+    cd_status?: boolean;
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["cliente"]>;
+export type ClienteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_cpf?: boolean;
+    nm_nome_cliente?: boolean;
+    dt_nascimento?: boolean;
+    cd_telefone?: boolean;
+    cd_DDD?: boolean;
+    nm_identificacao_telefone?: boolean;
+    nm_email?: boolean;
+    cd_senha?: boolean;
+    cd_rank_cliente?: boolean;
+    cd_genero?: boolean;
+    cd_tipo_telefone?: boolean;
+    cd_status?: boolean;
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["cliente"]>;
+export type ClienteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_cpf?: boolean;
+    nm_nome_cliente?: boolean;
+    dt_nascimento?: boolean;
+    cd_telefone?: boolean;
+    cd_DDD?: boolean;
+    nm_identificacao_telefone?: boolean;
+    nm_email?: boolean;
+    cd_senha?: boolean;
+    cd_rank_cliente?: boolean;
+    cd_genero?: boolean;
+    cd_tipo_telefone?: boolean;
+    cd_status?: boolean;
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["cliente"]>;
+export type ClienteSelectScalar = {
+    cd_cpf?: boolean;
+    nm_nome_cliente?: boolean;
+    dt_nascimento?: boolean;
+    cd_telefone?: boolean;
+    cd_DDD?: boolean;
+    nm_identificacao_telefone?: boolean;
+    nm_email?: boolean;
+    cd_senha?: boolean;
+    cd_rank_cliente?: boolean;
+    cd_genero?: boolean;
+    cd_tipo_telefone?: boolean;
+    cd_status?: boolean;
+};
+export type ClienteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"cd_cpf" | "nm_nome_cliente" | "dt_nascimento" | "cd_telefone" | "cd_DDD" | "nm_identificacao_telefone" | "nm_email" | "cd_senha" | "cd_rank_cliente" | "cd_genero" | "cd_tipo_telefone" | "cd_status", ExtArgs["result"]["cliente"]>;
+export type ClienteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+};
+export type ClienteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+};
+export type ClienteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    genero?: boolean | Prisma.GeneroDefaultArgs<ExtArgs>;
+    tipo_telefone?: boolean | Prisma.Tipo_telefoneDefaultArgs<ExtArgs>;
+    status_cliente?: boolean | Prisma.Status_clienteDefaultArgs<ExtArgs>;
+};
+export type $ClientePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Cliente";
+    objects: {
+        genero: Prisma.$GeneroPayload<ExtArgs>;
+        tipo_telefone: Prisma.$Tipo_telefonePayload<ExtArgs>;
+        status_cliente: Prisma.$Status_clientePayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        cd_cpf: string;
+        nm_nome_cliente: string;
+        dt_nascimento: Date;
+        cd_telefone: string;
+        cd_DDD: string;
+        nm_identificacao_telefone: string;
+        nm_email: string;
+        cd_senha: string;
+        cd_rank_cliente: number;
+        cd_genero: number;
+        cd_tipo_telefone: number;
+        cd_status: number;
+    }, ExtArgs["result"]["cliente"]>;
+    composites: {};
+};
+export type ClienteGetPayload<S extends boolean | null | undefined | ClienteDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ClientePayload, S>;
+export type ClienteCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<ClienteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: ClienteCountAggregateInputType | true;
+};
+export interface ClienteDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Cliente'];
+        meta: {
+            name: 'Cliente';
+        };
+    };
+    /**
+     * Find zero or one Cliente that matches the filter.
+     * @param {ClienteFindUniqueArgs} args - Arguments to find a Cliente
+     * @example
+     * // Get one Cliente
+     * const cliente = await prisma.cliente.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClienteFindUniqueArgs>(args: Prisma.SelectSubset<T, ClienteFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one Cliente that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClienteFindUniqueOrThrowArgs} args - Arguments to find a Cliente
+     * @example
+     * // Get one Cliente
+     * const cliente = await prisma.cliente.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClienteFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ClienteFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Cliente that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteFindFirstArgs} args - Arguments to find a Cliente
+     * @example
+     * // Get one Cliente
+     * const cliente = await prisma.cliente.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClienteFindFirstArgs>(args?: Prisma.SelectSubset<T, ClienteFindFirstArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Cliente that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteFindFirstOrThrowArgs} args - Arguments to find a Cliente
+     * @example
+     * // Get one Cliente
+     * const cliente = await prisma.cliente.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClienteFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ClienteFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more Clientes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Clientes
+     * const clientes = await prisma.cliente.findMany()
+     *
+     * // Get first 10 Clientes
+     * const clientes = await prisma.cliente.findMany({ take: 10 })
+     *
+     * // Only select the `cd_cpf`
+     * const clienteWithCd_cpfOnly = await prisma.cliente.findMany({ select: { cd_cpf: true } })
+     *
+     */
+    findMany<T extends ClienteFindManyArgs>(args?: Prisma.SelectSubset<T, ClienteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a Cliente.
+     * @param {ClienteCreateArgs} args - Arguments to create a Cliente.
+     * @example
+     * // Create one Cliente
+     * const Cliente = await prisma.cliente.create({
+     *   data: {
+     *     // ... data to create a Cliente
+     *   }
+     * })
+     *
+     */
+    create<T extends ClienteCreateArgs>(args: Prisma.SelectSubset<T, ClienteCreateArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many Clientes.
+     * @param {ClienteCreateManyArgs} args - Arguments to create many Clientes.
+     * @example
+     * // Create many Clientes
+     * const cliente = await prisma.cliente.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends ClienteCreateManyArgs>(args?: Prisma.SelectSubset<T, ClienteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many Clientes and returns the data saved in the database.
+     * @param {ClienteCreateManyAndReturnArgs} args - Arguments to create many Clientes.
+     * @example
+     * // Create many Clientes
+     * const cliente = await prisma.cliente.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many Clientes and only return the `cd_cpf`
+     * const clienteWithCd_cpfOnly = await prisma.cliente.createManyAndReturn({
+     *   select: { cd_cpf: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends ClienteCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ClienteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a Cliente.
+     * @param {ClienteDeleteArgs} args - Arguments to delete one Cliente.
+     * @example
+     * // Delete one Cliente
+     * const Cliente = await prisma.cliente.delete({
+     *   where: {
+     *     // ... filter to delete one Cliente
+     *   }
+     * })
+     *
+     */
+    delete<T extends ClienteDeleteArgs>(args: Prisma.SelectSubset<T, ClienteDeleteArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one Cliente.
+     * @param {ClienteUpdateArgs} args - Arguments to update one Cliente.
+     * @example
+     * // Update one Cliente
+     * const cliente = await prisma.cliente.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends ClienteUpdateArgs>(args: Prisma.SelectSubset<T, ClienteUpdateArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more Clientes.
+     * @param {ClienteDeleteManyArgs} args - Arguments to filter Clientes to delete.
+     * @example
+     * // Delete a few Clientes
+     * const { count } = await prisma.cliente.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends ClienteDeleteManyArgs>(args?: Prisma.SelectSubset<T, ClienteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Clientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Clientes
+     * const cliente = await prisma.cliente.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends ClienteUpdateManyArgs>(args: Prisma.SelectSubset<T, ClienteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Clientes and returns the data updated in the database.
+     * @param {ClienteUpdateManyAndReturnArgs} args - Arguments to update many Clientes.
+     * @example
+     * // Update many Clientes
+     * const cliente = await prisma.cliente.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more Clientes and only return the `cd_cpf`
+     * const clienteWithCd_cpfOnly = await prisma.cliente.updateManyAndReturn({
+     *   select: { cd_cpf: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends ClienteUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ClienteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one Cliente.
+     * @param {ClienteUpsertArgs} args - Arguments to update or create a Cliente.
+     * @example
+     * // Update or create a Cliente
+     * const cliente = await prisma.cliente.upsert({
+     *   create: {
+     *     // ... data to create a Cliente
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Cliente we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClienteUpsertArgs>(args: Prisma.SelectSubset<T, ClienteUpsertArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of Clientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteCountArgs} args - Arguments to filter Clientes to count.
+     * @example
+     * // Count the number of Clientes
+     * const count = await prisma.cliente.count({
+     *   where: {
+     *     // ... the filter for the Clientes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClienteCountArgs>(args?: Prisma.Subset<T, ClienteCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], ClienteCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a Cliente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClienteAggregateArgs>(args: Prisma.Subset<T, ClienteAggregateArgs>): Prisma.PrismaPromise<GetClienteAggregateType<T>>;
+    /**
+     * Group by Cliente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClienteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends ClienteGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: ClienteGroupByArgs['orderBy'];
+    } : {
+        orderBy?: ClienteGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, ClienteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClienteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the Cliente model
+     */
+    readonly fields: ClienteFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for Cliente.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__ClienteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    genero<T extends Prisma.GeneroDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GeneroDefaultArgs<ExtArgs>>): Prisma.Prisma__GeneroClient<runtime.Types.Result.GetResult<Prisma.$GeneroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    tipo_telefone<T extends Prisma.Tipo_telefoneDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tipo_telefoneDefaultArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    status_cliente<T extends Prisma.Status_clienteDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Status_clienteDefaultArgs<ExtArgs>>): Prisma.Prisma__Status_clienteClient<runtime.Types.Result.GetResult<Prisma.$Status_clientePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the Cliente model
+ */
+export interface ClienteFieldRefs {
+    readonly cd_cpf: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly nm_nome_cliente: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly dt_nascimento: Prisma.FieldRef<"Cliente", 'DateTime'>;
+    readonly cd_telefone: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly cd_DDD: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly nm_identificacao_telefone: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly nm_email: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly cd_senha: Prisma.FieldRef<"Cliente", 'String'>;
+    readonly cd_rank_cliente: Prisma.FieldRef<"Cliente", 'Int'>;
+    readonly cd_genero: Prisma.FieldRef<"Cliente", 'Int'>;
+    readonly cd_tipo_telefone: Prisma.FieldRef<"Cliente", 'Int'>;
+    readonly cd_status: Prisma.FieldRef<"Cliente", 'Int'>;
+}
+/**
+ * Cliente findUnique
+ */
+export type ClienteFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter, which Cliente to fetch.
+     */
+    where: Prisma.ClienteWhereUniqueInput;
+};
+/**
+ * Cliente findUniqueOrThrow
+ */
+export type ClienteFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter, which Cliente to fetch.
+     */
+    where: Prisma.ClienteWhereUniqueInput;
+};
+/**
+ * Cliente findFirst
+ */
+export type ClienteFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter, which Cliente to fetch.
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Clientes to fetch.
+     */
+    orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Clientes.
+     */
+    cursor?: Prisma.ClienteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Clientes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Clientes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Clientes.
+     */
+    distinct?: Prisma.ClienteScalarFieldEnum | Prisma.ClienteScalarFieldEnum[];
+};
+/**
+ * Cliente findFirstOrThrow
+ */
+export type ClienteFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter, which Cliente to fetch.
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Clientes to fetch.
+     */
+    orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Clientes.
+     */
+    cursor?: Prisma.ClienteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Clientes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Clientes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Clientes.
+     */
+    distinct?: Prisma.ClienteScalarFieldEnum | Prisma.ClienteScalarFieldEnum[];
+};
+/**
+ * Cliente findMany
+ */
+export type ClienteFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter, which Clientes to fetch.
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Clientes to fetch.
+     */
+    orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing Clientes.
+     */
+    cursor?: Prisma.ClienteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Clientes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Clientes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Clientes.
+     */
+    distinct?: Prisma.ClienteScalarFieldEnum | Prisma.ClienteScalarFieldEnum[];
+};
+/**
+ * Cliente create
+ */
+export type ClienteCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a Cliente.
+     */
+    data: Prisma.XOR<Prisma.ClienteCreateInput, Prisma.ClienteUncheckedCreateInput>;
+};
+/**
+ * Cliente createMany
+ */
+export type ClienteCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Clientes.
+     */
+    data: Prisma.ClienteCreateManyInput | Prisma.ClienteCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Cliente createManyAndReturn
+ */
+export type ClienteCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * The data used to create many Clientes.
+     */
+    data: Prisma.ClienteCreateManyInput | Prisma.ClienteCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Cliente update
+ */
+export type ClienteUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a Cliente.
+     */
+    data: Prisma.XOR<Prisma.ClienteUpdateInput, Prisma.ClienteUncheckedUpdateInput>;
+    /**
+     * Choose, which Cliente to update.
+     */
+    where: Prisma.ClienteWhereUniqueInput;
+};
+/**
+ * Cliente updateMany
+ */
+export type ClienteUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Clientes.
+     */
+    data: Prisma.XOR<Prisma.ClienteUpdateManyMutationInput, Prisma.ClienteUncheckedUpdateManyInput>;
+    /**
+     * Filter which Clientes to update
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * Limit how many Clientes to update.
+     */
+    limit?: number;
+};
+/**
+ * Cliente updateManyAndReturn
+ */
+export type ClienteUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * The data used to update Clientes.
+     */
+    data: Prisma.XOR<Prisma.ClienteUpdateManyMutationInput, Prisma.ClienteUncheckedUpdateManyInput>;
+    /**
+     * Filter which Clientes to update
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * Limit how many Clientes to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Cliente upsert
+ */
+export type ClienteUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the Cliente to update in case it exists.
+     */
+    where: Prisma.ClienteWhereUniqueInput;
+    /**
+     * In case the Cliente found by the `where` argument doesn't exist, create a new Cliente with this data.
+     */
+    create: Prisma.XOR<Prisma.ClienteCreateInput, Prisma.ClienteUncheckedCreateInput>;
+    /**
+     * In case the Cliente was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.ClienteUpdateInput, Prisma.ClienteUncheckedUpdateInput>;
+};
+/**
+ * Cliente delete
+ */
+export type ClienteDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    /**
+     * Filter which Cliente to delete.
+     */
+    where: Prisma.ClienteWhereUniqueInput;
+};
+/**
+ * Cliente deleteMany
+ */
+export type ClienteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Clientes to delete
+     */
+    where?: Prisma.ClienteWhereInput;
+    /**
+     * Limit how many Clientes to delete.
+     */
+    limit?: number;
+};
+/**
+ * Cliente without action
+ */
+export type ClienteDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=Cliente.d.ts.map

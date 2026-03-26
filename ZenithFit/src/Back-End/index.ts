@@ -122,7 +122,7 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
     const cpf = req.params.cpf.trim();
     const dados = req.body;
 
-    // 1. Criamos o objeto de atualização do Cliente (dados básicos)
+    // 1. Objeto de atualização básica
     const updateData: any = {
       nm_nome_cliente: dados.nm_nome_cliente,
       dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
@@ -137,57 +137,46 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
       updateData.cd_senha = dados.nm_senha;
     }
 
-    // 2. EXCUÇÃO EM TRANSAÇÃO (Garante que ou faz tudo ou não faz nada)
     const resultado = await prisma.$transaction(async (tx) => {
+      // Remove registros antigos para evitar duplicidade ou lixo
+      await tx.endereco.deleteMany({ where: { cd_cpf: cpf } });
+      await tx.cartao_credito.deleteMany({ where: { cd_cpf: cpf } });
 
-      // 🔥 remove endereços
-      await tx.endereco.deleteMany({
-        where: { cd_cpf: cpf }
-      });
-
-      // 🔥 remove cartões
-      await tx.cartao_credito.deleteMany({
-        where: { cd_cpf: cpf }
-      });
-
-      // 🔥 atualiza cliente + recria tudo
       return await tx.cliente.update({
         where: { cd_cpf: cpf },
         data: {
           ...updateData,
-
+          // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
           enderecos: {
-            create: dados.enderecos.map((end: any) => ({
+            create: (dados.enderecos || []).map((end: any) => ({
               cd_cep: end.cd_cep,
               nm_logradouro: end.nm_logradouro,
               cd_numero: end.cd_numero,
               nm_bairro: end.nm_bairro,
               nm_cidade: end.nm_cidade,
-              sg_estado: end.sg_uf,
-              nm_tipo_endereco: end.nm_tipo_endereco
+              sg_estado: end.sg_uf || end.sg_estado || "SP", // Fallback para o nome correto
+              nm_tipo_endereco: end.nm_tipo_endereco || "Entrega"
             }))
           },
-
           cartoes: {
-            create: dados.cartoes.map((c: any) => ({
+            create: (dados.cartoes || []).map((c: any) => ({
               cd_numero_cartao: c.cd_numero_cartao,
               nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
-              cd_seguranca: c.cd_seguranca,
+              cd_seguranca: c.cd_seguranca || "000", // Evita erro se o campo sumir na edição
               dt_validade_cartao: new Date(c.dt_validade_cartao),
-              cd_bandeira: Number(c.cd_bandeira),
-              cartao_preferencial: c.cartao_preferencial
+              cd_bandeira: Number(c.cd_bandeira || 1),
+              cartao_preferencial: !!c.cartao_preferencial // Garante que é booleano
             }))
           }
         }
       });
-
     });
 
-    console.log("Cliente e múltiplos endereços atualizados com sucesso!");
+    console.log("Cliente atualizado com sucesso!");
     res.status(200).json(resultado);
   } catch (error) {
     console.error("ERRO NO UPDATE:", error);
-    res.status(500).json({ message: "Erro ao atualizar cliente e endereços" });
+    res.status(500).json({ message: "Erro ao atualizar cliente" });
   }
 });
 

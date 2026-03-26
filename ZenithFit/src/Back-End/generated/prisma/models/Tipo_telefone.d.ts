@@ -1,0 +1,1098 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model Tipo_telefone
+ *
+ */
+export type Tipo_telefoneModel = runtime.Types.Result.DefaultSelection<Prisma.$Tipo_telefonePayload>;
+export type AggregateTipo_telefone = {
+    _count: Tipo_telefoneCountAggregateOutputType | null;
+    _avg: Tipo_telefoneAvgAggregateOutputType | null;
+    _sum: Tipo_telefoneSumAggregateOutputType | null;
+    _min: Tipo_telefoneMinAggregateOutputType | null;
+    _max: Tipo_telefoneMaxAggregateOutputType | null;
+};
+export type Tipo_telefoneAvgAggregateOutputType = {
+    cd_tipo_telefone: number | null;
+};
+export type Tipo_telefoneSumAggregateOutputType = {
+    cd_tipo_telefone: number | null;
+};
+export type Tipo_telefoneMinAggregateOutputType = {
+    cd_tipo_telefone: number | null;
+    nm_tipo_telefone: string | null;
+};
+export type Tipo_telefoneMaxAggregateOutputType = {
+    cd_tipo_telefone: number | null;
+    nm_tipo_telefone: string | null;
+};
+export type Tipo_telefoneCountAggregateOutputType = {
+    cd_tipo_telefone: number;
+    nm_tipo_telefone: number;
+    _all: number;
+};
+export type Tipo_telefoneAvgAggregateInputType = {
+    cd_tipo_telefone?: true;
+};
+export type Tipo_telefoneSumAggregateInputType = {
+    cd_tipo_telefone?: true;
+};
+export type Tipo_telefoneMinAggregateInputType = {
+    cd_tipo_telefone?: true;
+    nm_tipo_telefone?: true;
+};
+export type Tipo_telefoneMaxAggregateInputType = {
+    cd_tipo_telefone?: true;
+    nm_tipo_telefone?: true;
+};
+export type Tipo_telefoneCountAggregateInputType = {
+    cd_tipo_telefone?: true;
+    nm_tipo_telefone?: true;
+    _all?: true;
+};
+export type Tipo_telefoneAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tipo_telefone to aggregate.
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Tipo_telefones to fetch.
+     */
+    orderBy?: Prisma.Tipo_telefoneOrderByWithRelationInput | Prisma.Tipo_telefoneOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.Tipo_telefoneWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Tipo_telefones from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Tipo_telefones.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned Tipo_telefones
+    **/
+    _count?: true | Tipo_telefoneCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: Tipo_telefoneAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: Tipo_telefoneSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: Tipo_telefoneMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: Tipo_telefoneMaxAggregateInputType;
+};
+export type GetTipo_telefoneAggregateType<T extends Tipo_telefoneAggregateArgs> = {
+    [P in keyof T & keyof AggregateTipo_telefone]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateTipo_telefone[P]> : Prisma.GetScalarType<T[P], AggregateTipo_telefone[P]>;
+};
+export type Tipo_telefoneGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.Tipo_telefoneWhereInput;
+    orderBy?: Prisma.Tipo_telefoneOrderByWithAggregationInput | Prisma.Tipo_telefoneOrderByWithAggregationInput[];
+    by: Prisma.Tipo_telefoneScalarFieldEnum[] | Prisma.Tipo_telefoneScalarFieldEnum;
+    having?: Prisma.Tipo_telefoneScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: Tipo_telefoneCountAggregateInputType | true;
+    _avg?: Tipo_telefoneAvgAggregateInputType;
+    _sum?: Tipo_telefoneSumAggregateInputType;
+    _min?: Tipo_telefoneMinAggregateInputType;
+    _max?: Tipo_telefoneMaxAggregateInputType;
+};
+export type Tipo_telefoneGroupByOutputType = {
+    cd_tipo_telefone: number;
+    nm_tipo_telefone: string;
+    _count: Tipo_telefoneCountAggregateOutputType | null;
+    _avg: Tipo_telefoneAvgAggregateOutputType | null;
+    _sum: Tipo_telefoneSumAggregateOutputType | null;
+    _min: Tipo_telefoneMinAggregateOutputType | null;
+    _max: Tipo_telefoneMaxAggregateOutputType | null;
+};
+type GetTipo_telefoneGroupByPayload<T extends Tipo_telefoneGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<Tipo_telefoneGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof Tipo_telefoneGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], Tipo_telefoneGroupByOutputType[P]> : Prisma.GetScalarType<T[P], Tipo_telefoneGroupByOutputType[P]>;
+}>>;
+export type Tipo_telefoneWhereInput = {
+    AND?: Prisma.Tipo_telefoneWhereInput | Prisma.Tipo_telefoneWhereInput[];
+    OR?: Prisma.Tipo_telefoneWhereInput[];
+    NOT?: Prisma.Tipo_telefoneWhereInput | Prisma.Tipo_telefoneWhereInput[];
+    cd_tipo_telefone?: Prisma.IntFilter<"Tipo_telefone"> | number;
+    nm_tipo_telefone?: Prisma.StringFilter<"Tipo_telefone"> | string;
+    clientes?: Prisma.ClienteListRelationFilter;
+};
+export type Tipo_telefoneOrderByWithRelationInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+    nm_tipo_telefone?: Prisma.SortOrder;
+    clientes?: Prisma.ClienteOrderByRelationAggregateInput;
+};
+export type Tipo_telefoneWhereUniqueInput = Prisma.AtLeast<{
+    cd_tipo_telefone?: number;
+    AND?: Prisma.Tipo_telefoneWhereInput | Prisma.Tipo_telefoneWhereInput[];
+    OR?: Prisma.Tipo_telefoneWhereInput[];
+    NOT?: Prisma.Tipo_telefoneWhereInput | Prisma.Tipo_telefoneWhereInput[];
+    nm_tipo_telefone?: Prisma.StringFilter<"Tipo_telefone"> | string;
+    clientes?: Prisma.ClienteListRelationFilter;
+}, "cd_tipo_telefone">;
+export type Tipo_telefoneOrderByWithAggregationInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+    nm_tipo_telefone?: Prisma.SortOrder;
+    _count?: Prisma.Tipo_telefoneCountOrderByAggregateInput;
+    _avg?: Prisma.Tipo_telefoneAvgOrderByAggregateInput;
+    _max?: Prisma.Tipo_telefoneMaxOrderByAggregateInput;
+    _min?: Prisma.Tipo_telefoneMinOrderByAggregateInput;
+    _sum?: Prisma.Tipo_telefoneSumOrderByAggregateInput;
+};
+export type Tipo_telefoneScalarWhereWithAggregatesInput = {
+    AND?: Prisma.Tipo_telefoneScalarWhereWithAggregatesInput | Prisma.Tipo_telefoneScalarWhereWithAggregatesInput[];
+    OR?: Prisma.Tipo_telefoneScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.Tipo_telefoneScalarWhereWithAggregatesInput | Prisma.Tipo_telefoneScalarWhereWithAggregatesInput[];
+    cd_tipo_telefone?: Prisma.IntWithAggregatesFilter<"Tipo_telefone"> | number;
+    nm_tipo_telefone?: Prisma.StringWithAggregatesFilter<"Tipo_telefone"> | string;
+};
+export type Tipo_telefoneCreateInput = {
+    nm_tipo_telefone: string;
+    clientes?: Prisma.ClienteCreateNestedManyWithoutTipo_telefoneInput;
+};
+export type Tipo_telefoneUncheckedCreateInput = {
+    cd_tipo_telefone?: number;
+    nm_tipo_telefone: string;
+    clientes?: Prisma.ClienteUncheckedCreateNestedManyWithoutTipo_telefoneInput;
+};
+export type Tipo_telefoneUpdateInput = {
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    clientes?: Prisma.ClienteUpdateManyWithoutTipo_telefoneNestedInput;
+};
+export type Tipo_telefoneUncheckedUpdateInput = {
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+    clientes?: Prisma.ClienteUncheckedUpdateManyWithoutTipo_telefoneNestedInput;
+};
+export type Tipo_telefoneCreateManyInput = {
+    cd_tipo_telefone?: number;
+    nm_tipo_telefone: string;
+};
+export type Tipo_telefoneUpdateManyMutationInput = {
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type Tipo_telefoneUncheckedUpdateManyInput = {
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type Tipo_telefoneScalarRelationFilter = {
+    is?: Prisma.Tipo_telefoneWhereInput;
+    isNot?: Prisma.Tipo_telefoneWhereInput;
+};
+export type Tipo_telefoneCountOrderByAggregateInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+    nm_tipo_telefone?: Prisma.SortOrder;
+};
+export type Tipo_telefoneAvgOrderByAggregateInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+};
+export type Tipo_telefoneMaxOrderByAggregateInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+    nm_tipo_telefone?: Prisma.SortOrder;
+};
+export type Tipo_telefoneMinOrderByAggregateInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+    nm_tipo_telefone?: Prisma.SortOrder;
+};
+export type Tipo_telefoneSumOrderByAggregateInput = {
+    cd_tipo_telefone?: Prisma.SortOrder;
+};
+export type Tipo_telefoneCreateNestedOneWithoutClientesInput = {
+    create?: Prisma.XOR<Prisma.Tipo_telefoneCreateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedCreateWithoutClientesInput>;
+    connectOrCreate?: Prisma.Tipo_telefoneCreateOrConnectWithoutClientesInput;
+    connect?: Prisma.Tipo_telefoneWhereUniqueInput;
+};
+export type Tipo_telefoneUpdateOneRequiredWithoutClientesNestedInput = {
+    create?: Prisma.XOR<Prisma.Tipo_telefoneCreateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedCreateWithoutClientesInput>;
+    connectOrCreate?: Prisma.Tipo_telefoneCreateOrConnectWithoutClientesInput;
+    upsert?: Prisma.Tipo_telefoneUpsertWithoutClientesInput;
+    connect?: Prisma.Tipo_telefoneWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.Tipo_telefoneUpdateToOneWithWhereWithoutClientesInput, Prisma.Tipo_telefoneUpdateWithoutClientesInput>, Prisma.Tipo_telefoneUncheckedUpdateWithoutClientesInput>;
+};
+export type Tipo_telefoneCreateWithoutClientesInput = {
+    nm_tipo_telefone: string;
+};
+export type Tipo_telefoneUncheckedCreateWithoutClientesInput = {
+    cd_tipo_telefone?: number;
+    nm_tipo_telefone: string;
+};
+export type Tipo_telefoneCreateOrConnectWithoutClientesInput = {
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+    create: Prisma.XOR<Prisma.Tipo_telefoneCreateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedCreateWithoutClientesInput>;
+};
+export type Tipo_telefoneUpsertWithoutClientesInput = {
+    update: Prisma.XOR<Prisma.Tipo_telefoneUpdateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedUpdateWithoutClientesInput>;
+    create: Prisma.XOR<Prisma.Tipo_telefoneCreateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedCreateWithoutClientesInput>;
+    where?: Prisma.Tipo_telefoneWhereInput;
+};
+export type Tipo_telefoneUpdateToOneWithWhereWithoutClientesInput = {
+    where?: Prisma.Tipo_telefoneWhereInput;
+    data: Prisma.XOR<Prisma.Tipo_telefoneUpdateWithoutClientesInput, Prisma.Tipo_telefoneUncheckedUpdateWithoutClientesInput>;
+};
+export type Tipo_telefoneUpdateWithoutClientesInput = {
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type Tipo_telefoneUncheckedUpdateWithoutClientesInput = {
+    cd_tipo_telefone?: Prisma.IntFieldUpdateOperationsInput | number;
+    nm_tipo_telefone?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+/**
+ * Count Type Tipo_telefoneCountOutputType
+ */
+export type Tipo_telefoneCountOutputType = {
+    clientes: number;
+};
+export type Tipo_telefoneCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    clientes?: boolean | Tipo_telefoneCountOutputTypeCountClientesArgs;
+};
+/**
+ * Tipo_telefoneCountOutputType without action
+ */
+export type Tipo_telefoneCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefoneCountOutputType
+     */
+    select?: Prisma.Tipo_telefoneCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * Tipo_telefoneCountOutputType without action
+ */
+export type Tipo_telefoneCountOutputTypeCountClientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ClienteWhereInput;
+};
+export type Tipo_telefoneSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_tipo_telefone?: boolean;
+    nm_tipo_telefone?: boolean;
+    clientes?: boolean | Prisma.Tipo_telefone$clientesArgs<ExtArgs>;
+    _count?: boolean | Prisma.Tipo_telefoneCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["tipo_telefone"]>;
+export type Tipo_telefoneSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_tipo_telefone?: boolean;
+    nm_tipo_telefone?: boolean;
+}, ExtArgs["result"]["tipo_telefone"]>;
+export type Tipo_telefoneSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    cd_tipo_telefone?: boolean;
+    nm_tipo_telefone?: boolean;
+}, ExtArgs["result"]["tipo_telefone"]>;
+export type Tipo_telefoneSelectScalar = {
+    cd_tipo_telefone?: boolean;
+    nm_tipo_telefone?: boolean;
+};
+export type Tipo_telefoneOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"cd_tipo_telefone" | "nm_tipo_telefone", ExtArgs["result"]["tipo_telefone"]>;
+export type Tipo_telefoneInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    clientes?: boolean | Prisma.Tipo_telefone$clientesArgs<ExtArgs>;
+    _count?: boolean | Prisma.Tipo_telefoneCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type Tipo_telefoneIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type Tipo_telefoneIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type $Tipo_telefonePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Tipo_telefone";
+    objects: {
+        clientes: Prisma.$ClientePayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        cd_tipo_telefone: number;
+        nm_tipo_telefone: string;
+    }, ExtArgs["result"]["tipo_telefone"]>;
+    composites: {};
+};
+export type Tipo_telefoneGetPayload<S extends boolean | null | undefined | Tipo_telefoneDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload, S>;
+export type Tipo_telefoneCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<Tipo_telefoneFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: Tipo_telefoneCountAggregateInputType | true;
+};
+export interface Tipo_telefoneDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Tipo_telefone'];
+        meta: {
+            name: 'Tipo_telefone';
+        };
+    };
+    /**
+     * Find zero or one Tipo_telefone that matches the filter.
+     * @param {Tipo_telefoneFindUniqueArgs} args - Arguments to find a Tipo_telefone
+     * @example
+     * // Get one Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends Tipo_telefoneFindUniqueArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneFindUniqueArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one Tipo_telefone that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {Tipo_telefoneFindUniqueOrThrowArgs} args - Arguments to find a Tipo_telefone
+     * @example
+     * // Get one Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends Tipo_telefoneFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Tipo_telefone that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneFindFirstArgs} args - Arguments to find a Tipo_telefone
+     * @example
+     * // Get one Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends Tipo_telefoneFindFirstArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneFindFirstArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Tipo_telefone that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneFindFirstOrThrowArgs} args - Arguments to find a Tipo_telefone
+     * @example
+     * // Get one Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends Tipo_telefoneFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more Tipo_telefones that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tipo_telefones
+     * const tipo_telefones = await prisma.tipo_telefone.findMany()
+     *
+     * // Get first 10 Tipo_telefones
+     * const tipo_telefones = await prisma.tipo_telefone.findMany({ take: 10 })
+     *
+     * // Only select the `cd_tipo_telefone`
+     * const tipo_telefoneWithCd_tipo_telefoneOnly = await prisma.tipo_telefone.findMany({ select: { cd_tipo_telefone: true } })
+     *
+     */
+    findMany<T extends Tipo_telefoneFindManyArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a Tipo_telefone.
+     * @param {Tipo_telefoneCreateArgs} args - Arguments to create a Tipo_telefone.
+     * @example
+     * // Create one Tipo_telefone
+     * const Tipo_telefone = await prisma.tipo_telefone.create({
+     *   data: {
+     *     // ... data to create a Tipo_telefone
+     *   }
+     * })
+     *
+     */
+    create<T extends Tipo_telefoneCreateArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneCreateArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many Tipo_telefones.
+     * @param {Tipo_telefoneCreateManyArgs} args - Arguments to create many Tipo_telefones.
+     * @example
+     * // Create many Tipo_telefones
+     * const tipo_telefone = await prisma.tipo_telefone.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends Tipo_telefoneCreateManyArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many Tipo_telefones and returns the data saved in the database.
+     * @param {Tipo_telefoneCreateManyAndReturnArgs} args - Arguments to create many Tipo_telefones.
+     * @example
+     * // Create many Tipo_telefones
+     * const tipo_telefone = await prisma.tipo_telefone.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many Tipo_telefones and only return the `cd_tipo_telefone`
+     * const tipo_telefoneWithCd_tipo_telefoneOnly = await prisma.tipo_telefone.createManyAndReturn({
+     *   select: { cd_tipo_telefone: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends Tipo_telefoneCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a Tipo_telefone.
+     * @param {Tipo_telefoneDeleteArgs} args - Arguments to delete one Tipo_telefone.
+     * @example
+     * // Delete one Tipo_telefone
+     * const Tipo_telefone = await prisma.tipo_telefone.delete({
+     *   where: {
+     *     // ... filter to delete one Tipo_telefone
+     *   }
+     * })
+     *
+     */
+    delete<T extends Tipo_telefoneDeleteArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneDeleteArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one Tipo_telefone.
+     * @param {Tipo_telefoneUpdateArgs} args - Arguments to update one Tipo_telefone.
+     * @example
+     * // Update one Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends Tipo_telefoneUpdateArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneUpdateArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more Tipo_telefones.
+     * @param {Tipo_telefoneDeleteManyArgs} args - Arguments to filter Tipo_telefones to delete.
+     * @example
+     * // Delete a few Tipo_telefones
+     * const { count } = await prisma.tipo_telefone.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends Tipo_telefoneDeleteManyArgs>(args?: Prisma.SelectSubset<T, Tipo_telefoneDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Tipo_telefones.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tipo_telefones
+     * const tipo_telefone = await prisma.tipo_telefone.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends Tipo_telefoneUpdateManyArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Tipo_telefones and returns the data updated in the database.
+     * @param {Tipo_telefoneUpdateManyAndReturnArgs} args - Arguments to update many Tipo_telefones.
+     * @example
+     * // Update many Tipo_telefones
+     * const tipo_telefone = await prisma.tipo_telefone.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more Tipo_telefones and only return the `cd_tipo_telefone`
+     * const tipo_telefoneWithCd_tipo_telefoneOnly = await prisma.tipo_telefone.updateManyAndReturn({
+     *   select: { cd_tipo_telefone: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends Tipo_telefoneUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one Tipo_telefone.
+     * @param {Tipo_telefoneUpsertArgs} args - Arguments to update or create a Tipo_telefone.
+     * @example
+     * // Update or create a Tipo_telefone
+     * const tipo_telefone = await prisma.tipo_telefone.upsert({
+     *   create: {
+     *     // ... data to create a Tipo_telefone
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Tipo_telefone we want to update
+     *   }
+     * })
+     */
+    upsert<T extends Tipo_telefoneUpsertArgs>(args: Prisma.SelectSubset<T, Tipo_telefoneUpsertArgs<ExtArgs>>): Prisma.Prisma__Tipo_telefoneClient<runtime.Types.Result.GetResult<Prisma.$Tipo_telefonePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of Tipo_telefones.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneCountArgs} args - Arguments to filter Tipo_telefones to count.
+     * @example
+     * // Count the number of Tipo_telefones
+     * const count = await prisma.tipo_telefone.count({
+     *   where: {
+     *     // ... the filter for the Tipo_telefones we want to count
+     *   }
+     * })
+    **/
+    count<T extends Tipo_telefoneCountArgs>(args?: Prisma.Subset<T, Tipo_telefoneCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], Tipo_telefoneCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a Tipo_telefone.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Tipo_telefoneAggregateArgs>(args: Prisma.Subset<T, Tipo_telefoneAggregateArgs>): Prisma.PrismaPromise<GetTipo_telefoneAggregateType<T>>;
+    /**
+     * Group by Tipo_telefone.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Tipo_telefoneGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends Tipo_telefoneGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: Tipo_telefoneGroupByArgs['orderBy'];
+    } : {
+        orderBy?: Tipo_telefoneGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, Tipo_telefoneGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTipo_telefoneGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the Tipo_telefone model
+     */
+    readonly fields: Tipo_telefoneFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for Tipo_telefone.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__Tipo_telefoneClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    clientes<T extends Prisma.Tipo_telefone$clientesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tipo_telefone$clientesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the Tipo_telefone model
+ */
+export interface Tipo_telefoneFieldRefs {
+    readonly cd_tipo_telefone: Prisma.FieldRef<"Tipo_telefone", 'Int'>;
+    readonly nm_tipo_telefone: Prisma.FieldRef<"Tipo_telefone", 'String'>;
+}
+/**
+ * Tipo_telefone findUnique
+ */
+export type Tipo_telefoneFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter, which Tipo_telefone to fetch.
+     */
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+};
+/**
+ * Tipo_telefone findUniqueOrThrow
+ */
+export type Tipo_telefoneFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter, which Tipo_telefone to fetch.
+     */
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+};
+/**
+ * Tipo_telefone findFirst
+ */
+export type Tipo_telefoneFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter, which Tipo_telefone to fetch.
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Tipo_telefones to fetch.
+     */
+    orderBy?: Prisma.Tipo_telefoneOrderByWithRelationInput | Prisma.Tipo_telefoneOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Tipo_telefones.
+     */
+    cursor?: Prisma.Tipo_telefoneWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Tipo_telefones from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Tipo_telefones.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Tipo_telefones.
+     */
+    distinct?: Prisma.Tipo_telefoneScalarFieldEnum | Prisma.Tipo_telefoneScalarFieldEnum[];
+};
+/**
+ * Tipo_telefone findFirstOrThrow
+ */
+export type Tipo_telefoneFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter, which Tipo_telefone to fetch.
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Tipo_telefones to fetch.
+     */
+    orderBy?: Prisma.Tipo_telefoneOrderByWithRelationInput | Prisma.Tipo_telefoneOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Tipo_telefones.
+     */
+    cursor?: Prisma.Tipo_telefoneWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Tipo_telefones from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Tipo_telefones.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Tipo_telefones.
+     */
+    distinct?: Prisma.Tipo_telefoneScalarFieldEnum | Prisma.Tipo_telefoneScalarFieldEnum[];
+};
+/**
+ * Tipo_telefone findMany
+ */
+export type Tipo_telefoneFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter, which Tipo_telefones to fetch.
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Tipo_telefones to fetch.
+     */
+    orderBy?: Prisma.Tipo_telefoneOrderByWithRelationInput | Prisma.Tipo_telefoneOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing Tipo_telefones.
+     */
+    cursor?: Prisma.Tipo_telefoneWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Tipo_telefones from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Tipo_telefones.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Tipo_telefones.
+     */
+    distinct?: Prisma.Tipo_telefoneScalarFieldEnum | Prisma.Tipo_telefoneScalarFieldEnum[];
+};
+/**
+ * Tipo_telefone create
+ */
+export type Tipo_telefoneCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a Tipo_telefone.
+     */
+    data: Prisma.XOR<Prisma.Tipo_telefoneCreateInput, Prisma.Tipo_telefoneUncheckedCreateInput>;
+};
+/**
+ * Tipo_telefone createMany
+ */
+export type Tipo_telefoneCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tipo_telefones.
+     */
+    data: Prisma.Tipo_telefoneCreateManyInput | Prisma.Tipo_telefoneCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Tipo_telefone createManyAndReturn
+ */
+export type Tipo_telefoneCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * The data used to create many Tipo_telefones.
+     */
+    data: Prisma.Tipo_telefoneCreateManyInput | Prisma.Tipo_telefoneCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Tipo_telefone update
+ */
+export type Tipo_telefoneUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a Tipo_telefone.
+     */
+    data: Prisma.XOR<Prisma.Tipo_telefoneUpdateInput, Prisma.Tipo_telefoneUncheckedUpdateInput>;
+    /**
+     * Choose, which Tipo_telefone to update.
+     */
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+};
+/**
+ * Tipo_telefone updateMany
+ */
+export type Tipo_telefoneUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tipo_telefones.
+     */
+    data: Prisma.XOR<Prisma.Tipo_telefoneUpdateManyMutationInput, Prisma.Tipo_telefoneUncheckedUpdateManyInput>;
+    /**
+     * Filter which Tipo_telefones to update
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * Limit how many Tipo_telefones to update.
+     */
+    limit?: number;
+};
+/**
+ * Tipo_telefone updateManyAndReturn
+ */
+export type Tipo_telefoneUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * The data used to update Tipo_telefones.
+     */
+    data: Prisma.XOR<Prisma.Tipo_telefoneUpdateManyMutationInput, Prisma.Tipo_telefoneUncheckedUpdateManyInput>;
+    /**
+     * Filter which Tipo_telefones to update
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * Limit how many Tipo_telefones to update.
+     */
+    limit?: number;
+};
+/**
+ * Tipo_telefone upsert
+ */
+export type Tipo_telefoneUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the Tipo_telefone to update in case it exists.
+     */
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+    /**
+     * In case the Tipo_telefone found by the `where` argument doesn't exist, create a new Tipo_telefone with this data.
+     */
+    create: Prisma.XOR<Prisma.Tipo_telefoneCreateInput, Prisma.Tipo_telefoneUncheckedCreateInput>;
+    /**
+     * In case the Tipo_telefone was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.Tipo_telefoneUpdateInput, Prisma.Tipo_telefoneUncheckedUpdateInput>;
+};
+/**
+ * Tipo_telefone delete
+ */
+export type Tipo_telefoneDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+    /**
+     * Filter which Tipo_telefone to delete.
+     */
+    where: Prisma.Tipo_telefoneWhereUniqueInput;
+};
+/**
+ * Tipo_telefone deleteMany
+ */
+export type Tipo_telefoneDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tipo_telefones to delete
+     */
+    where?: Prisma.Tipo_telefoneWhereInput;
+    /**
+     * Limit how many Tipo_telefones to delete.
+     */
+    limit?: number;
+};
+/**
+ * Tipo_telefone.clientes
+ */
+export type Tipo_telefone$clientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: Prisma.ClienteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: Prisma.ClienteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ClienteInclude<ExtArgs> | null;
+    where?: Prisma.ClienteWhereInput;
+    orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[];
+    cursor?: Prisma.ClienteWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ClienteScalarFieldEnum | Prisma.ClienteScalarFieldEnum[];
+};
+/**
+ * Tipo_telefone without action
+ */
+export type Tipo_telefoneDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tipo_telefone
+     */
+    select?: Prisma.Tipo_telefoneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Tipo_telefone
+     */
+    omit?: Prisma.Tipo_telefoneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.Tipo_telefoneInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=Tipo_telefone.d.ts.map

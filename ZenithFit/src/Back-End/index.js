@@ -34,6 +34,16 @@ app.post("/clientes", async (req, res) => {
                         sg_estado: end.sg_uf || "SP",
                         nm_tipo_endereco: end.nm_tipo_endereco || "Ambos",
                     }))
+                },
+                cartoes: {
+                    create: dados.cartoes.map((c) => ({
+                        cd_numero_cartao: c.cd_numero_cartao,
+                        nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
+                        cd_seguranca: c.cd_seguranca,
+                        dt_validade_cartao: new Date(c.dt_validade_cartao),
+                        cd_bandeira: Number(c.cd_bandeira),
+                        cartao_preferencial: c.cartao_preferencial ?? false
+                    }))
                 }
             },
         });
@@ -48,7 +58,19 @@ app.post("/clientes", async (req, res) => {
 app.get("/clientes", async (req, res) => {
     try {
         const clientes = await prisma.cliente.findMany({
-            include: { genero: true, tipo_telefone: true, status_cliente: true },
+            include: {
+                genero: true,
+                tipo_telefone: true,
+                status_cliente: true,
+                // 🔥 adicionando endereços
+                enderecos: true,
+                // 🔥 adicionando cartões + bandeira
+                cartoes: {
+                    include: {
+                        bandeira: true
+                    }
+                }
+            },
         });
         res.status(200).json(clientes);
     }
@@ -66,21 +88,17 @@ app.get("/clientes/:cpf", async (req, res) => {
                 genero: true,
                 tipo_telefone: true,
                 status_cliente: true,
-                enderecos: true
+                enderecos: true,
+                cartoes: {
+                    include: {
+                        bandeira: true
+                    }
+                }
             },
         });
         if (!cliente)
             return res.status(404).json({ message: "Cliente não encontrado." });
-        const resposta = {
-            ...cliente,
-            cd_cep: cliente.enderecos[0]?.cd_cep || '',
-            nm_logradouro: cliente.enderecos[0]?.nm_logradouro || '',
-            cd_numero: cliente.enderecos[0]?.cd_numero || '',
-            nm_bairro: cliente.enderecos[0]?.nm_bairro || '',
-            nm_cidade: cliente.enderecos[0]?.nm_cidade || '',
-            sg_uf: cliente.enderecos[0]?.sg_estado || ''
-        };
-        res.status(200).json(resposta);
+        res.status(200).json(cliente);
     }
     catch (error) {
         res.status(500).json({ message: "Erro ao buscar cliente" });
@@ -91,7 +109,7 @@ app.put("/clientes/:cpf", async (req, res) => {
     try {
         const cpf = req.params.cpf.trim();
         const dados = req.body;
-        // 1. Criamos o objeto de atualização do Cliente (dados básicos)
+        // 1. Objeto de atualização básica
         const updateData = {
             nm_nome_cliente: dados.nm_nome_cliente,
             dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
@@ -104,52 +122,66 @@ app.put("/clientes/:cpf", async (req, res) => {
         if (dados.nm_senha && dados.nm_senha.trim() !== "") {
             updateData.cd_senha = dados.nm_senha;
         }
-        // 2. EXCUÇÃO EM TRANSAÇÃO (Garante que ou faz tudo ou não faz nada)
         const resultado = await prisma.$transaction(async (tx) => {
-            // Deleta todos os endereços atuais do cliente
-            await tx.endereco.deleteMany({
-                where: { cd_cpf: cpf }
-            });
-            // Atualiza o cliente e RECRIA os endereços enviados pelo Front-end
+            // Remove registros antigos para evitar duplicidade ou lixo
+            await tx.endereco.deleteMany({ where: { cd_cpf: cpf } });
+            await tx.cartao_credito.deleteMany({ where: { cd_cpf: cpf } });
             return await tx.cliente.update({
                 where: { cd_cpf: cpf },
                 data: {
                     ...updateData,
+                    // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
                     enderecos: {
-                        create: dados.enderecos.map((end) => ({
+                        create: (dados.enderecos || []).map((end) => ({
                             cd_cep: end.cd_cep,
                             nm_logradouro: end.nm_logradouro,
                             cd_numero: end.cd_numero,
                             nm_bairro: end.nm_bairro,
                             nm_cidade: end.nm_cidade,
-                            sg_estado: end.sg_uf,
-                            nm_tipo_endereco: end.nm_tipo_endereco
+                            sg_estado: end.sg_uf || end.sg_estado || "SP", // Fallback para o nome correto
+                            nm_tipo_endereco: end.nm_tipo_endereco || "Entrega"
+                        }))
+                    },
+                    cartoes: {
+                        create: (dados.cartoes || []).map((c) => ({
+                            cd_numero_cartao: c.cd_numero_cartao,
+                            nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
+                            cd_seguranca: c.cd_seguranca || "000", // Evita erro se o campo sumir na edição
+                            dt_validade_cartao: new Date(c.dt_validade_cartao),
+                            cd_bandeira: Number(c.cd_bandeira || 1),
+                            cartao_preferencial: !!c.cartao_preferencial // Garante que é booleano
                         }))
                     }
                 }
             });
         });
-        console.log("Cliente e múltiplos endereços atualizados com sucesso!");
+        console.log("Cliente atualizado com sucesso!");
         res.status(200).json(resultado);
     }
     catch (error) {
         console.error("ERRO NO UPDATE:", error);
-        res.status(500).json({ message: "Erro ao atualizar cliente e endereços" });
+        res.status(500).json({ message: "Erro ao atualizar cliente" });
     }
 });
 // 5. Deletar (Atualizado para remover endereço)
 app.delete("/clientes/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
-        //Remove o endereço
-        await prisma.endereco.deleteMany({
-            where: { cd_cpf: cpf }
+        // 🔥 remove cartões primeiro
+        await prisma.$transaction(async (tx) => {
+            await tx.cartao_credito.deleteMany({
+                where: { cd_cpf: cpf }
+            });
+            await tx.endereco.deleteMany({
+                where: { cd_cpf: cpf }
+            });
+            await tx.cliente.delete({
+                where: { cd_cpf: cpf }
+            });
         });
-        //remove o cliente
-        await prisma.cliente.delete({
-            where: { cd_cpf: cpf }
+        res.status(200).json({
+            message: "Cliente, endereços e cartões deletados com sucesso."
         });
-        res.status(200).json({ message: "Cliente e endereços deletados com sucesso." });
     }
     catch (error) {
         console.error("Erro ao deletar:", error);
