@@ -212,4 +212,81 @@ app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response
   }
 });
 
+
+app.post("/pedidos", async (req: Request, res: Response) => {
+  try {
+    const { 
+      cpf, 
+      cd_endereco, 
+      itens, 
+      pagamentos, // Array de { cd_cartao, valor }
+      cupons,     // Array de codigos de cupom
+      vl_frete 
+    } = req.body;
+
+    // 1. Calcular total dos itens e validar estoque (lógica simplificada aqui)
+    const vl_total_itens = itens.reduce((acc: number, item: any) => acc + (item.vl_unitario * item.qt_item), 0);
+    const vl_total_pedido = vl_total_itens + Number(vl_frete);
+
+    const resultado = await prisma.$transaction(async (tx) => {
+      // 2. Criar o Pedido
+      const novoPedido = await tx.pedido.create({
+        data: {
+          cd_cpf: cpf,
+          cd_endereco: cd_endereco,
+          vl_total: vl_total_pedido,
+          vl_frete: vl_frete,
+          cd_status_pedido: 1, // Em processamento
+          
+          // 3. Criar Itens do Pedido
+          itens: {
+            create: itens.map((i: any) => ({
+              cd_produto: i.cd_produto,
+              qt_item: i.qt_item,
+              vl_unitario: i.vl_unitario
+            }))
+          },
+
+          // 4. Registrar Pagamentos (Suporta múltiplos cartões)
+          pagamentos: {
+            create: pagamentos.map((p: any) => ({
+              cd_cartao: p.cd_cartao,
+              vl_pago: p.vl_pago
+            }))
+          }
+        }
+      });
+
+      // 5. Vincular Cupons
+      if (cupons && cupons.length > 0) {
+        for (const codigo of cupons) {
+          const cupomDb = await tx.cupom.findUnique({ where: { nm_codigo: codigo } });
+          if (cupomDb) {
+            await tx.cupom_Pedido.create({
+              data: {
+                cd_pedido: novoPedido.cd_pedido,
+                cd_cupom: cupomDb.cd_cupom
+              }
+            });
+            // Se for cupom de troca, desativar após o uso
+            if (cupomDb.tp_cupom === "TROCA") {
+              await tx.cupom.update({
+                where: { cd_cupom: cupomDb.cd_cupom },
+                data: { fl_ativo: false }
+              });
+            }
+          }
+        }
+      }
+
+      return novoPedido;
+    });
+
+    res.status(201).json(resultado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao processar compra" });
+  }
+});
+
 app.listen(3000, () => console.log("Servidor ON na 3000"));

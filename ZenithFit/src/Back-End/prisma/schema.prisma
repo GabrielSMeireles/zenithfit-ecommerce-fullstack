@@ -8,81 +8,154 @@ datasource db {
 }
 
 model Cliente {
-  cd_cpf                    String         @id
+  cd_cpf                    String   @id
   nm_nome_cliente           String
   dt_nascimento             DateTime
   cd_telefone               String
   cd_DDD                    String
   nm_identificacao_telefone String
-  nm_email                  String         @unique
+  nm_email                  String   @unique
   cd_senha                  String
-  cd_rank_cliente           Int            @default(0)
+  cd_rank_cliente           Int      @default(0)
 
   // Relações
-  genero                    Genero         @relation(fields: [cd_genero], references: [cd_genero])
-  cd_genero                 Int
-  tipo_telefone             Tipo_telefone  @relation(fields: [cd_tipo_telefone], references: [cd_tipo_telefone])
-  cd_tipo_telefone          Int
-  status_cliente            Status_cliente @relation(fields: [cd_status], references: [cd_status])
-  cd_status                 Int
+  genero           Genero         @relation(fields: [cd_genero], references: [cd_genero])
+  cd_genero        Int
+  tipo_telefone    Tipo_telefone  @relation(fields: [cd_tipo_telefone], references: [cd_tipo_telefone])
+  cd_tipo_telefone Int
+  status_cliente   Status_cliente @relation(fields: [cd_status], references: [cd_status])
+  cd_status        Int
 
   // Relações 1:N
-  enderecos                 Endereco[]
-  cartoes                   Cartao_credito[]
+  enderecos Endereco[]
+  cartoes   Cartao_credito[]
+  Pedido    Pedido[]
 }
 
 model Endereco {
-  cd_endereco   Int     @id @default(autoincrement())
-  cd_cep        String
-  nm_logradouro String
-  cd_numero     String
-  nm_bairro     String
-  nm_cidade     String
-  sg_estado     String
+  cd_endereco      Int    @id @default(autoincrement())
+  cd_cep           String
+  nm_logradouro    String
+  cd_numero        String
+  nm_bairro        String
+  nm_cidade        String
+  sg_estado        String
   nm_tipo_endereco String @default("Cobrança")
 
   nm_identificacao String @default("Casa")
 
   // Chave estrangeira para o Cliente
-  cliente       Cliente @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
-  cd_cpf        String
+  cliente Cliente  @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
+  cd_cpf  String
+  Pedido  Pedido[]
 }
 
 model Cartao_credito {
-  cd_cartao               Int             @id @default(autoincrement())
+  cd_cartao               Int      @id @default(autoincrement())
   cd_numero_cartao        String
   nm_nome_impresso_cartao String
   cd_seguranca            String
   dt_validade_cartao      DateTime
-  cartao_preferencial     Boolean         @default(false)
+  cartao_preferencial     Boolean  @default(false)
 
   // Relações
-  bandeira                Bandeira_cartao @relation(fields: [cd_bandeira], references: [cd_bandeira])
-  cd_bandeira             Int
-  cliente                 Cliente         @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
-  cd_cpf                  String
+  bandeira         Bandeira_cartao    @relation(fields: [cd_bandeira], references: [cd_bandeira])
+  cd_bandeira      Int
+  cliente          Cliente            @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
+  cd_cpf           String
+  Pagamento_Pedido Pagamento_Pedido[]
 }
 
 model Bandeira_cartao {
-  cd_bandeira  Int              @id @default(autoincrement())
-  nm_bandeira  String
-  cartoes      Cartao_credito[]
+  cd_bandeira Int              @id @default(autoincrement())
+  nm_bandeira String
+  cartoes     Cartao_credito[]
 }
 
 model Genero {
-  cd_genero  Int       @id @default(autoincrement())
-  nm_genero  String
-  clientes   Cliente[]
+  cd_genero Int       @id @default(autoincrement())
+  nm_genero String
+  clientes  Cliente[]
 }
 
 model Tipo_telefone {
-  cd_tipo_telefone  Int       @id @default(autoincrement())
-  nm_tipo_telefone  String
-  clientes          Cliente[]
+  cd_tipo_telefone Int       @id @default(autoincrement())
+  nm_tipo_telefone String
+  clientes         Cliente[]
 }
 
 model Status_cliente {
-  cd_status  Int       @id @default(autoincrement())
-  nm_status  String
-  clientes   Cliente[]
+  cd_status Int       @id @default(autoincrement())
+  nm_status String
+  clientes  Cliente[]
+}
+
+// Adicione ao seu schema.prisma
+
+model Pedido {
+  cd_pedido Int      @id @default(autoincrement())
+  dt_pedido DateTime @default(now())
+  vl_total  Decimal  @db.Decimal(10, 2)
+  vl_frete  Decimal  @db.Decimal(10, 2)
+
+  // Relacionamentos
+  cliente Cliente @relation(fields: [cd_cpf], references: [cd_cpf])
+  cd_cpf  String
+
+  endereco_entrega Endereco @relation(fields: [cd_endereco], references: [cd_endereco])
+  cd_endereco      Int
+
+  status_pedido    Status_Pedido @relation(fields: [cd_status_pedido], references: [cd_status_pedido])
+  cd_status_pedido Int           @default(1)
+
+  itens         Item_Pedido[]
+  pagamentos    Pagamento_Pedido[]
+  cupons_usados Cupom_Pedido[]
+}
+
+model Item_Pedido {
+  cd_item     Int     @id @default(autoincrement())
+  qt_item     Int
+  vl_unitario Decimal @db.Decimal(10, 2)
+
+  pedido    Pedido @relation(fields: [cd_pedido], references: [cd_pedido])
+  cd_pedido Int
+
+  // Aqui você ligaria ao seu modelo de Produto/Livro
+  cd_produto Int
+}
+
+model Pagamento_Pedido {
+  cd_pagamento Int     @id @default(autoincrement())
+  vl_pago      Decimal @db.Decimal(10, 2)
+
+  pedido    Pedido @relation(fields: [cd_pedido], references: [cd_pedido])
+  cd_pedido Int
+
+  cartao    Cartao_credito? @relation(fields: [cd_cartao], references: [cd_cartao])
+  cd_cartao Int? // Pode ser nulo se for só cupom
+}
+
+model Cupom {
+  cd_cupom    Int            @id @default(autoincrement())
+  nm_codigo   String         @unique
+  vl_desconto Decimal        @db.Decimal(10, 2)
+  tp_cupom    String // "PROMOCIONAL" ou "TROCA"
+  fl_ativo    Boolean        @default(true)
+  pedidos     Cupom_Pedido[]
+}
+
+model Cupom_Pedido {
+  pedido    Pedido @relation(fields: [cd_pedido], references: [cd_pedido])
+  cd_pedido Int
+  cupom     Cupom  @relation(fields: [cd_cupom], references: [cd_cupom])
+  cd_cupom  Int
+
+  @@id([cd_pedido, cd_cupom])
+}
+
+model Status_Pedido {
+  cd_status_pedido Int      @id @default(autoincrement())
+  nm_status        String // Ex: "EM PROCESSAMENTO", "APROVADO", "EM TRANSPORTE"
+  pedidos          Pedido[]
 }
