@@ -29,7 +29,7 @@ model Cliente {
   // Relações 1:N
   enderecos Endereco[]
   cartoes   Cartao_credito[]
-  Pedido    Pedido[]
+  pedidos   Pedido[]
 }
 
 model Endereco {
@@ -41,13 +41,11 @@ model Endereco {
   nm_cidade        String
   sg_estado        String
   nm_tipo_endereco String @default("Cobrança")
-
   nm_identificacao String @default("Casa")
 
-  // Chave estrangeira para o Cliente
   cliente Cliente  @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
   cd_cpf  String
-  Pedido  Pedido[]
+  pedidos Pedido[]
 }
 
 model Cartao_credito {
@@ -58,12 +56,11 @@ model Cartao_credito {
   dt_validade_cartao      DateTime
   cartao_preferencial     Boolean  @default(false)
 
-  // Relações
   bandeira         Bandeira_cartao    @relation(fields: [cd_bandeira], references: [cd_bandeira])
   cd_bandeira      Int
   cliente          Cliente            @relation(fields: [cd_cpf], references: [cd_cpf], onDelete: Cascade)
   cd_cpf           String
-  Pagamento_Pedido Pagamento_Pedido[]
+  pagamento_pedido Pagamento_Pedido[]
 }
 
 model Bandeira_cartao {
@@ -90,7 +87,17 @@ model Status_cliente {
   clientes  Cliente[]
 }
 
-// Adicione ao seu schema.prisma
+model Produto {
+  cd_produto    Int     @id @default(autoincrement())
+  nm_produto    String
+  ds_produto    String?
+  vl_produto    Decimal @db.Decimal(10, 2)
+  nm_imagem_url String? // Link para a foto do produto (ex: "/images/camisa.png")
+  qt_estoque    Int     @default(0)
+
+  // Relacionamento inverso (Opcional, mas bom para o Prisma)
+  itens_pedido Item_Pedido[]
+}
 
 model Pedido {
   cd_pedido Int      @id @default(autoincrement())
@@ -98,12 +105,14 @@ model Pedido {
   vl_total  Decimal  @db.Decimal(10, 2)
   vl_frete  Decimal  @db.Decimal(10, 2)
 
-  // Relacionamentos
   cliente Cliente @relation(fields: [cd_cpf], references: [cd_cpf])
   cd_cpf  String
 
   endereco_entrega Endereco @relation(fields: [cd_endereco], references: [cd_endereco])
   cd_endereco      Int
+
+  modalidade    Modalidade_Frete @relation(fields: [cd_modalidade], references: [cd_modalidade])
+  cd_modalidade Int
 
   status_pedido    Status_Pedido @relation(fields: [cd_status_pedido], references: [cd_status_pedido])
   cd_status_pedido Int           @default(1)
@@ -117,11 +126,13 @@ model Item_Pedido {
   cd_item     Int     @id @default(autoincrement())
   qt_item     Int
   vl_unitario Decimal @db.Decimal(10, 2)
+  nm_tamanho  String?
 
   pedido    Pedido @relation(fields: [cd_pedido], references: [cd_pedido])
   cd_pedido Int
 
-  // Aqui você ligaria ao seu modelo de Produto/Livro
+  // RELAÇÃO COM PRODUTO
+  produto    Produto @relation(fields: [cd_produto], references: [cd_produto])
   cd_produto Int
 }
 
@@ -133,7 +144,7 @@ model Pagamento_Pedido {
   cd_pedido Int
 
   cartao    Cartao_credito? @relation(fields: [cd_cartao], references: [cd_cartao])
-  cd_cartao Int? // Pode ser nulo se for só cupom
+  cd_cartao Int?
 }
 
 model Cupom {
@@ -156,6 +167,13 @@ model Cupom_Pedido {
 
 model Status_Pedido {
   cd_status_pedido Int      @id @default(autoincrement())
-  nm_status        String // Ex: "EM PROCESSAMENTO", "APROVADO", "EM TRANSPORTE"
+  nm_status        String
   pedidos          Pedido[]
+}
+
+model Modalidade_Frete {
+  cd_modalidade Int      @id @default(autoincrement())
+  nm_modalidade String
+  vl_fixo       Decimal  @db.Decimal(10, 2)
+  pedidos       Pedido[]
 }

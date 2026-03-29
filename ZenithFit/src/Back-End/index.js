@@ -188,5 +188,116 @@ app.delete("/clientes/:cpf", async (req, res) => {
         res.status(500).json({ message: "Erro ao deletar. Verifique se o cliente possui pedidos vinculados." });
     }
 });
+app.post("/pedidos", async (req, res) => {
+    try {
+        const { cpf, cd_endereco, cd_modalidade, // Agora recebemos o ID da modalidade de frete
+        itens, // Cada item agora deve ter: cd_produto, qt_item, vl_unitario, nm_tamanho
+        pagamentos, // Array de { cd_cartao, vl_pago }
+        cupons // Array de códigos (strings)
+         } = req.body;
+        const resultado = await prisma.$transaction(async (tx) => {
+            // 1. Buscar valor real do Frete no Banco
+            const modalidade = await tx.modalidade_Frete.findUnique({
+                where: { cd_modalidade: Number(cd_modalidade) }
+            });
+            if (!modalidade)
+                throw new Error("Modalidade de frete inválida");
+            const vl_frete = Number(modalidade.vl_fixo);
+            // 2. Calcular total dos itens
+            const vl_total_itens = itens.reduce((acc, item) => acc + (Number(item.vl_unitario) * item.qt_item), 0);
+            // 3. Validar Cupons e Calcular Desconto
+            let total_desconto = 0;
+            const cuponsParaVincular = [];
+            if (cupons && cupons.length > 0) {
+                for (const codigo of cupons) {
+                    const cupomDb = await tx.cupom.findUnique({ where: { nm_codigo: codigo } });
+                    if (cupomDb && cupomDb.fl_ativo) {
+                        total_desconto += Number(cupomDb.vl_desconto);
+                        cuponsParaVincular.push(cupomDb);
+                    }
+                }
+            }
+            // 4. Valor final do pedido
+            const vl_total_pedido = (vl_total_itens + vl_frete) - total_desconto;
+            // 5. Criar o Pedido
+            const novoPedido = await tx.pedido.create({
+                data: {
+                    cd_cpf: cpf,
+                    cd_endereco: cd_endereco,
+                    cd_modalidade: cd_modalidade,
+                    vl_total: vl_total_pedido,
+                    vl_frete: vl_frete,
+                    cd_status_pedido: 1, // "Em Processamento"
+                    // Itens com Tamanho
+                    itens: {
+                        create: itens.map((i) => ({
+                            cd_produto: i.cd_produto,
+                            qt_item: i.qt_item,
+                            vl_unitario: i.vl_unitario,
+                            nm_tamanho: i.nm_tamanho // Agora salvando o tamanho (P, M, G...)
+                        }))
+                    },
+                    // Pagamentos (Múltiplos cartões)
+                    pagamentos: {
+                        create: pagamentos.map((p) => ({
+                            cd_cartao: p.cd_cartao,
+                            vl_pago: p.vl_pago
+                        }))
+                    }
+                }
+            });
+            // 6. Vincular Cupons e desativar se for Cupom de TROCA
+            for (const cupom of cuponsParaVincular) {
+                await tx.cupom_Pedido.create({
+                    data: {
+                        cd_pedido: novoPedido.cd_pedido,
+                        cd_cupom: cupom.cd_cupom
+                    }
+                });
+                if (cupom.tp_cupom === "TROCA") {
+                    await tx.cupom.update({
+                        where: { cd_cupom: cupom.cd_cupom },
+                        data: { fl_ativo: false }
+                    });
+                }
+            }
+            return novoPedido;
+        });
+        res.status(201).json(resultado);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message || "Erro ao processar compra" });
+    }
+});
+// 6. Listar Produtos (Para a Home e Carrinho)
+app.get("/produtos", async (req, res) => {
+    try {
+        const produtos = await prisma.produto.findMany({
+            where: {
+            // Opcional: você pode adicionar um campo 'fl_ativo' no futuro
+            }
+        });
+        res.status(200).json(produtos);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao buscar produtos" });
+    }
+});
+// 7. Buscar um produto específico (Opcional, mas útil para a página de detalhes)
+app.get("/produtos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const produto = await prisma.produto.findUnique({
+            where: { cd_produto: Number(id) }
+        });
+        if (!produto)
+            return res.status(404).json({ message: "Produto não encontrado" });
+        res.status(200).json(produto);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao buscar detalhes do produto" });
+    }
+});
 app.listen(3000, () => console.log("Servidor ON na 3000"));
 //# sourceMappingURL=index.js.map
