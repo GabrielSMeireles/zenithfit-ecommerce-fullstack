@@ -60,7 +60,7 @@
             <p class="text-slate-600 mt-2">Confira as principais chegadas da semana.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="container-novidades" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <a href="detalhesProduto.html" class="group block">
                 <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
                     <img alt="Lançamento Kokushibo" class="w-full h-full object-contain" src="images/kokushibo.png" />
@@ -169,6 +169,41 @@
         </div>
     </footer>
 
+<script>
+  const API = "http://localhost:3000";
+
+  async function carregarNovidades() {
+    try {
+      const res = await fetch(`${API}/produtos`);
+      const produtos = await res.json();
+
+      // Pega os últimos 6 cadastrados (mais recentes)
+      const novidades = produtos.slice(-6).reverse();
+
+      const container = document.getElementById("container-novidades");
+      container.innerHTML = novidades.map(produto => `
+        <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group block">
+          <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
+            <img 
+              alt="${produto.nm_produto}" 
+              class="w-full h-full object-contain" 
+              src="${produto.nm_imagem_url || 'images/placeholder.png'}" 
+            />
+          </div>
+          <h3 class="font-medium text-slate-900">Lançamento: ${produto.nm_produto}</h3>
+          <p class="font-bold text-lg mt-2">
+            R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
+          </p>
+        </a>
+      `).join('');
+
+    } catch (e) {
+      console.error("Erro ao carregar novidades:", e);
+    }
+  }
+
+  carregarNovidades();
+</script>
 </body>
 
 </html>
