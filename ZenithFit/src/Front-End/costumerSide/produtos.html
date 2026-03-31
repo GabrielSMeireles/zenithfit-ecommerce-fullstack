@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="light">
 
 <head>
     <meta charset="utf-8" />
@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script>
         tailwind.config = {
+            darkMode: "class",
             theme: {
               extend: {
                 colors: {
@@ -27,11 +28,36 @@
             },
           };
     </script>
-    <style>
+        <style>
         body { font-family: 'Inter', sans-serif; }
-          .product-card-img { aspect-ratio: 1 / 1.1; }
-          .hide-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
+        .product-card-img { aspect-ratio: 1 / 1.1; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* Range duplo */
+        input[type="range"] {
+            pointer-events: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            pointer-events: all;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            pointer-events: all;
+            cursor: pointer;
+        }
+        #filtro-preco-min {
+            z-index: 3;
+        }
+        #filtro-preco-max {
+            z-index: 4;
+        }
+        #filtro-preco-min::-webkit-slider-thumb {
+            z-index: 3;
+        }
+        #filtro-preco-max::-webkit-slider-thumb {
+            z-index: 4;
+        }
+        </style>
 </head>
 
 <body class="bg-background-light text-slate-900 transition-colors duration-200">
@@ -59,54 +85,59 @@
         </div>
     </header>
     <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <aside class="col-span-1">
-            <div class="bg-sidebar-light p-6 rounded-lg">
-                <h2 class="font-bold text-lg mb-6">Filtros</h2>
-                <div class="mb-8">
-                    <h3 class="font-semibold text-sm mb-4">Tamanho</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="w-10 h-10 border border-slate-300 rounded flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-white transition-colors">P</button>
-                        <button class="w-10 h-10 border border-slate-300 rounded flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-white transition-colors">M</button>
-                        <button class="w-10 h-10 bg-primary text-white border border-primary rounded flex items-center justify-center text-xs font-bold">G</button>
-                        <button class="w-10 h-10 border border-slate-300 rounded flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-white transition-colors">GG</button>
-                        <button class="w-10 h-10 border border-slate-300 rounded flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-white transition-colors">XG</button>
+            <aside class="col-span-1">
+                <div class="bg-sidebar-light p-6 rounded-lg">
+                    <h2 class="font-bold text-lg mb-6">Filtros</h2>
+
+                    <div class="mb-8">
+                        <h3 class="font-semibold text-sm mb-4">Faixa de Preço</h3>
+                        <div class="relative h-2 bg-slate-200 rounded-full mb-4">
+                            <div id="range-track" class="absolute h-2 bg-primary rounded-full"></div>
+                            <input id="filtro-preco-min" type="range" min="0" max="300" value="0" step="10"
+                                class="absolute w-full h-2 appearance-none bg-transparent cursor-pointer accent-primary"
+                                oninput="sincronizarFiltros('min')" />
+                            <input id="filtro-preco-max" type="range" min="0" max="300" value="300" step="10"
+                                class="absolute w-full h-2 appearance-none bg-transparent cursor-pointer accent-primary"
+                                oninput="sincronizarFiltros('max')" />
+                        </div>
+                        <div class="flex gap-3 mt-6">
+                            <div class="flex-1">
+                                <label class="text-xs text-slate-400 mb-1 block">Mínimo</label>
+                                <div class="flex items-center border border-slate-300 rounded px-2 py-1">
+                                    <span class="text-xs text-slate-400 mr-1">R$</span>
+                                    <input id="input-preco-min" type="number" min="0" max="300" value="0"
+                                        class="w-full text-sm font-medium outline-none bg-transparent"
+                                        oninput="sincronizarInput('min')" />
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <label class="text-xs text-slate-400 mb-1 block">Máximo</label>
+                                <div class="flex items-center border border-slate-300 rounded px-2 py-1">
+                                    <span class="text-xs text-slate-400 mr-1">R$</span>
+                                    <input id="input-preco-max" type="number" min="0" max="300" value="300"
+                                        class="w-full text-sm font-medium outline-none bg-transparent"
+                                        oninput="sincronizarInput('max')" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-8">
-                    <h3 class="font-semibold text-sm mb-4">Cor</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <button class="w-6 h-6 rounded-full bg-black ring-offset-2 ring-1 ring-black"></button>
-                        <button class="w-6 h-6 rounded-full bg-white border border-slate-200"></button>
-                        <button class="w-6 h-6 rounded-full bg-red-600"></button>
-                        <button class="w-6 h-6 rounded-full bg-blue-600"></button>
-                        <button class="w-6 h-6 rounded-full bg-green-600"></button>
-                        <button class="w-6 h-6 rounded-full bg-yellow-400"></button>
-                    </div>
-                </div>
-                <!-- removed Marca filter per project requirement -->
-                <div class="space-y-4 mb-8">
-                    <div>
-                        <h3 class="font-semibold text-sm mb-2">Tecido</h3>
-                        <select class="w-full bg-white border-slate-300 rounded text-sm p-2 focus:ring-primary">
-                            <option>Algodão</option>
-                            <option>Poliéster</option>
-                            <option>Dry Fit</option>
+
+                    <div class="mb-8">
+                        <h3 class="font-semibold text-sm mb-4">Ordenar por</h3>
+                        <select id="filtro-ordem" class="w-full bg-white border-slate-300 rounded text-sm p-2 focus:ring-primary" onchange="aplicarFiltros()">
+                            <option value="padrao">Padrão</option>
+                            <option value="menor-preco">Menor preço</option>
+                            <option value="maior-preco">Maior preço</option>
+                            <option value="nome-az">Nome A-Z</option>
+                            <option value="nome-za">Nome Z-A</option>
                         </select>
                     </div>
-                    <div>
-                        <h3 class="font-semibold text-sm mb-2">Categoria</h3>
-                        <select class="w-full bg-white border-slate-300 rounded text-sm p-2 focus:ring-primary">
-                            <option>Casual</option>
-                            <option>Academia</option>
-                            <option>Oversized</option>
-                        </select>
-                    </div>
+
+                    <button onclick="limparFiltros()" class="w-full bg-primary text-white py-3 rounded font-bold text-sm hover:opacity-90 transition-opacity">
+                        Limpar Filtros
+                    </button>
                 </div>
-                <button class="w-full bg-primary text-white py-3 rounded font-bold text-sm hover:opacity-90 transition-opacity">
-                    Aplicar Filtros
-                </button>
-            </div>
-        </aside>
+            </aside>
         <section class="col-span-1 md:col-span-3">
             <div class="relative mb-8">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
@@ -278,61 +309,132 @@
             </div>
         </div>
     </footer>
-    <script>
-  const API = "http://localhost:3000";
-  let todosProdutos = [];
+        <script>
+        const API = "http://localhost:3000";
+        let todosProdutos = [];
 
-  async function carregarProdutos() {
-    try {
-      const res = await fetch(`${API}/produtos`);
-      todosProdutos = await res.json();
-      renderizarProdutos(todosProdutos);
-    } catch (e) {
-      console.error("Erro ao carregar produtos:", e);
-    }
-  }
+        async function carregarProdutos() {
+            try {
+            const res = await fetch(`${API}/produtos`);
+            todosProdutos = await res.json();
 
-  function cardProduto(produto) {
-    return `
-      <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group block">
-        <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
-          <img 
-            src="${produto.nm_imagem_url || 'images/placeholder.png'}" 
-            alt="${produto.nm_produto}" 
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <h3 class="font-medium text-slate-900">${produto.nm_produto}</h3>
-        <p class="font-bold text-lg mt-2">
-          R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
-        </p>
-      </a>
-    `;
-  }
+            const maxPreco = Math.ceil(Math.max(...todosProdutos.map(p => Number(p.vl_produto))) / 10) * 10;
+            ['filtro-preco-min', 'filtro-preco-max', 'input-preco-min', 'input-preco-max'].forEach(id => {
+                document.getElementById(id).max = maxPreco;
+            });
+            document.getElementById('filtro-preco-max').value = maxPreco;
+            document.getElementById('input-preco-max').value  = maxPreco;
 
-  function renderizarProdutos(produtos) {
-    const container = document.getElementById("container-produtos");
-    if (!container) return;
+            atualizarTrack();
+            renderizarProdutos(todosProdutos);
+            } catch (e) {
+            console.error("Erro ao carregar produtos:", e);
+            }
+        }
 
-    if (produtos.length === 0) {
-      container.innerHTML = `<p class="col-span-3 text-center text-slate-400 py-10">Nenhum produto encontrado.</p>`;
-      return;
-    }
+        function atualizarTrack() {
+            const min    = Number(document.getElementById('filtro-preco-min').value);
+            const max    = Number(document.getElementById('filtro-preco-max').value);
+            const maxAbs = Number(document.getElementById('filtro-preco-max').max);
+            const track  = document.getElementById('range-track');
+            track.style.left  = `${(min / maxAbs) * 100}%`;
+            track.style.right = `${100 - (max / maxAbs) * 100}%`;
+        }
 
-    container.innerHTML = produtos.map(cardProduto).join('');
-  }
+        function sincronizarFiltros(tipo) {
+            let min = Number(document.getElementById('filtro-preco-min').value);
+            let max = Number(document.getElementById('filtro-preco-max').value);
 
-  // Busca em tempo real
-  document.querySelector('input[type="text"]').addEventListener('input', (e) => {
-    const termo = e.target.value.toLowerCase();
-    const filtrados = todosProdutos.filter(p =>
-      p.nm_produto.toLowerCase().includes(termo)
-    );
-    renderizarProdutos(filtrados);
-  });
+            if (min > max) {
+            if (tipo === 'min') { min = max; document.getElementById('filtro-preco-min').value = min; }
+            else                { max = min; document.getElementById('filtro-preco-max').value = max; }
+            }
 
-  carregarProdutos();
-    </script>
+            document.getElementById('input-preco-min').value = min;
+            document.getElementById('input-preco-max').value = max;
+            atualizarTrack();
+            aplicarFiltros();
+        }
+
+        function sincronizarInput(tipo) {
+            let min    = Number(document.getElementById('input-preco-min').value);
+            let max    = Number(document.getElementById('input-preco-max').value);
+            const maxAbs = Number(document.getElementById('filtro-preco-max').max);
+
+            min = Math.max(0, Math.min(min, maxAbs));
+            max = Math.max(0, Math.min(max, maxAbs));
+
+            if (tipo === 'min' && min > max) min = max;
+            if (tipo === 'max' && max < min) max = min;
+
+            document.getElementById('filtro-preco-min').value = min;
+            document.getElementById('filtro-preco-max').value = max;
+            atualizarTrack();
+            aplicarFiltros();
+        }
+
+        function cardProduto(produto) {
+            const semEstoque = produto.qt_estoque === 0;
+            return `
+            <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group block ${semEstoque ? 'opacity-50 pointer-events-none' : ''}">
+                <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
+                <img src="${produto.nm_imagem_url || 'images/placeholder.png'}" alt="${produto.nm_produto}" class="w-full h-full object-contain" />
+                ${semEstoque ? '<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Esgotado</span>' : ''}
+                </div>
+                <h3 class="font-medium text-slate-900">${produto.nm_produto}</h3>
+                <p class="font-bold text-lg mt-2">R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}</p>
+                <p class="text-xs text-slate-400">${produto.qt_estoque > 0 ? `${produto.qt_estoque} disponíveis` : 'Sem estoque'}</p>
+            </a>
+            `;
+        }
+
+        function renderizarProdutos(produtos) {
+            const container = document.getElementById("container-produtos");
+            if (!container) return;
+            if (produtos.length === 0) {
+            container.innerHTML = `<p class="col-span-3 text-center text-slate-400 py-10">Nenhum produto encontrado.</p>`;
+            return;
+            }
+            container.innerHTML = produtos.map(cardProduto).join('');
+        }
+
+        function aplicarFiltros() {
+            const termo    = document.querySelector('input[type="text"]').value.toLowerCase();
+            const precoMin = Number(document.getElementById('filtro-preco-min').value);
+            const precoMax = Number(document.getElementById('filtro-preco-max').value);
+            const ordem    = document.getElementById('filtro-ordem').value;
+
+            let filtrados = todosProdutos.filter(p => {
+            const preco = Number(p.vl_produto);
+            return p.nm_produto.toLowerCase().includes(termo)
+                && preco >= precoMin
+                && preco <= precoMax;
+            });
+
+            if (ordem === 'menor-preco') filtrados.sort((a, b) => Number(a.vl_produto) - Number(b.vl_produto));
+            if (ordem === 'maior-preco') filtrados.sort((a, b) => Number(b.vl_produto) - Number(a.vl_produto));
+            if (ordem === 'nome-az')     filtrados.sort((a, b) => a.nm_produto.localeCompare(b.nm_produto));
+            if (ordem === 'nome-za')     filtrados.sort((a, b) => b.nm_produto.localeCompare(a.nm_produto));
+
+            renderizarProdutos(filtrados);
+        }
+
+        function limparFiltros() {
+            const maxAbs = Number(document.getElementById('filtro-preco-max').max);
+            document.querySelector('input[type="text"]').value = '';
+            document.getElementById('filtro-preco-min').value  = 0;
+            document.getElementById('filtro-preco-max').value  = maxAbs;
+            document.getElementById('input-preco-min').value   = 0;
+            document.getElementById('input-preco-max').value   = maxAbs;
+            document.getElementById('filtro-ordem').value      = 'padrao';
+            atualizarTrack();
+            renderizarProdutos(todosProdutos);
+        }
+
+        document.querySelector('input[type="text"]').addEventListener('input', aplicarFiltros);
+
+        carregarProdutos();
+        </script>
 
 </body>
 
