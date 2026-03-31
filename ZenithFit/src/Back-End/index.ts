@@ -340,4 +340,55 @@ app.get("/produtos/:id", async (req: Request, res: Response) => {
   }
 });
 
+// Listar modalidades de frete (necessário para o checkout)
+app.get("/fretes", async (req: Request, res: Response) => {
+  try {
+    const modalidades = await prisma.modalidade_Frete.findMany();
+    res.status(200).json(modalidades);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao buscar modalidades de frete" });
+  }
+});
+
+// Listar pedidos do cliente (necessário para a tela de pedidos)
+app.get("/pedidos/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
+  try {
+    const { cpf } = req.params;
+    const pedidos = await prisma.pedido.findMany({
+      where: { cd_cpf: cpf },
+      include: {
+        itens:         { include: { produto: true } },
+        pagamentos:    { include: { cartao: { include: { bandeira: true } } } },
+        cupons_usados: { include: { cupom: true } },
+        modalidade:    true,
+        status_pedido: true,
+        endereco_entrega: true,
+      },
+      orderBy: { dt_pedido: "desc" }
+    });
+    res.status(200).json(pedidos);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao buscar pedidos" });
+  }
+});
+
+// Validar cupom antes de finalizar compra
+app.get("/cupons/:codigo", async (req: Request<{ codigo: string }>, res: Response) => {
+  try {
+    const { codigo } = req.params;
+    const cupom = await prisma.cupom.findUnique({
+      where: { nm_codigo: codigo }
+    });
+
+    if (!cupom || !cupom.fl_ativo) {
+      res.status(404).json({ message: "Cupom inválido ou expirado." });
+      return;
+    }
+
+    res.status(200).json(cupom);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao validar cupom" });
+  }
+});
+
 app.listen(3000, () => console.log("Servidor ON na 3000"));

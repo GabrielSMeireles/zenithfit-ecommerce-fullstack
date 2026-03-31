@@ -28,6 +28,55 @@
                 },
             },
         };
+
+  const API = "http://localhost:3000";
+
+  async function carregarProdutos() {
+    try {
+      const res = await fetch(`${API}/produtos`);
+      const produtos = await res.json();
+
+      renderizarNovidades(produtos.slice(0, 4));
+      renderizarMaisVendidos(produtos.slice(4, 8));
+    } catch (e) {
+      console.error("Erro ao carregar produtos:", e);
+    }
+  }
+
+  function cardProduto(produto) {
+    return `
+      <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group cursor-pointer block">
+        <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
+          <img 
+            src="${produto.nm_imagem_url || 'images/placeholder.png'}" 
+            alt="${produto.nm_produto}" 
+            class="w-full h-full object-contain"
+          />
+        </div>
+        <div class="text-left">
+          <h3 class="font-bold text-lg mb-1">${produto.nm_produto}</h3>
+          <p class="font-black text-slate-800 dark:text-slate-200">
+            R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
+          </p>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderizarNovidades(produtos) {
+    const container = document.getElementById("container-novidades");
+    if (!container) return;
+    container.innerHTML = produtos.map(cardProduto).join('');
+  }
+
+  function renderizarMaisVendidos(produtos) {
+    const container = document.getElementById("container-mais-vendidos");
+    if (!container) return;
+    container.innerHTML = produtos.map(cardProduto).join('');
+  }
+
+  carregarProdutos();
+        
     </script>
     <style type="text/tailwindcss">
         body { font-family: 'Inter', sans-serif; } .hero-gradient { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); } .product-card-bg { background-color: #d1d9e6; }
@@ -93,7 +142,7 @@
     <section class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl lg:text-4xl font-black mb-12 uppercase tracking-tighter">Novidades da Semana</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="container-novidades" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <a href="detalhesProduto.html" class="group cursor-pointer block">
                     <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
                         <img alt="Camisa oversized Mahoraga" class="w-full h-full object-contain" src="images/mahoraga.png"
@@ -143,7 +192,7 @@
     <section class="py-20 bg-slate-50 dark:bg-black/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl lg:text-4xl font-black mb-12 uppercase tracking-tighter">Mais Vendidos</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="container-mais-vendidos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <a href="detalhesProduto.html" class="group cursor-pointer block">
                     <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
                         <img alt="Camisa oversized Limitless" class="w-full h-full object-contain" src="images/limitless.png"

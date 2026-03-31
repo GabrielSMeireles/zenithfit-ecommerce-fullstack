@@ -112,7 +112,7 @@
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
                 <input class="w-full bg-transparent border-slate-200 rounded py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary" placeholder="Buscar por produtos..." type="text" />
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-6">
+            <div id="container-produtos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-6">
                 <a href="detalhesProduto.html" class="group block">
                     <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
                         <img alt="Camisa oversized Kokushibo" class="w-full h-full object-contain" src="images/kokushibo.png"
@@ -279,6 +279,59 @@
         </div>
     </footer>
     <script>
+  const API = "http://localhost:3000";
+  let todosProdutos = [];
+
+  async function carregarProdutos() {
+    try {
+      const res = await fetch(`${API}/produtos`);
+      todosProdutos = await res.json();
+      renderizarProdutos(todosProdutos);
+    } catch (e) {
+      console.error("Erro ao carregar produtos:", e);
+    }
+  }
+
+  function cardProduto(produto) {
+    return `
+      <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group block">
+        <div class="product-card-img bg-[#c9d6e1] rounded-lg overflow-hidden mb-4 relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:-translate-y-1">
+          <img 
+            src="${produto.nm_imagem_url || 'images/placeholder.png'}" 
+            alt="${produto.nm_produto}" 
+            class="w-full h-full object-contain"
+          />
+        </div>
+        <h3 class="font-medium text-slate-900">${produto.nm_produto}</h3>
+        <p class="font-bold text-lg mt-2">
+          R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
+        </p>
+      </a>
+    `;
+  }
+
+  function renderizarProdutos(produtos) {
+    const container = document.getElementById("container-produtos");
+    if (!container) return;
+
+    if (produtos.length === 0) {
+      container.innerHTML = `<p class="col-span-3 text-center text-slate-400 py-10">Nenhum produto encontrado.</p>`;
+      return;
+    }
+
+    container.innerHTML = produtos.map(cardProduto).join('');
+  }
+
+  // Busca em tempo real
+  document.querySelector('input[type="text"]').addEventListener('input', (e) => {
+    const termo = e.target.value.toLowerCase();
+    const filtrados = todosProdutos.filter(p =>
+      p.nm_produto.toLowerCase().includes(termo)
+    );
+    renderizarProdutos(filtrados);
+  });
+
+  carregarProdutos();
     </script>
 
 </body>
