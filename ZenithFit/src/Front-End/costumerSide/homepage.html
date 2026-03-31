@@ -29,53 +29,66 @@
             },
         };
 
-  const API = "http://localhost:3000";
+        const API = "http://localhost:3000";
 
-  async function carregarProdutos() {
-    try {
-      const res = await fetch(`${API}/produtos`);
-      const produtos = await res.json();
+        async function carregarProdutos() {
+            try {
+            const res = await fetch(`${API}/produtos`);
+            const produtos = await res.json();
 
-      renderizarNovidades(produtos.slice(0, 4));
-      renderizarMaisVendidos(produtos.slice(4, 8));
-    } catch (e) {
-      console.error("Erro ao carregar produtos:", e);
-    }
-  }
+            renderizarNovidades(produtos.slice(0, 4));
+            renderizarMaisVendidos(produtos.slice(4, 8));
+            renderizarCategorias(produtos);
+            } catch (e) {
+            console.error("Erro ao carregar produtos:", e);
+            }
+        }
 
-  function cardProduto(produto) {
-    return `
-      <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group cursor-pointer block">
-        <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
-          <img 
-            src="${produto.nm_imagem_url || 'images/placeholder.png'}" 
-            alt="${produto.nm_produto}" 
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <div class="text-left">
-          <h3 class="font-bold text-lg mb-1">${produto.nm_produto}</h3>
-          <p class="font-black text-slate-800 dark:text-slate-200">
-            R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
-          </p>
-        </div>
-      </a>
-    `;
-  }
+        function cardProduto(produto) {
+            return `
+            <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group cursor-pointer block">
+                <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
+                <img src="${produto.nm_imagem_url || 'images/placeholder.png'}" alt="${produto.nm_produto}" class="w-full h-full object-contain" />
+                </div>
+                <div class="text-left">
+                <h3 class="font-bold text-lg mb-1">${produto.nm_produto}</h3>
+                <p class="font-black text-slate-800 dark:text-slate-200">
+                    R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
+                </p>
+                </div>
+            </a>
+            `;
+        }
 
-  function renderizarNovidades(produtos) {
-    const container = document.getElementById("container-novidades");
-    if (!container) return;
-    container.innerHTML = produtos.map(cardProduto).join('');
-  }
+        function renderizarNovidades(produtos) {
+            const container = document.getElementById("container-novidades");
+            if (!container) return;
+            container.innerHTML = produtos.map(cardProduto).join('');
+        }
 
-  function renderizarMaisVendidos(produtos) {
-    const container = document.getElementById("container-mais-vendidos");
-    if (!container) return;
-    container.innerHTML = produtos.map(cardProduto).join('');
-  }
+        function renderizarMaisVendidos(produtos) {
+            const container = document.getElementById("container-mais-vendidos");
+            if (!container) return;
+            container.innerHTML = produtos.map(cardProduto).join('');
+        }
 
-  carregarProdutos();
+        function renderizarCategorias(produtos) {
+            const exclusivas = produtos.filter(p => p.ds_produto?.toLowerCase().includes("exclusiva"));
+            const lisas      = produtos.filter(p => p.ds_produto?.toLowerCase().includes("lisa") || p.ds_produto?.toLowerCase().includes("premium"));
+            const colecoes   = produtos.filter(p => p.ds_produto?.toLowerCase().includes("paisagem"));
+            const casuais    = produtos.filter(p =>
+            p.ds_produto?.toLowerCase().includes("lisa") ||
+            p.ds_produto?.toLowerCase().includes("premium") ||
+            p.ds_produto?.toLowerCase().includes("paisagem")
+            );
+
+            if (exclusivas.length > 0) document.getElementById("img-exclusiva").src = exclusivas[0].nm_imagem_url || 'images/placeholder.png';
+            if (lisas.length > 0)      document.getElementById("img-lisa").src      = lisas[0].nm_imagem_url      || 'images/placeholder.png';
+            if (colecoes.length > 0)   document.getElementById("img-colecao").src   = colecoes[0].nm_imagem_url   || 'images/placeholder.png';
+            if (casuais.length > 0)    document.getElementById("img-casual").src    = casuais[0].nm_imagem_url    || 'images/placeholder.png';
+        }
+
+        carregarProdutos();
         
     </script>
     <style type="text/tailwindcss">
@@ -117,9 +130,9 @@
                     <p class="text-slate-600 dark:text-slate-400 text-lg max-w-md">
                         Explore nossa linha premium de camisetas para academia, que ajudam você a atingir seu máximo potencial.
                     </p>
-                    <a href="detalhesProduto.html" class="bg-primary text-white px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
-                        Compre Agora
-                    </a>
+                        <a href="produtos.html?filtro=premium" class="bg-primary text-white px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
+                            Compre Agora
+                        </a>
                     <div class="flex gap-12 pt-8">
                         <div>
                             <div class="text-3xl font-bold">1.800+</div>
@@ -244,34 +257,35 @@
             <div class="bg-slate-100 dark:bg-slate-900 rounded-[3rem] p-12 lg:p-20 text-center">
                 <h2 class="text-4xl lg:text-5xl font-black mb-16 uppercase tracking-tighter">Treine do seu Jeito</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <a href="produtos.html" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
+
+                    <a id="card-casual" href="produtos.html?filtro=casual" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
                         <h3 class="text-3xl font-bold">Casual</h3>
                         <div class="w-48 transition-transform duration-300 group-hover:scale-110">
-                            <img alt="Casual collection" class="w-full" src="images/lisa.png"
-                            />
+                            <img id="img-casual" alt="Casual" class="w-full" src="images/lisa.png" />
                         </div>
                     </a>
-                    <a href="produtos.html" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
+
+                    <a id="card-exclusiva" href="produtos.html?filtro=exclusiva" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
                         <h3 class="text-3xl font-bold text-left">Estampas<br/>exclusivas</h3>
                         <div class="w-48 transition-transform duration-300 group-hover:scale-110">
-                            <img alt="Exclusive prints" class="w-full" src="images/zenitsu2.png"
-                            />
+                            <img id="img-exclusiva" alt="Exclusiva" class="w-full" src="images/zenitsu2.png" />
                         </div>
                     </a>
-                    <a href="produtos.html" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
+
+                    <a id="card-colecao" href="produtos.html?filtro=paisagem" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
                         <h3 class="text-3xl font-bold">Coleções</h3>
                         <div class="w-48 transition-transform duration-300 group-hover:scale-110">
-                            <img alt="Collections" class="w-full" src="images/paisagem.png"
-                            />
+                            <img id="img-colecao" alt="Coleção" class="w-full" src="images/paisagem.png" />
                         </div>
                     </a>
-                    <a href="produtos.html" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
+
+                    <a id="card-lisa" href="produtos.html?filtro=lisa" class="product-card-bg rounded-3xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden block">
                         <h3 class="text-3xl font-bold">Lisas</h3>
                         <div class="w-48 transition-transform duration-300 group-hover:scale-110">
-                            <img alt="Plain shirts" class="w-full" src="images/lisa.png"
-                            />
+                            <img id="img-lisa" alt="Lisa" class="w-full" src="images/lisa.png" />
                         </div>
                     </a>
+
                 </div>
             </div>
         </div>

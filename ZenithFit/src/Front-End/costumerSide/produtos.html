@@ -314,22 +314,45 @@
         let todosProdutos = [];
 
         async function carregarProdutos() {
-            try {
+        try {
             const res = await fetch(`${API}/produtos`);
             todosProdutos = await res.json();
 
             const maxPreco = Math.ceil(Math.max(...todosProdutos.map(p => Number(p.vl_produto))) / 10) * 10;
             ['filtro-preco-min', 'filtro-preco-max', 'input-preco-min', 'input-preco-max'].forEach(id => {
-                document.getElementById(id).max = maxPreco;
+            document.getElementById(id).max = maxPreco;
             });
             document.getElementById('filtro-preco-max').value = maxPreco;
             document.getElementById('input-preco-max').value  = maxPreco;
-
             atualizarTrack();
-            renderizarProdutos(todosProdutos);
-            } catch (e) {
-            console.error("Erro ao carregar produtos:", e);
+
+            // Verifica se veio com filtro de categoria pela URL
+            const params = new URLSearchParams(window.location.search);
+            const filtroCategoria = params.get("filtro");
+
+            if (filtroCategoria) {
+            let produtosFiltrados;
+
+            if (filtroCategoria === "casual") {
+                produtosFiltrados = todosProdutos.filter(p =>
+                p.ds_produto?.toLowerCase().includes("lisa") ||
+                p.ds_produto?.toLowerCase().includes("premium") ||
+                p.ds_produto?.toLowerCase().includes("paisagem")
+                );
+            } else {
+                produtosFiltrados = todosProdutos.filter(p =>
+                p.ds_produto?.toLowerCase().includes(filtroCategoria)
+                );
             }
+
+            renderizarProdutos(produtosFiltrados);
+            } else {
+            renderizarProdutos(todosProdutos);
+            }
+
+        } catch (e) {
+            console.error("Erro ao carregar produtos:", e);
+        }
         }
 
         function atualizarTrack() {
