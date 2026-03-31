@@ -93,10 +93,17 @@ INSERT INTO "Cartao_credito" (
 -- PRODUTOS
 -- =========================================
 INSERT INTO "Produto" (nm_produto, ds_produto, vl_produto, nm_imagem_url, qt_estoque) VALUES
-('Camiseta Oversized Preta', 'Camiseta básica oversized preta', 79.90, '/images/camisa-preta.png', 50),
-('Camiseta Oversized Branca', 'Camiseta básica oversized branca', 79.90, '/images/camisa-branca.png', 40),
-('Camiseta Estampada Street', 'Estilo streetwear', 99.90, '/images/camisa-street.png', 30),
-('Moletom Oversized', 'Moletom confortável', 149.90, '/images/moletom.png', 20);
+  ('Camisa oversized Mahoraga',   'Estampa exclusiva Mahoraga',   99.99,  'images/mahoraga.png',   50),
+  ('Camisa oversized Zenitsu',    'Estampa exclusiva Zenitsu',    99.99,  'images/zenitsu.png',    40),
+  ('Camisa oversized Spider',     'Estampa exclusiva Spider',     129.99, 'images/spider.png',     30),
+  ('Camisa oversized Brother',    'Estampa exclusiva Brother',    99.99,  'images/brother.png',    45),
+  ('Camisa oversized Limitless',  'Estampa exclusiva Limitless',  129.99, 'images/limitless.png',  35),
+  ('Camisa oversized Kokushibo',  'Estampa exclusiva Kokushibo',  129.99, 'images/kokushibo.png',  25),
+  ('Camisa oversized Toji',       'Estampa exclusiva Toji',       129.99, 'images/toji.png',       20),
+  ('Camisa oversized Symbol',     'Estampa exclusiva Symbol',     129.99, 'images/symbol.png',     60),
+  ('Camiseta oversized Akasa',    'Estampa exclusiva Akasa',      129.99, 'images/akasa.png',      15),
+  ('Camiseta oversized Paisagem', 'Estampa exclusiva Paisagem',   129.99, 'images/paisagem.png',   30),
+  ('Camiseta oversized Lisa',     'Camiseta lisa premium',         99.99, 'images/lisa.png',       80);
 
 -- =========================================
 -- STATUS PEDIDO
