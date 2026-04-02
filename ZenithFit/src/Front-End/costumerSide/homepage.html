@@ -28,67 +28,6 @@
                 },
             },
         };
-
-        const API = "http://localhost:3000";
-
-        async function carregarProdutos() {
-            try {
-            const res = await fetch(`${API}/produtos`);
-            const produtos = await res.json();
-
-            renderizarNovidades(produtos.slice(0, 4));
-            renderizarMaisVendidos(produtos.slice(4, 8));
-            renderizarCategorias(produtos);
-            } catch (e) {
-            console.error("Erro ao carregar produtos:", e);
-            }
-        }
-
-        function cardProduto(produto) {
-            return `
-            <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group cursor-pointer block">
-                <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
-                <img src="${produto.nm_imagem_url || 'images/placeholder.png'}" alt="${produto.nm_produto}" class="w-full h-full object-contain" />
-                </div>
-                <div class="text-left">
-                <h3 class="font-bold text-lg mb-1">${produto.nm_produto}</h3>
-                <p class="font-black text-slate-800 dark:text-slate-200">
-                    R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
-                </p>
-                </div>
-            </a>
-            `;
-        }
-
-        function renderizarNovidades(produtos) {
-            const container = document.getElementById("container-novidades");
-            if (!container) return;
-            container.innerHTML = produtos.map(cardProduto).join('');
-        }
-
-        function renderizarMaisVendidos(produtos) {
-            const container = document.getElementById("container-mais-vendidos");
-            if (!container) return;
-            container.innerHTML = produtos.map(cardProduto).join('');
-        }
-
-        function renderizarCategorias(produtos) {
-            const exclusivas = produtos.filter(p => p.ds_produto?.toLowerCase().includes("exclusiva"));
-            const lisas      = produtos.filter(p => p.ds_produto?.toLowerCase().includes("lisa") || p.ds_produto?.toLowerCase().includes("premium"));
-            const colecoes   = produtos.filter(p => p.ds_produto?.toLowerCase().includes("paisagem"));
-            const casuais    = produtos.filter(p =>
-            p.ds_produto?.toLowerCase().includes("lisa") ||
-            p.ds_produto?.toLowerCase().includes("premium") ||
-            p.ds_produto?.toLowerCase().includes("paisagem")
-            );
-
-            if (exclusivas.length > 0) document.getElementById("img-exclusiva").src = exclusivas[0].nm_imagem_url || 'images/placeholder.png';
-            if (lisas.length > 0)      document.getElementById("img-lisa").src      = lisas[0].nm_imagem_url      || 'images/placeholder.png';
-            if (colecoes.length > 0)   document.getElementById("img-colecao").src   = colecoes[0].nm_imagem_url   || 'images/placeholder.png';
-            if (casuais.length > 0)    document.getElementById("img-casual").src    = casuais[0].nm_imagem_url    || 'images/placeholder.png';
-        }
-
-        carregarProdutos();
         
     </script>
     <style type="text/tailwindcss">
@@ -367,6 +306,68 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        const API = "http://localhost:3000";
+
+        async function carregarProdutos() {
+            try {
+                const res = await fetch(`${API}/produtos`);
+                const produtos = await res.json();
+                renderizarNovidades(produtos.slice(0, 4));
+                renderizarMaisVendidos(produtos.slice(4, 8));
+                renderizarCategorias(produtos);
+            } catch (e) {
+                console.error("Erro ao carregar produtos:", e);
+            }
+        }
+
+        function cardProduto(produto) {
+            return `
+                <a href="detalhesProduto.html?id=${produto.cd_produto}" class="group cursor-pointer block">
+                    <div class="product-card-bg rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:-translate-y-2">
+                        <img src="${produto.nm_imagem_url || 'images/placeholder.png'}" alt="${produto.nm_produto}" class="w-full h-full object-contain" />
+                    </div>
+                    <div class="text-left">
+                        <h3 class="font-bold text-lg mb-1">${produto.nm_produto}</h3>
+                        <p class="font-black text-slate-800 dark:text-slate-200">
+                            R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}
+                        </p>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderizarNovidades(produtos) {
+            const container = document.getElementById("container-novidades");
+            if (!container) return;
+            container.innerHTML = produtos.map(cardProduto).join('');
+        }
+
+        function renderizarMaisVendidos(produtos) {
+            const container = document.getElementById("container-mais-vendidos");
+            if (!container) return;
+            container.innerHTML = produtos.map(cardProduto).join('');
+        }
+
+        function renderizarCategorias(produtos) {
+            const exclusivas = produtos.filter(p => p.ds_produto?.toLowerCase().includes("exclusiva"));
+            const lisas      = produtos.filter(p => p.ds_produto?.toLowerCase().includes("lisa") || p.ds_produto?.toLowerCase().includes("premium"));
+            const colecoes   = produtos.filter(p => p.ds_produto?.toLowerCase().includes("paisagem"));
+            const casuais    = produtos.filter(p =>
+                p.ds_produto?.toLowerCase().includes("lisa") ||
+                p.ds_produto?.toLowerCase().includes("premium") ||
+                p.ds_produto?.toLowerCase().includes("paisagem")
+            );
+
+            if (exclusivas.length > 0) document.getElementById("img-exclusiva").src = exclusivas[0].nm_imagem_url || 'images/placeholder.png';
+            if (lisas.length > 0)      document.getElementById("img-lisa").src      = lisas[0].nm_imagem_url      || 'images/placeholder.png';
+            if (colecoes.length > 0)   document.getElementById("img-colecao").src   = colecoes[0].nm_imagem_url   || 'images/placeholder.png';
+            if (casuais.length > 0)    document.getElementById("img-casual").src    = casuais[0].nm_imagem_url    || 'images/placeholder.png';
+        }
+
+        carregarProdutos();
+    </script>
 
 </body>
 
