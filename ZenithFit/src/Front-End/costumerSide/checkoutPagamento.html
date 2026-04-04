@@ -4,37 +4,42 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Zenith - Pagamento</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-        <script>
-                tailwind.config = {
-                        darkMode: "class",
-                        theme: {
-                                extend: {
-                                        colors: {
-                                                primary: "#000000",
-                                                "background-light": "#FFFFFF",
-                                                "background-dark": "#0D0D0D",
-                                        },
-                                        fontFamily: {
-                                                display: ["Inter", "sans-serif"],
-                                        },
-                                        borderRadius: {
-                                                DEFAULT: "8px",
-                                        },
-                                },
-                        },
-                };
-        </script>
-        <style type="text/tailwindcss">
-                body { font-family: 'Inter', sans-serif; }
+    <title>Zenith - Pagamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#000000",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#0D0D0D",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "8px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
         </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-200">
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <header
+        class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="homepage.html" class="flex items-center flex-shrink-0">
@@ -42,15 +47,18 @@
                 </a>
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
                     <a class="hover:text-primary transition-colors" href="homepage.html">Home</a>
-                    <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop <span class="material-symbols-outlined text-sm">expand_more</span></a>
+                    <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop
+                        <span class="material-symbols-outlined text-sm">expand_more</span></a>
                     <a class="hover:text-primary transition-colors" href="novidades.html">Novidades</a>
                     <a class="hover:text-primary transition-colors" href="assistente.html">Assistente</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <a href="dashboardCliente.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <a href="dashboardCliente.html"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">account_circle</span>
                     </a>
-                    <a href="carrinho.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <a href="carrinho.html"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">shopping_cart</span>
                     </a>
                 </div>
@@ -61,8 +69,10 @@
         <div class="flex flex-col lg:flex-row lg:gap-12">
             <main class="w-full lg:w-3/5">
                 <header class="mb-8">
-                    <a class="text-xl font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100" href="#">ZENITH</a>
-                    <nav aria-label="Breadcrumb" class="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                    <a class="text-xl font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100"
+                        href="#">ZENITH</a>
+                    <nav aria-label="Breadcrumb"
+                        class="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-4">
                         <ol class="flex items-center space-x-2">
                             <li>
                                 <a href="#">Carrinho</a>
@@ -84,89 +94,79 @@
                 </header>
                 <section class="mb-8">
                     <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Passo 2: Pagamento</h2>
-                    <form id="paymentForm">
-                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                            <h3 class="font-medium mb-4 text-gray-900 dark:text-gray-100">Cartões salvos</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800">
-                                <input checked="" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-offset-gray-800" id="card1" name="payment_method" type="radio" />
-                                <label class="ml-3 flex-grow flex items-center justify-between cursor-pointer" for="card1">
-                                    <div class="flex items-center">
-                                        <img alt="Mastercard logo" class="w-8 h-auto mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXz0o62m1McloEc3vTYS2LgbyLemR44noOEJ2EEh3OpVQmjtddCZFlkACCMjlnwxA07VK8rNuoayOqZxjygu2KfhvIxdMiko30f3HBT-ye2o3ko3KKL-D_lpiH5tfQQeCwlHsJ-hc7_YZ32fH2517dIFjwNwVJI4wr-DN_Sa5w33aEh9elLJhK2bGKOUaDODidhAlLc3ZLg8_e6qmhshGBXnl7NIAaKb5t4z8WYPB_Xyn3K0YjM5VOerMtwm2xLdtd6kdm4_L0sA"
-                                        />
-                                        <div>
-                                            <span class="block font-medium text-gray-900 dark:text-gray-100">Mastercard</span>
-                                            <span class="block text-sm text-gray-500 dark:text-gray-400">**** **** **** 1234</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Expira em 12/2025</span>
-                                </label>
-                            </div>
-                            <div class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                <input class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-offset-gray-800" id="card2" name="payment_method" type="radio" />
-                                <label class="ml-3 flex-grow flex items-center justify-between cursor-pointer" for="card2">
-                                    <div class="flex items-center">
-                                        <img alt="Visa logo" class="w-8 h-auto mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmrYvQBADRg-QTnfapM1k_8WQ4M4pw0TzIDcEFE1cWUNfY9BdpyH3oxRqKRWLq4CP1mGvphq_OpCs91UQljE4k4BpjxleVI5ugrjV-w_C-oRmR_zKxQ8US0HthrEz4ODib4FB9FEtoDTBAg-_PfYYL_rANtPGjHY6SWqzJbPkGKJT9nnEdOKy81BJGX4SRJjXf1qqhhrnbD6Ls0s3-DB5uFpx2fmOvkAztV5OECHFSNDJzGTq3b3JtL2hllZUS0o_JeAnnDPoTuw"
-                                        />
-                                        <div>
-                                            <span class="block font-medium text-gray-900 dark:text-gray-100">Visa</span>
-                                            <span class="block text-sm text-gray-500 dark:text-gray-400">**** **** **** 5678</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Expira em 08/2026</span>
-                                </label>
-                            </div>
+
+                    <!-- Mantenha o formulário -->
+                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                        <h3 class="font-medium mb-4 text-gray-900 dark:text-gray-100">Cartões salvos</h3>
+
+                        <!-- É AQUI que a mágica acontece: Deixe esta div vazia com o ID "cards-container" -->
+                        <div id="cards-container" class="space-y-4">
+                            <!-- O JavaScript vai colocar os cartões aqui dentro automaticamente -->
+                            <p class="text-sm text-gray-500">Carregando seus cartões...</p>
                         </div>
-                        <button class="mt-4 flex items-center text-sm font-medium text-primary hover:text-gray-600 dark:hover:text-gray-400">
-                            <span class="material-symbols-outlined text-lg mr-1">add_circle_outline</span> Adicionar novo cartão
+
+                        <button
+                            class="mt-4 flex items-center text-sm font-medium text-primary hover:text-gray-600 dark:hover:text-gray-400">
+                            <span class="material-symbols-outlined text-lg mr-1">add_circle_outline</span> Adicionar
+                            novo cartão
                         </button>
-                        </div>
-                    </form>
+                    </div>
                 </section>
+
                 <section>
-                    <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Cupom de desconto ou troca</h2>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Apenas um tipo de cupom pode ser utilizado por compra.</p>
+                    <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Cupom de desconto ou troca
+                    </h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Apenas um tipo de cupom pode ser utilizado
+                        por compra.</p>
                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
                         <div class="flex space-x-4">
-                            <input class="flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" placeholder="Insira o código do cupom" type="text" />
-                            <button class="px-6 py-2 bg-primary text-white font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors" type="button">
+                            <input
+                                class="flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                placeholder="Insira o código do cupom" type="text" />
+                            <button
+                                class="px-6 py-2 bg-primary text-white font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
+                                type="button">
                                 Aplicar
                             </button>
                         </div>
-                        <div class="flex items-start mt-4 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 p-3 rounded-md">
+                        <div
+                            class="flex items-start mt-4 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 p-3 rounded-md">
                             <span class="material-symbols-outlined text-xl mr-2">info</span>
                             <p class="text-sm">
-                                O valor mínimo por cartão é de R$10,00. Essa regra não se aplica quando o pagamento é combinado com cupom.
+                                O valor mínimo por cartão é de R$10,00. Essa regra não se aplica quando o pagamento é
+                                combinado com cupom.
                             </p>
                         </div>
                     </div>
                 </section>
                 <div class="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <a class="flex items-center text-sm text-primary hover:text-gray-600 dark:hover:text-gray-400 font-medium" href="checkout.html">
-                        <span class="material-symbols-outlined text-lg mr-1">arrow_back_ios_new</span> Voltar para informações
+                    <a class="flex items-center text-sm text-primary hover:text-gray-600 dark:hover:text-gray-400 font-medium"
+                        href="checkout.html">
+                        <span class="material-symbols-outlined text-lg mr-1">arrow_back_ios_new</span> Voltar para
+                        informações
                     </a>
                     <form id="paymentForm2">
-                        <button class="w-full sm:w-auto px-8 py-3 bg-primary text-white font-bold rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors" type="submit">
+                        <button
+                            class="w-full sm:w-auto px-8 py-3 bg-primary text-white font-bold rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
+                            type="submit">
                             Finalizar Pagamento
                         </button>
                     </form>
                 </div>
-                <script>
-                    document.getElementById('paymentForm2').addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        window.location.href = 'sucessoCompra.html';
-                    });
-                </script>
+
             </main>
             <aside class="w-full lg:w-2/5 mt-12 lg:mt-0">
-                <div class="bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-8 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div
+                    class="bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-8 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">Resumo do pedido</h2>
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <div class="relative">
-                                <img alt="Camisa oversized Maharaga" class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700" src="images/mahoraga.png"
-                                />
-                                <span class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
+                                <img alt="Camisa oversized Maharaga"
+                                    class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700"
+                                    src="images/mahoraga.png" />
+                                <span
+                                    class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
                             </div>
                             <div class="ml-4 flex-grow">
                                 <p class="font-medium text-gray-900 dark:text-gray-100">Camisa oversized Maharaga</p>
@@ -176,9 +176,11 @@
                         </div>
                         <div class="flex items-center">
                             <div class="relative">
-                                <img alt="Camisa oversized Limitless" class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700" src="images/limitless.png"
-                                />
-                                <span class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
+                                <img alt="Camisa oversized Limitless"
+                                    class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700"
+                                    src="images/limitless.png" />
+                                <span
+                                    class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
                             </div>
                             <div class="ml-4 flex-grow">
                                 <p class="font-medium text-gray-900 dark:text-gray-100">Camisa oversized Limitless</p>
@@ -189,29 +191,165 @@
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
                     <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
-                            <span class="font-medium text-gray-900 dark:text-gray-100">R$229,98</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Frete</span>
-                            <span class="font-medium text-gray-900 dark:text-gray-100">R$15,00</span>
-                        </div>
-                        <div class="flex justify-between text-green-600 dark:text-green-400">
-                            <span class="">Desconto Cupom</span>
-                            <span class="font-medium">- R$24,49</span>
-                        </div>
+                        <<div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
+                                <!-- Adicionado ID aqui -->
+                                <span id="resumo-subtotal"
+                                    class="font-medium text-gray-900 dark:text-gray-100">R$0,00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Frete</span>
+                                <!-- Adicionado ID aqui -->
+                                <span id="resumo-frete-valor"
+                                    class="font-medium text-gray-900 dark:text-gray-100">R$0,00</span>
+                            </div>
+                            <div class="flex justify-between text-green-600 dark:text-green-400">
+                                <span class="">Desconto Cupom</span>
+                                <span class="font-medium">- R$24,49</span>
+                            </div>
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
                     <div class="flex justify-between items-center">
                         <span class="text-base text-gray-600 dark:text-gray-300">Total</span>
-                        <span class="text-2xl font-bold text-gray-900 dark:text-gray-100">R$220,49</span>
+                        <!-- Adicionado ID aqui -->
+                        <span id="resumo-total"
+                            class="text-2xl font-bold text-gray-900 dark:text-gray-100">R$0,00</span>
                     </div>
                 </div>
             </aside>
         </div>
     </div>
+    <script>
 
+
+        const clienteLogado = JSON.parse(localStorage.getItem('cliente_cpf')); // Objeto salvo no login
+        const cpf = localStorage.getItem('cliente_cpf');
+        const valorFrete = parseFloat(localStorage.getItem('checkout_valor_frete') || 0);
+        const idModalidade = localStorage.getItem('checkout_id_modalidade');
+
+
+        const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+        const subtotal = itensCarrinho.reduce((acc, item) => {
+            // 1. Limpa o valor do produto (remove R$, espaços e troca vírgula por ponto)
+            const precoLimpo = String(item.vl_produto).replace('R$', '').replace(',', '.').trim();
+            const preco = parseFloat(precoLimpo) || 0;
+
+            // 2. Garante que a quantidade seja um número inteiro
+            const quantidade = parseInt(item.qt_item) || 0;
+
+            // 3. Soma ao acumulador
+            return acc + (preco * quantidade);
+        }, 0);
+
+        async function inicializarPagamento() {
+            if (!cpf) {
+                alert("Sessão expirada. Faça login novamente.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Atualizar Resumo Visual
+            document.getElementById('resumo-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-frete-valor').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-total').innerText = `R$ ${(subtotal + valorFrete).toFixed(2).replace('.', ',')}`;
+
+            // Buscar Cartões do Banco
+            try {
+                const response = await fetch(`http://localhost:3000/clientes/${cpf}`);
+                const cliente = await response.json();
+                renderizarCartoes(cliente.cartoes);
+            } catch (error) {
+                console.error("Erro ao buscar cartões:", error);
+            }
+        }
+
+        function renderizarCartoes(cartoes) {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            if (cartoes.length === 0) {
+                container.innerHTML = '<p class="text-sm text-red-500">Nenhum cartão cadastrado.</p>';
+                return;
+            }
+
+            cartoes.forEach((cartao, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center p-4 border rounded-lg cursor-pointer transition-all ${index === 0 ? 'border-primary bg-gray-50 dark:bg-gray-800' : 'border-gray-200 dark:border-gray-700'}`;
+
+                div.innerHTML = `
+            <input ${index === 0 ? 'checked' : ''} 
+                class="h-4 w-4 text-primary focus:ring-primary border-gray-300" 
+                id="card-${cartao.cd_cartao}" 
+                name="payment_method" 
+                value="${cartao.cd_cartao}" 
+                type="radio" />
+            <label class="ml-3 flex-grow flex items-center justify-between cursor-pointer" for="card-${cartao.cd_cartao}">
+                <div class="flex items-center">
+                    <span class="material-symbols-outlined mr-3 text-gray-500">credit_card</span>
+                    <div>
+                        <span class="block font-medium text-gray-900 dark:text-gray-100">${cartao.bandeira.nm_bandeira}</span>
+                        <span class="block text-sm text-gray-500">**** **** **** ${cartao.cd_numero_cartao.slice(-4)}</span>
+                    </div>
+                </div>
+                <span class="text-sm text-gray-500">Val: ${new Date(cartao.dt_validade_cartao).toLocaleDateString('pt-BR', { month: '2-digit', year: '2-digit' })}</span>
+            </label>
+        `;
+                container.appendChild(div);
+            });
+        }
+
+        // 3. Finalizar Pedido (Evento do Botão)
+        document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const cartaoSelecionado = document.querySelector('input[name="payment_method"]:checked')?.value;
+            const enderecoId = localStorage.getItem('checkout_id_endereco'); // Salvo na tela anterior
+
+            if (!cartaoSelecionado) {
+                alert("Selecione um cartão para o pagamento.");
+                return;
+            }
+
+            const dadosPedido = {
+                cpf: cpf,
+                cd_endereco: Number(enderecoId),
+                cd_modalidade: Number(idModalidade),
+                itens: itensCarrinho.map(item => ({
+                    cd_produto: item.cd_produto,
+                    qt_item: item.qt_item,
+                    vl_unitario: item.vl_produto,
+                    nm_tamanho: item.nm_tamanho || "G"
+                })),
+                pagamentos: [
+                    { cd_cartao: Number(cartaoSelecionado), vl_pago: subtotal + valorFrete }
+                ],
+                cupons: [] // Adicione lógica de cupom se houver
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/pedidos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosPedido)
+                });
+
+                if (response.ok) {
+                    localStorage.removeItem('carrinho'); // Limpa carrinho após sucesso
+                    window.location.href = 'sucessoCompra.html';
+                } else {
+                    const erro = await response.json();
+                    alert("Erro ao finalizar: " + erro.message);
+                }
+            } catch (error) {
+                alert("Erro de conexão com o servidor.");
+            }
+        });
+
+        // Inicia a carga de dados
+        inicializarPagamento();
+
+    </script>
 </body>
 
 </html>
