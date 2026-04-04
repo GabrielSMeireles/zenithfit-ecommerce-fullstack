@@ -24,8 +24,10 @@ app.post("/clientes", async (req, res) => {
                 cd_status: 1,
                 // ADICIONE ESTA LINHA ABAIXO:
                 nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular",
+                // Localize o app.post("/clientes") e altere o bloco de endereços:
                 enderecos: {
                     create: dados.enderecos.map((end) => ({
+                        nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
                         cd_cep: end.cd_cep,
                         nm_logradouro: end.nm_logradouro,
                         cd_numero: end.cd_numero,
@@ -131,14 +133,17 @@ app.put("/clientes/:cpf", async (req, res) => {
                 data: {
                     ...updateData,
                     // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
+                    // Dentro do prisma.$transaction no PUT
+                    // Localize o app.put("/clientes/:cpf") e altere o map dentro da transação:
                     enderecos: {
                         create: (dados.enderecos || []).map((end) => ({
+                            nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
                             cd_cep: end.cd_cep,
                             nm_logradouro: end.nm_logradouro,
                             cd_numero: end.cd_numero,
                             nm_bairro: end.nm_bairro,
                             nm_cidade: end.nm_cidade,
-                            sg_estado: end.sg_uf || end.sg_estado || "SP", // Fallback para o nome correto
+                            sg_estado: end.sg_uf || end.sg_estado || "SP",
                             nm_tipo_endereco: end.nm_tipo_endereco || "Entrega"
                         }))
                     },
@@ -383,9 +388,11 @@ app.post("/login", async (req, res) => {
 // Rota para adicionar apenas um endereço novo
 app.post("/enderecos", async (req, res) => {
     try {
-        const { nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
+        const { nm_identificacao, // Pegue o apelido vindo do front
+        nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
         const novoEnd = await prisma.endereco.create({
             data: {
+                nm_identificacao, // Salve aqui
                 nm_tipo_endereco,
                 cd_cep,
                 nm_logradouro,
@@ -393,13 +400,12 @@ app.post("/enderecos", async (req, res) => {
                 nm_bairro,
                 nm_cidade,
                 sg_estado,
-                cd_cpf: fk_cliente_cpf // Certifique-se que o nome do campo no banco é cd_cpf
+                cd_cpf: fk_cliente_cpf
             }
         });
         res.status(201).json(novoEnd);
     }
     catch (error) {
-        console.error(error);
         res.status(500).json({ message: "Erro ao cadastrar endereço" });
     }
 });

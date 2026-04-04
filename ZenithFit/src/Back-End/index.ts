@@ -22,15 +22,17 @@ app.post("/clientes", async (req: Request, res: Response) => {
         cd_telefone: dados.cd_telefone,
         cd_DDD: dados.cd_DDD,
         nm_email: dados.nm_email,
-        cd_senha: dados.cd_senha || "123456", 
+        cd_senha: dados.cd_senha || "123456",
         cd_genero: Number(dados.cd_genero) || 1,
         cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
         cd_status: 1,
         // ADICIONE ESTA LINHA ABAIXO:
-        nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular", 
-        
+        nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular",
+
+        // Localize o app.post("/clientes") e altere o bloco de endereços:
         enderecos: {
           create: dados.enderecos.map((end: any) => ({
+            nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
             cd_cep: end.cd_cep,
             nm_logradouro: end.nm_logradouro,
             cd_numero: end.cd_numero,
@@ -40,6 +42,7 @@ app.post("/clientes", async (req: Request, res: Response) => {
             nm_tipo_endereco: end.nm_tipo_endereco || "Ambos",
           }))
         },
+
         cartoes: {
           create: dados.cartoes.map((c: any) => ({
             cd_numero_cartao: c.cd_numero_cartao,
@@ -51,7 +54,7 @@ app.post("/clientes", async (req: Request, res: Response) => {
           }))
         }
 
-        
+
       },
     });
 
@@ -94,9 +97,9 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
     const { cpf } = req.params;
     const cliente = await prisma.cliente.findUnique({
       where: { cd_cpf: cpf.trim() }, //trim remove os espaços em branco
-      include: { 
-        genero: true, 
-        tipo_telefone: true, 
+      include: {
+        genero: true,
+        tipo_telefone: true,
         status_cliente: true,
         enderecos: true,
         cartoes: {
@@ -147,14 +150,17 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
         data: {
           ...updateData,
           // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
+          // Dentro do prisma.$transaction no PUT
+          // Localize o app.put("/clientes/:cpf") e altere o map dentro da transação:
           enderecos: {
             create: (dados.enderecos || []).map((end: any) => ({
+              nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
               cd_cep: end.cd_cep,
               nm_logradouro: end.nm_logradouro,
               cd_numero: end.cd_numero,
               nm_bairro: end.nm_bairro,
               nm_cidade: end.nm_cidade,
-              sg_estado: end.sg_uf || end.sg_estado || "SP", // Fallback para o nome correto
+              sg_estado: end.sg_uf || end.sg_estado || "SP",
               nm_tipo_endereco: end.nm_tipo_endereco || "Entrega"
             }))
           },
@@ -215,9 +221,9 @@ app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response
 
 app.post("/pedidos", async (req: Request, res: Response) => {
   try {
-    const { 
-      cpf, 
-      cd_endereco, 
+    const {
+      cpf,
+      cd_endereco,
       cd_modalidade, // Agora recebemos o ID da modalidade de frete
       itens,         // Cada item agora deve ter: cd_produto, qt_item, vl_unitario, nm_tamanho
       pagamentos,    // Array de { cd_cartao, vl_pago }
@@ -225,7 +231,7 @@ app.post("/pedidos", async (req: Request, res: Response) => {
     } = req.body;
 
     const resultado = await prisma.$transaction(async (tx) => {
-      
+
       // 1. Buscar valor real do Frete no Banco
       const modalidade = await tx.modalidade_Frete.findUnique({
         where: { cd_modalidade: Number(cd_modalidade) }
@@ -234,7 +240,7 @@ app.post("/pedidos", async (req: Request, res: Response) => {
       const vl_frete = Number(modalidade.vl_fixo);
 
       // 2. Calcular total dos itens
-      const vl_total_itens = itens.reduce((acc: number, item: any) => 
+      const vl_total_itens = itens.reduce((acc: number, item: any) =>
         acc + (Number(item.vl_unitario) * item.qt_item), 0);
 
       // 3. Validar Cupons e Calcular Desconto
@@ -244,7 +250,7 @@ app.post("/pedidos", async (req: Request, res: Response) => {
       if (cupons && cupons.length > 0) {
         for (const codigo of cupons) {
           const cupomDb = await tx.cupom.findUnique({ where: { nm_codigo: codigo } });
-          
+
           if (cupomDb && cupomDb.fl_ativo) {
             total_desconto += Number(cupomDb.vl_desconto);
             cuponsParaVincular.push(cupomDb);
@@ -264,7 +270,7 @@ app.post("/pedidos", async (req: Request, res: Response) => {
           vl_total: vl_total_pedido,
           vl_frete: vl_frete,
           cd_status_pedido: 1, // "Em Processamento"
-          
+
           // Itens com Tamanho
           itens: {
             create: itens.map((i: any) => ({
@@ -357,10 +363,10 @@ app.get("/pedidos/:cpf", async (req: Request<{ cpf: string }>, res: Response) =>
     const pedidos = await prisma.pedido.findMany({
       where: { cd_cpf: cpf },
       include: {
-        itens:         { include: { produto: true } },
-        pagamentos:    { include: { cartao: { include: { bandeira: true } } } },
+        itens: { include: { produto: true } },
+        pagamentos: { include: { cartao: { include: { bandeira: true } } } },
         cupons_usados: { include: { cupom: true } },
-        modalidade:    true,
+        modalidade: true,
         status_pedido: true,
         endereco_entrega: true,
       },
@@ -421,8 +427,8 @@ app.post("/login", async (req: Request, res: Response) => {
 
     // Se chegou aqui, login deu certo
     // Retornamos os dados básicos do cliente (sem a senha por segurança)
-   const { cd_senha: _, ...clienteSemSenha } = cliente;
-    
+    const { cd_senha: _, ...clienteSemSenha } = cliente;
+
     res.status(200).json(clienteSemSenha);
 
   } catch (error) {
@@ -434,10 +440,21 @@ app.post("/login", async (req: Request, res: Response) => {
 // Rota para adicionar apenas um endereço novo
 app.post("/enderecos", async (req, res) => {
   try {
-    const { nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
+    const {
+      nm_identificacao, // Pegue o apelido vindo do front
+      nm_tipo_endereco,
+      cd_cep,
+      nm_logradouro,
+      cd_numero,
+      nm_bairro,
+      nm_cidade,
+      sg_estado,
+      fk_cliente_cpf
+    } = req.body;
 
     const novoEnd = await prisma.endereco.create({
       data: {
+        nm_identificacao, // Salve aqui
         nm_tipo_endereco,
         cd_cep,
         nm_logradouro,
@@ -445,13 +462,12 @@ app.post("/enderecos", async (req, res) => {
         nm_bairro,
         nm_cidade,
         sg_estado,
-        cd_cpf: fk_cliente_cpf // Certifique-se que o nome do campo no banco é cd_cpf
+        cd_cpf: fk_cliente_cpf
       }
     });
 
     res.status(201).json(novoEnd);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Erro ao cadastrar endereço" });
   }
 });
