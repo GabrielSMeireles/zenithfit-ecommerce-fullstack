@@ -268,39 +268,132 @@
         }
 
         function renderizarCartoes(cartoes) {
-            const container = document.getElementById('cards-container');
-            container.innerHTML = '';
+    const container = document.getElementById('cards-container');
+    container.innerHTML = '';
 
-            if (cartoes.length === 0) {
-                container.innerHTML = '<p class="text-sm text-red-500">Nenhum cartão cadastrado.</p>';
-                return;
-            }
+    if (cartoes.length === 0) {
+        container.innerHTML = '<p class="text-sm text-red-500">Nenhum cartão cadastrado.</p>';
+        return;
+    }
 
-            cartoes.forEach((cartao, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center p-4 border rounded-lg cursor-pointer transition-all ${index === 0 ? 'border-primary bg-gray-50 dark:bg-gray-800' : 'border-gray-200 dark:border-gray-700'}`;
+    cartoes.forEach((cartao) => {
+        const div = document.createElement('div');
+        div.className = "p-4 border rounded-lg border-gray-200 dark:border-gray-700 mb-4";
 
-                div.innerHTML = `
-            <input ${index === 0 ? 'checked' : ''} 
-                class="h-4 w-4 text-primary focus:ring-primary border-gray-300" 
-                id="card-${cartao.cd_cartao}" 
-                name="payment_method" 
-                value="${cartao.cd_cartao}" 
-                type="radio" />
-            <label class="ml-3 flex-grow flex items-center justify-between cursor-pointer" for="card-${cartao.cd_cartao}">
+        div.innerHTML = `
+            <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <span class="material-symbols-outlined mr-3 text-gray-500">credit_card</span>
-                    <div>
-                        <span class="block font-medium text-gray-900 dark:text-gray-100">${cartao.bandeira.nm_bandeira}</span>
-                        <span class="block text-sm text-gray-500">**** **** **** ${cartao.cd_numero_cartao.slice(-4)}</span>
-                    </div>
+                    <input class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded card-checkbox" 
+                           id="card-${cartao.cd_cartao}" 
+                           data-id="${cartao.cd_cartao}"
+                           onchange="toggleInputValor(${cartao.cd_cartao})"
+                           type="checkbox" />
+                    <label class="ml-3 flex items-center cursor-pointer" for="card-${cartao.cd_cartao}">
+                        <span class="material-symbols-outlined mr-3 text-gray-500">credit_card</span>
+                        <div>
+                            <span class="block font-medium text-gray-900 dark:text-gray-100">${cartao.bandeira.nm_bandeira}</span>
+                            <span class="block text-sm text-gray-500">**** ${cartao.cd_numero_cartao.slice(-4)}</span>
+                        </div>
+                    </label>
                 </div>
-                <span class="text-sm text-gray-500">Val: ${new Date(cartao.dt_validade_cartao).toLocaleDateString('pt-BR', { month: '2-digit', year: '2-digit' })}</span>
-            </label>
+            </div>
+            
+            <!-- Campo de valor que aparece ao selecionar -->
+            <div id="input-container-${cartao.cd_cartao}" class="hidden mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Valor neste cartão</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                    <input type="number" 
+                           step="0.01" 
+                           id="valor-card-${cartao.cd_cartao}" 
+                           class="pl-10 w-full rounded-md border-gray-300 dark:bg-gray-800 valor-pagamento" 
+                           placeholder="0,00">
+                </div>
+                <p class="text-[10px] text-gray-400 mt-1">* Mínimo R$ 10,00</p>
+            </div>
         `;
-                container.appendChild(div);
-            });
+        container.appendChild(div);
+    });
+}
+
+
+document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const checkboxes = document.querySelectorAll('.card-checkbox:checked');
+    const totalPedido = subtotal + valorFrete;
+    let somaValoresInformados = 0;
+    const pagamentos = [];
+
+    if (checkboxes.length === 0) {
+        alert("Selecione pelo menos um cartão para o pagamento.");
+        return;
+    }
+
+    // Validar cada cartão selecionado
+    for (let cb of checkboxes) {
+        const idCartao = cb.getAttribute('data-id');
+        const inputValor = document.getElementById(`valor-card-${idCartao}`);
+        const valor = parseFloat(inputValor.value);
+
+        if (isNaN(valor) || valor < 10) {
+            alert(`O valor no cartão final ${cb.nextElementSibling.querySelector('span:last-child').innerText.slice(-4)} deve ser de no mínimo R$ 10,00.`);
+            return;
         }
+
+        somaValoresInformados += valor;
+        pagamentos.push({
+            cd_cartao: Number(idCartao),
+            vl_pago: valor
+        });
+    }
+
+    // Validar se a soma dos cartões bate com o total do pedido
+    // Usamos .toFixed(2) para evitar problemas de precisão do JS (ex: 0.1 + 0.2)
+    if (somaValoresInformados.toFixed(2) !== totalPedido.toFixed(2)) {
+        alert(`A soma dos valores (R$ ${somaValoresInformados.toFixed(2)}) não coincide com o total do pedido (R$ ${totalPedido.toFixed(2)}).`);
+        return;
+    }
+
+    const enderecoId = localStorage.getItem('checkout_id_endereco');
+    const dadosPedido = {
+        cpf: cpf,
+        cd_endereco: Number(enderecoId),
+        cd_modalidade: Number(idModalidade),
+        itens: itensCarrinho.map(item => ({
+            cd_produto: item.cd_produto,
+            qt_item: item.qt_item,
+            vl_unitario: item.vl_produto,
+            nm_tamanho: item.nm_tamanho || "G"
+        })),
+        pagamentos: pagamentos,
+        cupons: [] 
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/pedidos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosPedido)
+        });
+
+        if (response.ok) {
+            localStorage.removeItem('carrinho');
+            window.location.href = 'sucessoCompra.html';
+        } else {
+            const erro = await response.json();
+            alert("Erro: " + erro.message);
+        }
+    } catch (error) {
+        alert("Erro de conexão.");
+    }
+});
+
+// Função para mostrar/esconder o campo de valor
+function toggleInputValor(id) {
+    const container = document.getElementById(`input-container-${id}`);
+    container.classList.toggle('hidden');
+}
 
         // 3. Finalizar Pedido (Evento do Botão)
         document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
@@ -439,24 +532,40 @@ function fecharFormularioNovo() {
     document.getElementById('container-novo-cartao').innerHTML = '';
 }
 
-// Função de salvar atualizada para a versão inline
+
 async function salvarNovoCartaoInline() {
     const cpfCliente = localStorage.getItem('cliente_cpf');
 
-    const dadosCartao = {
-        cd_cpf_cliente: cpfCliente,
-        cd_numero_cartao: document.getElementById('num_cartao').value,
-        nm_nome_impresso_cartao: document.getElementById('nome_cartao').value,
-        dt_validade_cartao: document.getElementById('validade_cartao').value,
-        cd_cvv_cartao: document.getElementById('cvv_cartao').value,
-        cd_bandeira: Number(document.getElementById('id_bandeira').value)
-    };
+    // 1. Captura os elementos primeiro
+    const elNum = document.getElementById('num_cartao');
+    const elNome = document.getElementById('nome_cartao');
+    const elValidade = document.getElementById('validade_cartao');
+    const elCvv = document.getElementById('cvv_cartao');
+    const elBandeira = document.getElementById('id_bandeira');
 
-    // Validação simples
-    if(!dadosCartao.cd_numero_cartao || !dadosCartao.nm_nome_impresso_cartao) {
-        alert("Preencha todos os dados do cartão.");
+    // 2. Verifica se os elementos existem e extrai os valores
+    const numCartao = elNum ? elNum.value.replace(/\s+/g, '') : '';
+    const nomeImpresso = elNome ? elNome.value : '';
+    const validade = elValidade ? elValidade.value : '';
+    const cvv = elCvv ? elCvv.value : '';
+    const bandeiraId = elBandeira ? elBandeira.value : '';
+
+    // 3. Validação (o que estava disparando o seu erro)
+    if (!numCartao || !nomeImpresso || !validade || !cvv) {
+        alert("Por favor, preencha todos os campos do cartão.");
         return;
     }
+
+    const dadosCartao = {
+        cd_cpf_cliente: cpfCliente,
+        cd_numero_cartao: numCartao,
+        nm_nome_impresso_cartao: nomeImpresso,
+        // No seu backend Prisma, dt_validade_cartao é DateTime. 
+        // O input date retorna YYYY-MM-DD, precisamos converter para ISO:
+        dt_validade_cartao: new Date(validade + "T12:00:00Z").toISOString(), 
+        cd_cvv_cartao: cvv,
+        cd_bandeira: Number(bandeiraId)
+    };
 
     try {
         const response = await fetch('http://localhost:3000/cartoes', {
@@ -467,13 +576,16 @@ async function salvarNovoCartaoInline() {
 
         if (response.ok) {
             alert("Cartão adicionado com sucesso!");
-            fecharFormularioNovo(); // Remove o formulário da tela
-            inicializarPagamento(); // Recarrega a lista de cartões (o novo aparecerá lá)
+            fecharFormularioNovo(); 
+            // Recarrega a lista de cartões para o novo aparecer
+            await inicializarPagamento(); 
         } else {
-            alert("Erro ao salvar cartão.");
+            const erro = await response.json();
+            alert("Erro ao salvar: " + (erro.message || "Dados inválidos"));
         }
     } catch (error) {
-        console.error("Erro:", error);
+        console.error("Erro na requisição:", error);
+        alert("Erro de conexão com o servidor.");
     }
 }
         inicializarPagamento();
