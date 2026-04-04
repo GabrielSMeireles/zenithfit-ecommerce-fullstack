@@ -52,93 +52,95 @@
 
       // ... dentro do seu Alpine.data
       async realizarLogin(e) {
-        const form = e.target;
-        const email = form.email.value;
-        const senha = form.password.value;
+  const form = e.target;
+  const email = form.email.value;
+  const senha = form.password.value;
 
-        try {
-          // Você precisará criar essa rota no seu Back-end para validar email/senha
-          const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, senha })
-          });
+  try {
+    const response = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha })
+    });
 
-          if (response.ok) {
-            const user = await response.json();
+    if (response.ok) {
+      const dados = await response.json(); 
 
-            // O SEGREDO ESTÁ AQUI: Salva o CPF para uso posterior
-            localStorage.setItem('user_cpf', user.cd_cpf);
-            localStorage.setItem('user_name', user.nm_nome_cliente);
+      // Se você alterou o Back-end para Opção 1 (objeto direto):
+      // O dado vem como { cd_cpf: '...', nm_nome_cliente: '...' }
+      // Então salvamos direto do 'dados':
+      localStorage.setItem('cliente_cpf', dados.cd_cpf); 
+      localStorage.setItem('user_name', dados.nm_nome_cliente);
 
-            alert(`Bem-vindo, ${user.nm_nome_cliente}!`);
-            window.location.href = 'homepage.html';
-          } else {
-            alert('Email ou senha incorretos.');
-          }
+      alert(`Bem-vindo, ${dados.nm_nome_cliente}!`);
+      window.location.href = 'homepage.html';
+    } else {
+      alert('Email ou senha incorretos.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao conectar com o servidor.');
+  }
+},
+
+    async enviarCadastro(e) {
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const listaCartoes = this.cartoes.map((_, index) => ({
+      cd_numero_cartao: form.querySelectorAll('[name="card-number"]')[index]?.value,
+      nm_nome_impresso_cartao: form.querySelectorAll('[name="card-name"]')[index]?.value,
+      cd_seguranca: form.querySelectorAll('[name="card-cvv"]')[index]?.value,
+      dt_validade_cartao: form.querySelectorAll('[name="card-expiry"]')[index]?.value
+        ? new Date(form.querySelectorAll('[name="card-expiry"]')[index].value + '-01T00:00:00')
+        : new Date(),
+      cd_bandeira: Number(form.querySelectorAll('[name="card-brand"]')[index]?.value || 1),
+      cartao_preferencial: form.querySelectorAll('[name="card-preferred"]')[index]?.checked || false
+    }));
+
+    const listaEnderecos = this.enderecos.map((_, index) => ({
+      nm_tipo_endereco: form.querySelectorAll('[name="address-type"]')[index]?.value,
+      cd_cep: form.querySelectorAll('[name="zip-code"]')[index]?.value,
+      nm_logradouro: form.querySelectorAll('[name="street"]')[index]?.value,
+      cd_numero: form.querySelectorAll('[name="number"]')[index]?.value,
+      nm_bairro: form.querySelectorAll('[name="neighborhood"]')[index]?.value,
+      nm_cidade: form.querySelectorAll('[name="city"]')[index]?.value,
+      sg_estado: form.querySelectorAll('[name="state"]')[index]?.value
+    }));
+
+    const data = {
+      cpf: formData.get('cpf'),
+      nm_nome_cliente: formData.get('full-name'),
+      dt_nascimento: formData.get('birth-date') ? new Date(formData.get('birth-date') + 'T00:00:00') : new Date(),
+      cd_DDD: formData.get('ddd'),
+      cd_telefone: formData.get('phone-number'),
+      nm_email: formData.get('register-email-address'),
+      cd_senha: formData.get('password'),
+      cd_genero: formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
+      cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
+      nm_identificacao_telefone: 'Principal',
+      cd_status: 1,
+      enderecos: listaEnderecos,
+      cartoes: listaCartoes
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/clientes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if(response.ok) {
+    alert('Cadastro realizado com sucesso!');
+    window.location.href = 'homepage.html';
+  } else {
+    const res = await response.json();
+    alert('Erro: ' + (res.message || 'Erro no servidor'));
+  }
         } catch (err) {
-          alert('Erro ao conectar com o servidor.');
-        }
-      },
-
-      async enviarCadastro(e) {
-        const form = e.target;
-        const formData = new FormData(form);
-
-        const listaCartoes = this.cartoes.map((_, index) => ({
-          cd_numero_cartao: form.querySelectorAll('[name="card-number"]')[index]?.value,
-          nm_nome_impresso_cartao: form.querySelectorAll('[name="card-name"]')[index]?.value,
-          cd_seguranca: form.querySelectorAll('[name="card-cvv"]')[index]?.value,
-          dt_validade_cartao: form.querySelectorAll('[name="card-expiry"]')[index]?.value
-            ? new Date(form.querySelectorAll('[name="card-expiry"]')[index].value + '-01T00:00:00')
-            : new Date(),
-          cd_bandeira: Number(form.querySelectorAll('[name="card-brand"]')[index]?.value || 1),
-          cartao_preferencial: form.querySelectorAll('[name="card-preferred"]')[index]?.checked || false
-        }));
-
-        const listaEnderecos = this.enderecos.map((_, index) => ({
-          nm_tipo_endereco: form.querySelectorAll('[name="address-type"]')[index]?.value,
-          cd_cep: form.querySelectorAll('[name="zip-code"]')[index]?.value,
-          nm_logradouro: form.querySelectorAll('[name="street"]')[index]?.value,
-          cd_numero: form.querySelectorAll('[name="number"]')[index]?.value,
-          nm_bairro: form.querySelectorAll('[name="neighborhood"]')[index]?.value,
-          nm_cidade: form.querySelectorAll('[name="city"]')[index]?.value,
-          sg_estado: form.querySelectorAll('[name="state"]')[index]?.value
-        }));
-
-        const data = {
-          cpf: formData.get('cpf'),
-          nm_nome_cliente: formData.get('full-name'),
-          dt_nascimento: formData.get('birth-date') ? new Date(formData.get('birth-date') + 'T00:00:00') : new Date(),
-          cd_DDD: formData.get('ddd'),
-          cd_telefone: formData.get('phone-number'),
-          nm_email: formData.get('register-email-address'),
-          cd_senha: formData.get('password'),
-          cd_genero: formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
-          cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
-          nm_identificacao_telefone: 'Principal',
-          cd_status: 1,
-          enderecos: listaEnderecos,
-          cartoes: listaCartoes
-        };
-
-        try {
-          const response = await fetch('http://localhost:3000/clientes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          if (response.ok) {
-            alert('Cadastro realizado com sucesso!');
-            window.location.href = 'homepage.html';
-          } else {
-            const res = await response.json();
-            alert('Erro: ' + (res.message || 'Erro no servidor'));
-          }
-        } catch (err) {
-          alert('Erro ao conectar com o servidor.');
-        }
+    alert('Erro ao conectar com o servidor.');
+  }
       }
     }));
   });

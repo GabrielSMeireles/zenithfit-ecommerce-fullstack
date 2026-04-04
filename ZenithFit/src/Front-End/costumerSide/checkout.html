@@ -218,74 +218,54 @@
     <script>
         const API_URL = "http://localhost:3000";
 
-        const CLIENT_CPF = localStorage.getItem('user_cpf');
-
-        if (!CLIENT_CPF) {
+        const cpf = localStorage.getItem('cliente_cpf');
+        if (!cpf) { // Use o mesmo nome!
             alert("Usuário não identificado. Por favor, faça login.");
             window.location.href = 'login.html';
         }
 
         async function carregarEnderecos() {
-            try {
-                const response = await fetch(`${API_URL}/clientes/${CLIENT_CPF}`);
-                if (!response.ok) throw new Error("Cliente não encontrado");
+    const container = document.getElementById('address-container');
+    try {
+        const response = await fetch(`${API_URL}/clientes/${cpf}`);
+        if (!response.ok) throw new Error("Cliente não encontrado na API");
 
-                const cliente = await response.json();
-                const container = document.getElementById('address-container');
+        const data = await response.json();
+        console.log("Dados da API:", data); // Verifique isso no console!
 
-                if (!cliente.enderecos || cliente.enderecos.length === 0) {
-                    container.innerHTML = `
-                    <div class="p-4 border border-dashed border-red-300 rounded-lg text-center">
-                        <p class="text-red-500">Nenhum endereço encontrado. Por favor, adicione um abaixo.</p>
-                    </div>`;
-                    return;
-                }
+        // AJUSTE CRUCIAL: Tenta pegar o cliente ou o data direto
+        const clienteReal = data.cliente || data;
 
-                // Gerando o HTML baseado no seu Schema Prisma
-                container.innerHTML = cliente.enderecos.map((end, index) => {
-                    // Verifica se é o primeiro para deixar marcado por padrão
-                    const isSelected = index === 0;
+        // Se clienteReal for undefined, o erro de 'reading enderecos' acontece aqui.
+        // Por isso, verificamos se ele existe primeiro:
+        if (!clienteReal || !clienteReal.enderecos) {
+            console.warn("Estrutura de dados inesperada ou cliente sem endereços");
+            container.innerHTML = `<p class="text-amber-500">Nenhum endereço vinculado a este perfil.</p>`;
+            return;
+        }
 
-                    return `
-                <label class="block p-4 border-2 ${isSelected ? 'border-primary bg-gray-50 dark:bg-gray-800/20' : 'border-gray-300 dark:border-gray-700'} rounded-lg cursor-pointer hover:border-primary transition-all" 
-                       for="address-${end.cd_endereco}">
+        container.innerHTML = clienteReal.enderecos.map((end, index) => {
+            const isSelected = index === 0;
+            return `
+                <label class="block p-4 border-2 ${isSelected ? 'border-primary bg-gray-50' : 'border-gray-300'} rounded-lg cursor-pointer hover:border-primary transition-all">
                     <div class="flex justify-between items-start">
                         <div class="flex items-start space-x-4">
-                            <input 
-                                ${isSelected ? 'checked' : ''} 
-                                class="mt-1 h-4 w-4 text-primary border-gray-300 focus:ring-primary" 
-                                id="address-${end.cd_endereco}" 
-                                name="delivery_address" 
-                                type="radio" 
-                                value="${end.cd_endereco}"
-                                onchange="atualizarEstiloSelecao(this)"
-                            />
+                            <input ${isSelected ? 'checked' : ''} class="mt-1 h-4 w-4 text-primary" name="delivery_address" type="radio" value="${end.cd_endereco}" onchange="atualizarEstiloSelecao(this)" />
                             <div>
-                                <div class="flex items-center gap-2">
-                                    <p class="font-semibold text-gray-900 dark:text-white">${end.nm_identificacao}</p>
-                                    <span class="text-[10px] px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded-full uppercase font-bold">
-                                        ${end.nm_tipo_endereco}
-                                    </span>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">${cliente.nm_nome_cliente}</p>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm">${end.nm_logradouro}, ${end.cd_numero}</p>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm">${end.nm_bairro} - ${end.nm_cidade}/${end.sg_estado}</p>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm font-mono">${end.cd_cep}</p>
+                                <p class="font-semibold text-gray-900">${end.nm_logradouro || 'Endereço'}</p>
+                                <p class="text-gray-500 text-sm">${end.nm_bairro} - ${end.nm_cidade}/${end.sg_estado}</p>
+                                <p class="text-gray-400 text-xs font-mono">${end.cd_cep}</p>
                             </div>
                         </div>
-                        <button type="button" onclick="editarEndereco(${end.cd_endereco})" class="text-xs font-semibold text-gray-500 hover:text-primary">
-                            EDITAR
-                        </button>
                     </div>
-                </label>
-                `;
-                }).join('');
+                </label>`;
+        }).join('');
 
-            } catch (error) {
-                console.error("Erro ao carregar:", error);
-                document.getElementById('address-container').innerHTML = "<p class='text-red-500'>Erro ao carregar endereços.</p>";
-            }
-        }
+    } catch (error) {
+        console.error("Erro ao carregar:", error);
+        container.innerHTML = "<p class='text-red-500'>Erro ao carregar endereços. Verifique a conexão com o servidor.</p>";
+    }
+}
 
         function atualizarEstiloSelecao(radio) {
             // Remove destaque de todos

@@ -421,12 +421,9 @@ app.post("/login", async (req: Request, res: Response) => {
 
     // Se chegou aqui, login deu certo
     // Retornamos os dados básicos do cliente (sem a senha por segurança)
-    const { cd_senha: _, ...clienteSemSenha } = cliente;
+   const { cd_senha: _, ...clienteSemSenha } = cliente;
     
-    res.status(200).json({
-      message: "Login realizado com sucesso!",
-      cliente: clienteSemSenha
-    });
+    res.status(200).json(clienteSemSenha);
 
   } catch (error) {
     console.error("Erro no Login:", error);
