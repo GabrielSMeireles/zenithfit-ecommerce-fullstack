@@ -99,17 +99,20 @@
                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
                         <h3 class="font-medium mb-4 text-gray-900 dark:text-gray-100">Cartões salvos</h3>
 
-                        <!-- É AQUI que a mágica acontece: Deixe esta div vazia com o ID "cards-container" -->
+
                         <div id="cards-container" class="space-y-4">
                             <!-- O JavaScript vai colocar os cartões aqui dentro automaticamente -->
                             <p class="text-sm text-gray-500">Carregando seus cartões...</p>
                         </div>
 
-                        <button
+                        <button type="button" onclick="adicionarNovoCartaoPagina()"
                             class="mt-4 flex items-center text-sm font-medium text-primary hover:text-gray-600 dark:hover:text-gray-400">
-                            <span class="material-symbols-outlined text-lg mr-1">add_circle_outline</span> Adicionar
-                            novo cartão
+                            <span class="material-symbols-outlined text-lg mr-1">add_circle_outline</span>
+                            Adicionar novo cartão
                         </button>
+                        <div id="container-novo-cartao" class="mt-6 space-y-4">
+                            
+                        </div>
                     </div>
                 </section>
 
@@ -191,7 +194,7 @@
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
                     <div class="space-y-3 text-sm">
-                        <<div class="space-y-3 text-sm">
+                        <div class="space-y-3 text-sm">
                             <div class="flex justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
                                 <!-- Adicionado ID aqui -->
@@ -208,15 +211,15 @@
                                 <span class="">Desconto Cupom</span>
                                 <span class="font-medium">- R$24,49</span>
                             </div>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-base text-gray-600 dark:text-gray-300">Total</span>
+                            <!-- Adicionado ID aqui -->
+                            <span id="resumo-total"
+                                class="text-2xl font-bold text-gray-900 dark:text-gray-100">R$0,00</span>
+                        </div>
                     </div>
-                    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-base text-gray-600 dark:text-gray-300">Total</span>
-                        <!-- Adicionado ID aqui -->
-                        <span id="resumo-total"
-                            class="text-2xl font-bold text-gray-900 dark:text-gray-100">R$0,00</span>
-                    </div>
-                </div>
             </aside>
         </div>
     </div>
@@ -346,10 +349,137 @@
             }
         });
 
-        // Inicia a carga de dados
+        async function salvarNovoCartao(event) {
+            event.preventDefault();
+
+            // Pegamos o CPF que salvamos no localStorage lá no Login
+            const cpfCliente = localStorage.getItem('cliente_cpf');
+
+            const dadosCartao = {
+                cd_cpf_cliente: cpfCliente,
+                cd_numero_cartao: document.getElementById('num_cartao').value,
+                nm_nome_impresso_cartao: document.getElementById('nome_cartao').value, // Adicione este input no modal
+                dt_validade_cartao: document.getElementById('validade_cartao').value,
+                cd_cvv_cartao: document.getElementById('cvv_cartao').value,
+                cd_bandeira: Number(document.getElementById('id_bandeira').value)
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/cartoes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosCartao)
+                });
+
+                if (response.ok) {
+                    alert("Cartão salvo!");
+                    toggleModal(); // Fecha o modal
+                    inicializarPagamento(); // Recarrega a lista de cartões na tela de checkout
+                } else {
+                    alert("Erro ao salvar cartão no servidor.");
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+            }
+        }
+        // Função para abrir/fechar o modal
+        function toggleModal() {
+            const modal = document.getElementById('modalCartao');
+            modal.classList.toggle('hidden');
+        }
+
+
+        // Função que injeta o formulário na página
+function adicionarNovoCartaoPagina() {
+    const container = document.getElementById('container-novo-cartao');
+    
+    // Se já tiver um formulário aberto, não faz nada ou foca nele
+    if (document.getElementById('form-novo-cartao-inline')) return;
+
+    const formHtml = `
+        <div id="form-novo-cartao-inline" class="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800/50 relative">
+            <button onclick="fecharFormularioNovo()" class="absolute top-2 right-2 text-gray-400 hover:text-red-500">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="text-md font-bold mb-4 uppercase tracking-wider">Dados do Novo Cartão</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Nome no Cartão</label>
+                    <input id="nome_cartao" required class="w-full rounded-md border-gray-300 dark:bg-gray-800" type="text" placeholder="JOAO S SILVA">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Número do Cartão</label>
+                    <input id="num_cartao" required class="w-full rounded-md border-gray-300 dark:bg-gray-800" type="text" placeholder="0000 0000 0000 0000">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Validade</label>
+                    <input id="validade_cartao" required class="w-full rounded-md border-gray-300 dark:bg-gray-800" type="date">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">CVV</label>
+                    <input id="cvv_cartao" required class="w-full rounded-md border-gray-300 dark:bg-gray-800" type="text" maxlength="3">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Bandeira</label>
+                    <select id="id_bandeira" class="w-full rounded-md border-gray-300 dark:bg-gray-800">
+                        <option value="1">Visa</option>
+                        <option value="2">Mastercard</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" onclick="salvarNovoCartaoInline()" class="w-full py-3 bg-primary text-white font-bold rounded-md mt-6 hover:opacity-90">
+                Salvar e Usar este Cartão
+            </button>
+        </div>
+    `;
+    container.innerHTML = formHtml;
+}
+
+function fecharFormularioNovo() {
+    document.getElementById('container-novo-cartao').innerHTML = '';
+}
+
+// Função de salvar atualizada para a versão inline
+async function salvarNovoCartaoInline() {
+    const cpfCliente = localStorage.getItem('cliente_cpf');
+
+    const dadosCartao = {
+        cd_cpf_cliente: cpfCliente,
+        cd_numero_cartao: document.getElementById('num_cartao').value,
+        nm_nome_impresso_cartao: document.getElementById('nome_cartao').value,
+        dt_validade_cartao: document.getElementById('validade_cartao').value,
+        cd_cvv_cartao: document.getElementById('cvv_cartao').value,
+        cd_bandeira: Number(document.getElementById('id_bandeira').value)
+    };
+
+    // Validação simples
+    if(!dadosCartao.cd_numero_cartao || !dadosCartao.nm_nome_impresso_cartao) {
+        alert("Preencha todos os dados do cartão.");
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/cartoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosCartao)
+        });
+
+        if (response.ok) {
+            alert("Cartão adicionado com sucesso!");
+            fecharFormularioNovo(); // Remove o formulário da tela
+            inicializarPagamento(); // Recarrega a lista de cartões (o novo aparecerá lá)
+        } else {
+            alert("Erro ao salvar cartão.");
+        }
+    } catch (error) {
+        console.error("Erro:", error);
+    }
+}
         inicializarPagamento();
 
     </script>
+   
 </body>
 
 </html>

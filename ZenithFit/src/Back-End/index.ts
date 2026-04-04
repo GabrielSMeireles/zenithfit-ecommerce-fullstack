@@ -437,6 +437,29 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+app.post('/cartoes', async (req, res) => {
+    const { cd_cpf_cliente, cd_numero_cartao, nm_nome_impresso_cartao, cd_cvv_cartao, dt_validade_cartao, cd_bandeira } = req.body;
+
+    try {
+        await prisma.cartao_credito.create({
+            data: {
+                cd_cpf: cd_cpf_cliente,
+                cd_numero_cartao: cd_numero_cartao,
+                nm_nome_impresso_cartao: nm_nome_impresso_cartao,
+                cd_seguranca: cd_cvv_cartao,
+                dt_validade_cartao: new Date(dt_validade_cartao),
+                cd_bandeira: Number(cd_bandeira),
+                cartao_preferencial: false
+            }
+        });
+
+        res.status(201).json({ message: "Cartão adicionado com sucesso!" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erro ao salvar cartão" });
+    }
+});
+
 // Rota para adicionar apenas um endereço novo
 app.post("/enderecos", async (req, res) => {
   try {
@@ -471,5 +494,7 @@ app.post("/enderecos", async (req, res) => {
     res.status(500).json({ message: "Erro ao cadastrar endereço" });
   }
 });
+
+
 
 app.listen(3000, () => console.log("Servidor ON na 3000"));
