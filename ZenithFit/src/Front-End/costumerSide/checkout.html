@@ -2,40 +2,45 @@
 <html lang="pt-br">
 
 <head>
-        <meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Checkout (Entrega e Frete)</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-        <script>
-                tailwind.config = {
-                        darkMode: "class",
-                        theme: {
-                                extend: {
-                                        colors: {
-                                                primary: "#000000",
-                                                "background-light": "#FFFFFF",
-                                                "background-dark": "#0a0a0a",
-                                                "card-bg": "#cbd5e1",
-                                        },
-                                        fontFamily: {
-                                                display: ["Inter", "sans-serif"],
-                                        },
-                                        borderRadius: {
-                                                DEFAULT: "0.5rem",
-                                        },
-                                },
-                        },
-                };
-        </script>
-        <style type="text/tailwindcss">
-                body { font-family: 'Inter', sans-serif; } .hero-gradient { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); } .product-card-bg { background-color: #d1d9e6; }
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Checkout (Entrega e Frete)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#000000",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#0a0a0a",
+                        "card-bg": "#cbd5e1",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; } .hero-gradient { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); } .product-card-bg { background-color: #d1d9e6; }
         </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-200">
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <header
+        class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="homepage.html" class="flex items-center flex-shrink-0">
@@ -43,145 +48,266 @@
                 </a>
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
                     <a class="hover:text-primary transition-colors" href="homepage.html">Home</a>
-                    <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop <span class="material-symbols-outlined text-sm">expand_more</span></a>
+                    <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop
+                        <span class="material-symbols-outlined text-sm">expand_more</span></a>
                     <a class="hover:text-primary transition-colors" href="novidades.html">Novidades</a>
                     <a class="hover:text-primary transition-colors" href="assistente.html">Assistente</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <a href="dashboardCliente.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <a href="dashboardCliente.html"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">account_circle</span>
                     </a>
-                    <a href="carrinho.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <a href="carrinho.html"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">shopping_cart</span>
                     </a>
                 </div>
             </div>
         </div>
     </header>
-        <main class="container mx-auto px-4 py-12 lg:py-16">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-10">
-                    <h1 class="text-3xl lg:text-4xl font-bold font-display text-gray-900 dark:text-white mb-2">Checkout</h1>
-                    <p class="text-gray-500 dark:text-gray-400">Finalize sua compra de forma rápida e segura.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-                    <div class="md:col-span-2">
-                        <div class="flex items-center space-x-4 mb-8">
-                            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold">1</div>
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Entrega e Frete</h2>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Selecione ou adicione um endereço de entrega.</p>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Selecione o endereço</h3>
-                            <div class="space-y-4">
-                                <label class="block p-4 border-2 border-primary rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800/20" for="address-1">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex items-start space-x-4">
-                                            <input checked="" class="mt-1 h-4 w-4 text-primary border-gray-300 focus:ring-primary" id="address-1" name="delivery_address" type="radio" />
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white">Casa</p>
-                                                <p class="text-gray-600 dark:text-gray-300">João da Silva</p>
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">Rua das Flores, 123, Jardim Primavera</p>
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">São Paulo, SP - 01234-567</p>
-                                            </div>
-                                        </div>
-                                        <button class="text-xs font-semibold text-gray-500 hover:text-primary dark:hover:text-gray-300">EDITAR</button>
-                                    </div>
-                                </label>
-                                <label class="block p-4 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-primary dark:hover:border-primary/70" for="address-2">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex items-start space-x-4">
-                                            <input class="mt-1 h-4 w-4 text-primary border-gray-300 focus:ring-primary" id="address-2" name="delivery_address" type="radio" />
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white">Trabalho</p>
-                                                <p class="text-gray-600 dark:text-gray-300">João da Silva</p>
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">Avenida Principal, 456, Sala 101, Centro</p>
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">São Paulo, SP - 09876-543</p>
-                                            </div>
-                                        </div>
-                                        <button class="text-xs font-semibold text-gray-500 hover:text-primary dark:hover:text-gray-300">EDITAR</button>
-                                    </div>
-                                </label>
-                            </div>
-                            <details class="w-full group">
-                                <summary class="flex items-center justify-center space-x-2 py-3 border border-dashed border-gray-400 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
-                                    <span class="material-symbols-outlined text-base group-open:rotate-180 transition-transform">expand_more</span>
-                                    <span class="font-semibold">Adicionar novo endereço</span>
-                                </summary>
-                                <div class="mt-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800/20">
-                                    <form class="space-y-4">
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-residence-type">Tipo de residência</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-residence-type" type="text" placeholder="Ex: Casa, Apartamento" />
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-cep">CEP</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-cep" type="text" placeholder="00000-000" />
-                                            </div>
-                                            <div class="md:col-span-2">
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-street">Logradouro</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-street" type="text" placeholder="Rua, Avenida, etc." />
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-number">Número</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-number" type="text" placeholder="Ex: 123" />
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-neighborhood">Bairro</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-neighborhood" type="text" placeholder="Ex: Jardim Botânico" />
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-city">Cidade</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-city" type="text" placeholder="Ex: São Paulo" />
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-state">Estado</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-state" type="text" placeholder="Ex: SP" />
-                                            </div>
-                                            <div class="md:col-span-2">
-                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="add-country">País</label>
-                                                <input class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary" id="add-country" type="text" placeholder="Ex: Brasil" />
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-end gap-4 pt-4">
-                                            <button class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-6 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors" type="reset">Cancelar</button>
-                                            <button class="bg-primary text-white font-semibold py-2 px-6 rounded-md hover:opacity-90 transition-opacity" type="submit">Adicionar Endereço</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </details>
+    <main class="container mx-auto px-4 py-12 lg:py-16">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl lg:text-4xl font-bold font-display text-gray-900 dark:text-white mb-2">Checkout</h1>
+                <p class="text-gray-500 dark:text-gray-400">Finalize sua compra de forma rápida e segura.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold">
+                            1</div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Entrega e Frete</h2>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Selecione ou adicione um endereço de
+                                entrega.</p>
                         </div>
                     </div>
-                    <div class="md:col-span-1 sticky top-8">
-                        <div class="bg-gray-100 dark:bg-gray-800/50 rounded-lg p-6">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumo do Pedido</h3>
-                            <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                                <div class="flex justify-between">
-                                    <span>Subtotal (2 itens)</span>
-                                    <span>R$ 229,98</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Frete</span>
-                                    <span class="font-semibold text-gray-800 dark:text-gray-200">R$ 15,50</span>
+                    <div class="space-y-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Selecione o endereço</h3>
+                        <!-- O JavaScript vai preencher esta DIV -->
+                        <div id="address-container" class="space-y-4">
+                            <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-slate-200 rounded"></div>
+                                    <div class="space-y-2">
+                                        <div class="h-4 bg-slate-200 rounded w-5/6"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="border-t border-gray-300 dark:border-gray-700 my-4"></div>
-                            <div class="flex justify-between font-bold text-gray-900 dark:text-white text-lg">
-                                <span>Total</span>
-                                <span>R$ 245,48</span>
-                            </div>
-                            <a href="checkoutPagamento.html" class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-center">
-                                Continuar para Pagamento
-                            </a>
                         </div>
+                        <details class="w-full group">
+                            <summary
+                                class="flex items-center justify-center space-x-2 py-3 border border-dashed border-gray-400 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
+                                <span
+                                    class="material-symbols-outlined text-base group-open:rotate-180 transition-transform">expand_more</span>
+                                <span class="font-semibold">Adicionar novo endereço</span>
+                            </summary>
+                            <div
+                                class="mt-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800/20">
+                                <form class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-residence-type">Tipo de residência</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-residence-type" type="text"
+                                                placeholder="Ex: Casa, Apartamento" />
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-cep">CEP</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-cep" type="text" placeholder="00000-000" />
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-street">Logradouro</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-street" type="text" placeholder="Rua, Avenida, etc." />
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-number">Número</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-number" type="text" placeholder="Ex: 123" />
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-neighborhood">Bairro</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-neighborhood" type="text" placeholder="Ex: Jardim Botânico" />
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-city">Cidade</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-city" type="text" placeholder="Ex: São Paulo" />
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-state">Estado</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-state" type="text" placeholder="Ex: SP" />
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                for="add-country">País</label>
+                                            <input
+                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                                id="add-country" type="text" placeholder="Ex: Brasil" />
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end gap-4 pt-4">
+                                        <button
+                                            class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-6 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                                            type="reset">Cancelar</button>
+                                        <button
+                                            class="bg-primary text-white font-semibold py-2 px-6 rounded-md hover:opacity-90 transition-opacity"
+                                            type="submit">Adicionar Endereço</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="md:col-span-1 sticky top-8">
+                    <div class="bg-gray-100 dark:bg-gray-800/50 rounded-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumo do Pedido</h3>
+                        <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                            <div class="flex justify-between">
+                                <span>Subtotal (2 itens)</span>
+                                <span>R$ 229,98</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Frete</span>
+                                <span class="font-semibold text-gray-800 dark:text-gray-200">R$ 15,50</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-300 dark:border-gray-700 my-4"></div>
+                        <div class="flex justify-between font-bold text-gray-900 dark:text-white text-lg">
+                            <span>Total</span>
+                            <span>R$ 245,48</span>
+                        </div>
+                        <a href="checkoutPagamento.html"
+                            class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-center">
+                            Continuar para Pagamento
+                        </a>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
     </div>
+    <script>
+        const API_URL = "http://localhost:3000";
+
+        const CLIENT_CPF = localStorage.getItem('user_cpf');
+
+        if (!CLIENT_CPF) {
+            alert("Usuário não identificado. Por favor, faça login.");
+            window.location.href = 'login.html';
+        }
+
+        async function carregarEnderecos() {
+            try {
+                const response = await fetch(`${API_URL}/clientes/${CLIENT_CPF}`);
+                if (!response.ok) throw new Error("Cliente não encontrado");
+
+                const cliente = await response.json();
+                const container = document.getElementById('address-container');
+
+                if (!cliente.enderecos || cliente.enderecos.length === 0) {
+                    container.innerHTML = `
+                    <div class="p-4 border border-dashed border-red-300 rounded-lg text-center">
+                        <p class="text-red-500">Nenhum endereço encontrado. Por favor, adicione um abaixo.</p>
+                    </div>`;
+                    return;
+                }
+
+                // Gerando o HTML baseado no seu Schema Prisma
+                container.innerHTML = cliente.enderecos.map((end, index) => {
+                    // Verifica se é o primeiro para deixar marcado por padrão
+                    const isSelected = index === 0;
+
+                    return `
+                <label class="block p-4 border-2 ${isSelected ? 'border-primary bg-gray-50 dark:bg-gray-800/20' : 'border-gray-300 dark:border-gray-700'} rounded-lg cursor-pointer hover:border-primary transition-all" 
+                       for="address-${end.cd_endereco}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start space-x-4">
+                            <input 
+                                ${isSelected ? 'checked' : ''} 
+                                class="mt-1 h-4 w-4 text-primary border-gray-300 focus:ring-primary" 
+                                id="address-${end.cd_endereco}" 
+                                name="delivery_address" 
+                                type="radio" 
+                                value="${end.cd_endereco}"
+                                onchange="atualizarEstiloSelecao(this)"
+                            />
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold text-gray-900 dark:text-white">${end.nm_identificacao}</p>
+                                    <span class="text-[10px] px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded-full uppercase font-bold">
+                                        ${end.nm_tipo_endereco}
+                                    </span>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">${cliente.nm_nome_cliente}</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">${end.nm_logradouro}, ${end.cd_numero}</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">${end.nm_bairro} - ${end.nm_cidade}/${end.sg_estado}</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-mono">${end.cd_cep}</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="editarEndereco(${end.cd_endereco})" class="text-xs font-semibold text-gray-500 hover:text-primary">
+                            EDITAR
+                        </button>
+                    </div>
+                </label>
+                `;
+                }).join('');
+
+            } catch (error) {
+                console.error("Erro ao carregar:", error);
+                document.getElementById('address-container').innerHTML = "<p class='text-red-500'>Erro ao carregar endereços.</p>";
+            }
+        }
+
+        function atualizarEstiloSelecao(radio) {
+            // Remove destaque de todos
+            document.querySelectorAll('#address-container label').forEach(label => {
+                label.classList.remove('border-primary', 'bg-gray-50', 'dark:bg-gray-800/20');
+                label.classList.add('border-gray-300', 'dark:border-gray-700');
+            });
+
+            // Adiciona destaque ao selecionado
+            const label = radio.closest('label');
+            label.classList.add('border-primary', 'bg-gray-50', 'dark:bg-gray-800/20');
+            label.classList.remove('border-gray-300', 'dark:border-gray-700');
+        }
+
+        function editarEndereco(id) {
+            console.log("Editando endereço ID:", id);
+            // Lógica para abrir modal ou redirecionar
+        }
+
+        // Chama a função ao carregar a página
+        window.onload = carregarEnderecos;
+    </script>
 
 </body>
 

@@ -48,54 +48,85 @@
       activeTab: 'login',
       userRole: 'cliente',
       enderecos: [{ id: Date.now() }],
-      cartoes:   [{ id: Date.now() }],
+      cartoes: [{ id: Date.now() }],
+
+      // ... dentro do seu Alpine.data
+      async realizarLogin(e) {
+        const form = e.target;
+        const email = form.email.value;
+        const senha = form.password.value;
+
+        try {
+          // Você precisará criar essa rota no seu Back-end para validar email/senha
+          const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha })
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+
+            // O SEGREDO ESTÁ AQUI: Salva o CPF para uso posterior
+            localStorage.setItem('user_cpf', user.cd_cpf);
+            localStorage.setItem('user_name', user.nm_nome_cliente);
+
+            alert(`Bem-vindo, ${user.nm_nome_cliente}!`);
+            window.location.href = 'homepage.html';
+          } else {
+            alert('Email ou senha incorretos.');
+          }
+        } catch (err) {
+          alert('Erro ao conectar com o servidor.');
+        }
+      },
 
       async enviarCadastro(e) {
-        const form     = e.target;
+        const form = e.target;
         const formData = new FormData(form);
 
         const listaCartoes = this.cartoes.map((_, index) => ({
-          cd_numero_cartao:        form.querySelectorAll('[name="card-number"]')[index]?.value,
+          cd_numero_cartao: form.querySelectorAll('[name="card-number"]')[index]?.value,
           nm_nome_impresso_cartao: form.querySelectorAll('[name="card-name"]')[index]?.value,
-          cd_seguranca:            form.querySelectorAll('[name="card-cvv"]')[index]?.value,
-          dt_validade_cartao:      form.querySelectorAll('[name="card-expiry"]')[index]?.value
+          cd_seguranca: form.querySelectorAll('[name="card-cvv"]')[index]?.value,
+          dt_validade_cartao: form.querySelectorAll('[name="card-expiry"]')[index]?.value
             ? new Date(form.querySelectorAll('[name="card-expiry"]')[index].value + '-01T00:00:00')
             : new Date(),
-          cd_bandeira:          Number(form.querySelectorAll('[name="card-brand"]')[index]?.value || 1),
-          cartao_preferencial:  form.querySelectorAll('[name="card-preferred"]')[index]?.checked || false
+          cd_bandeira: Number(form.querySelectorAll('[name="card-brand"]')[index]?.value || 1),
+          cartao_preferencial: form.querySelectorAll('[name="card-preferred"]')[index]?.checked || false
         }));
 
         const listaEnderecos = this.enderecos.map((_, index) => ({
           nm_tipo_endereco: form.querySelectorAll('[name="address-type"]')[index]?.value,
-          cd_cep:           form.querySelectorAll('[name="zip-code"]')[index]?.value,
-          nm_logradouro:    form.querySelectorAll('[name="street"]')[index]?.value,
-          cd_numero:        form.querySelectorAll('[name="number"]')[index]?.value,
-          nm_bairro:        form.querySelectorAll('[name="neighborhood"]')[index]?.value,
-          nm_cidade:        form.querySelectorAll('[name="city"]')[index]?.value,
-          sg_estado:        form.querySelectorAll('[name="state"]')[index]?.value
+          cd_cep: form.querySelectorAll('[name="zip-code"]')[index]?.value,
+          nm_logradouro: form.querySelectorAll('[name="street"]')[index]?.value,
+          cd_numero: form.querySelectorAll('[name="number"]')[index]?.value,
+          nm_bairro: form.querySelectorAll('[name="neighborhood"]')[index]?.value,
+          nm_cidade: form.querySelectorAll('[name="city"]')[index]?.value,
+          sg_estado: form.querySelectorAll('[name="state"]')[index]?.value
         }));
 
         const data = {
-          cpf:                      formData.get('cpf'),
-          nm_nome_cliente:          formData.get('full-name'),
-          dt_nascimento:            formData.get('birth-date') ? new Date(formData.get('birth-date') + 'T00:00:00') : new Date(),
-          cd_DDD:                   formData.get('ddd'),
-          cd_telefone:              formData.get('phone-number'),
-          nm_email:                 formData.get('register-email-address'),
-          cd_senha:                 formData.get('password'),
-          cd_genero:                formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
-          cd_tipo_telefone:         formData.get('phone-type') === 'Celular' ? 1 : 2,
+          cpf: formData.get('cpf'),
+          nm_nome_cliente: formData.get('full-name'),
+          dt_nascimento: formData.get('birth-date') ? new Date(formData.get('birth-date') + 'T00:00:00') : new Date(),
+          cd_DDD: formData.get('ddd'),
+          cd_telefone: formData.get('phone-number'),
+          nm_email: formData.get('register-email-address'),
+          cd_senha: formData.get('password'),
+          cd_genero: formData.get('gender') === 'masculino' ? 1 : (formData.get('gender') === 'feminino' ? 2 : 3),
+          cd_tipo_telefone: formData.get('phone-type') === 'Celular' ? 1 : 2,
           nm_identificacao_telefone: 'Principal',
-          cd_status:                1,
-          enderecos:                listaEnderecos,
-          cartoes:                  listaCartoes
+          cd_status: 1,
+          enderecos: listaEnderecos,
+          cartoes: listaCartoes
         };
 
         try {
           const response = await fetch('http://localhost:3000/clientes', {
-            method:  'POST',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(data)
+            body: JSON.stringify(data)
           });
 
           if (response.ok) {
@@ -157,42 +188,39 @@
             CRIAR CONTA
           </button>
         </div>
-        <div x-show="activeTab === 'login'" x-transition:enter="transition ease-out duration-200"
-          x-transition:enter-end="opacity-100 transform translate-y-0"
-          x-transition:enter-start="opacity-0 transform -translate-y-2">
-          <form class="mt-8 space-y-6" method="POST">
+        <!-- Procure a div x-show="activeTab === 'login'" -->
+        <div x-show="activeTab === 'login'" ...>
+          <form class="mt-8 space-y-6" @submit.prevent="realizarLogin($event)">
             <div class="rounded-md shadow-sm -space-y-px">
+              <!-- Campo Email para Cliente -->
               <div x-show="userRole === 'cliente'">
                 <label class="sr-only" for="login-email-address">Email</label>
-                <input autocomplete="email"
-                  class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 bg-transparent focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  id="login-email-address" name="email" placeholder="Email" required="" type="email" />
+                <input autocomplete="email" id="login-email-address" name="email"
+                  class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  placeholder="Email" :required="userRole === 'cliente' && activeTab === 'login'" type="email" />
               </div>
+
+              <!-- Campo Matrícula para Colaborador -->
               <div x-show="userRole === 'colaborador'">
                 <label class="sr-only" for="login-id">Matrícula</label>
-                <input :required="userRole === 'colaborador'"
-                  class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 bg-transparent focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  id="login-id" name="id_colaborador" placeholder="Matrícula / ID Colaborador" type="text" />
+                <input id="login-id" name="id_colaborador"
+                  class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  placeholder="Matrícula / ID Colaborador"
+                  :required="userRole === 'colaborador' && activeTab === 'login'" type="text" />
               </div>
+
+              <!-- Campo Senha -->
               <div>
                 <label class="sr-only" for="login-password">Senha</label>
-                <input autocomplete="current-password"
-                  class="appearance-none rounded-b-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 bg-transparent focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  id="login-password" name="password" placeholder="Senha" required="" type="password" />
+                <input autocomplete="current-password" id="login-password" name="password" required
+                  class="appearance-none rounded-b-md relative block w-full px-3 py-3 border border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  placeholder="Senha" type="password" />
               </div>
             </div>
-            <div class="flex items-center justify-between">
-              <div class="text-sm">
-                <a class="font-medium text-primary hover:text-black" href="#">
-                  Esqueceu sua senha?
-                </a>
-              </div>
-            </div>
+
             <div>
-              <button
-                @click="window.location.href = userRole === 'cliente' ? 'homepage.html' : '../employerSide/AnaliseVendas.html'"
-                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-                type="button">
+              <button type="submit"
+                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
                 <span x-text="userRole === 'cliente' ? 'Entrar como Cliente' : 'Entrar como Colaborador'"></span>
               </button>
             </div>
@@ -345,62 +373,66 @@
                     </div>
                   </template>
                   <div class="border-b border-neutral-200 pb-6 mt-6">
-  <div class="flex justify-between items-center mb-4">
-    <h3 class="text-lg font-semibold leading-6 text-neutral-900">Cartões de Crédito</h3>
-    <button type="button" 
-      @click="cartoes.push({ id: Date.now() })"
-      class="text-sm bg-neutral-100 hover:bg-neutral-200 text-primary py-1.5 px-3 rounded-md transition-colors flex items-center gap-1">
-      <span class="material-symbols-outlined text-[18px]">add_card</span> Adicionar Cartão
-    </button>
-  </div>
+                    <div class="flex justify-between items-center mb-4">
+                      <h3 class="text-lg font-semibold leading-6 text-neutral-900">Cartões de Crédito</h3>
+                      <button type="button" @click="cartoes.push({ id: Date.now() })"
+                        class="text-sm bg-neutral-100 hover:bg-neutral-200 text-primary py-1.5 px-3 rounded-md transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px]">add_card</span> Adicionar Cartão
+                      </button>
+                    </div>
 
-  <template x-for="(cartao, index) in cartoes" :key="cartao.id">
-    <div class="mt-4 p-4 border border-neutral-200 rounded-md bg-neutral-50 relative">
-      <button type="button" 
-        @click="cartoes = cartoes.filter(c => c.id !== cartao.id)"
-        class="absolute top-2 right-2 text-red-500 hover:text-red-700">
-        <span class="material-symbols-outlined">delete</span>
-      </button>
+                    <template x-for="(cartao, index) in cartoes" :key="cartao.id">
+                      <div class="mt-4 p-4 border border-neutral-200 rounded-md bg-neutral-50 relative">
+                        <button type="button" @click="cartoes = cartoes.filter(c => c.id !== cartao.id)"
+                          class="absolute top-2 right-2 text-red-500 hover:text-red-700">
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-neutral-700">Nome Impresso no Cartão</label>
-          <input name="card-name" required type="text" class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
-        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-neutral-700">Nome Impresso no Cartão</label>
+                            <input name="card-name" required type="text"
+                              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
+                          </div>
 
-        <div>
-          <label class="block text-sm font-medium text-neutral-700">Número do Cartão</label>
-          <input name="card-number" required type="text" maxlength="16" class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
-        </div>
+                          <div>
+                            <label class="block text-sm font-medium text-neutral-700">Número do Cartão</label>
+                            <input name="card-number" required type="text" maxlength="16"
+                              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
+                          </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-sm font-medium text-neutral-700">Validade</label>
-            <input name="card-expiry" required type="month" class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-neutral-700">CVV</label>
-            <input name="card-cvv" required type="text" maxlength="4" class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
-          </div>
-        </div>
+                          <div class="grid grid-cols-2 gap-2">
+                            <div>
+                              <label class="block text-sm font-medium text-neutral-700">Validade</label>
+                              <input name="card-expiry" required type="month"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
+                            </div>
+                            <div>
+                              <label class="block text-sm font-medium text-neutral-700">CVV</label>
+                              <input name="card-cvv" required type="text" maxlength="4"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
+                            </div>
+                          </div>
 
-        <div>
-          <label class="block text-sm font-medium text-neutral-700">Bandeira</label>
-          <select name="card-brand" required class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
-            <option value="1">Mastercard</option>
-            <option value="2">Visa</option>
-            <option value="3">Elo</option>
-          </select>
-        </div>
+                          <div>
+                            <label class="block text-sm font-medium text-neutral-700">Bandeira</label>
+                            <select name="card-brand" required
+                              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm">
+                              <option value="1">Mastercard</option>
+                              <option value="2">Visa</option>
+                              <option value="3">Elo</option>
+                            </select>
+                          </div>
 
-        <div class="flex items-center mt-6">
-          <input name="card-preferred" type="checkbox" class="h-4 w-4 text-primary border-neutral-300 rounded focus:ring-primary">
-          <label class="ml-2 block text-sm text-neutral-700">Definir como preferencial</label>
-        </div>
-      </div>
-    </div>
-  </template>
-</div>
+                          <div class="flex items-center mt-6">
+                            <input name="card-preferred" type="checkbox"
+                              class="h-4 w-4 text-primary border-neutral-300 rounded focus:ring-primary">
+                            <label class="ml-2 block text-sm text-neutral-700">Definir como preferencial</label>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
                 </div>
               </div>
               <div>
@@ -446,7 +478,7 @@
       </div>
     </main>
   </div>
-  
+
   <script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </body>

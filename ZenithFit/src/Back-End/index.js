@@ -299,5 +299,89 @@ app.get("/produtos/:id", async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar detalhes do produto" });
     }
 });
+// Listar modalidades de frete (necessário para o checkout)
+app.get("/fretes", async (req, res) => {
+    try {
+        const modalidades = await prisma.modalidade_Frete.findMany();
+        res.status(200).json(modalidades);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao buscar modalidades de frete" });
+    }
+});
+// Listar pedidos do cliente (necessário para a tela de pedidos)
+app.get("/pedidos/:cpf", async (req, res) => {
+    try {
+        const { cpf } = req.params;
+        const pedidos = await prisma.pedido.findMany({
+            where: { cd_cpf: cpf },
+            include: {
+                itens: { include: { produto: true } },
+                pagamentos: { include: { cartao: { include: { bandeira: true } } } },
+                cupons_usados: { include: { cupom: true } },
+                modalidade: true,
+                status_pedido: true,
+                endereco_entrega: true,
+            },
+            orderBy: { dt_pedido: "desc" }
+        });
+        res.status(200).json(pedidos);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao buscar pedidos" });
+    }
+});
+// Validar cupom antes de finalizar compra
+app.get("/cupons/:codigo", async (req, res) => {
+    try {
+        const { codigo } = req.params;
+        const cupom = await prisma.cupom.findUnique({
+            where: { nm_codigo: codigo }
+        });
+        if (!cupom || !cupom.fl_ativo) {
+            res.status(404).json({ message: "Cupom inválido ou expirado." });
+            return;
+        }
+        res.status(200).json(cupom);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao validar cupom" });
+    }
+});
+// --- ROTA DE LOGIN ---
+app.post("/login", async (req, res) => {
+    try {
+        const { email, senha, nm_email, cd_senha } = req.body;
+        // Como no front você pode estar enviando 'email' ou 'nm_email'
+        // vamos garantir que pegamos o valor correto
+        const emailLogin = email || nm_email;
+        const senhaLogin = senha || cd_senha;
+        if (!emailLogin || !senhaLogin) {
+            return res.status(400).json({ message: "E-mail e senha são obrigatórios." });
+        }
+        // Busca o cliente pelo e-mail
+        const cliente = await prisma.cliente.findFirst({
+            where: {
+                nm_email: emailLogin,
+            },
+        });
+        // Verifica se o cliente existe e se a senha confere
+        // NOTA: Se você estiver usando Bcrypt, aqui deve usar o bcrypt.compare
+        if (!cliente || cliente.cd_senha !== senhaLogin) {
+            return res.status(401).json({ message: "E-mail ou senha incorretos." });
+        }
+        // Se chegou aqui, login deu certo
+        // Retornamos os dados básicos do cliente (sem a senha por segurança)
+        const { cd_senha: _, ...clienteSemSenha } = cliente;
+        res.status(200).json({
+            message: "Login realizado com sucesso!",
+            cliente: clienteSemSenha
+        });
+    }
+    catch (error) {
+        console.error("Erro no Login:", error);
+        res.status(500).json({ message: "Erro interno no servidor ao tentar logar." });
+    }
+});
 app.listen(3000, () => console.log("Servidor ON na 3000"));
 //# sourceMappingURL=index.js.map
