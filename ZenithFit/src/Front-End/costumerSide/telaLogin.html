@@ -135,7 +135,14 @@
           });
 
           if (response.ok) {
+            // 1. Salvamos os dados que o usuário acabou de digitar no formulário
+            // Usamos os nomes que você definiu no objeto 'data' acima
+            localStorage.setItem('cliente_cpf', data.cpf);
+            localStorage.setItem('user_name', data.nm_nome_cliente);
+
             alert('Cadastro realizado com sucesso!');
+
+            // 2. Agora sim, redirecionamos
             window.location.href = 'homepage.html';
           } else {
             const res = await response.json();
