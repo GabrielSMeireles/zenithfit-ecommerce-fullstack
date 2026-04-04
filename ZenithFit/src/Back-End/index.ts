@@ -431,4 +431,29 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// Rota para adicionar apenas um endereço novo
+app.post("/enderecos", async (req, res) => {
+  try {
+    const { nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
+
+    const novoEnd = await prisma.endereco.create({
+      data: {
+        nm_tipo_endereco,
+        cd_cep,
+        nm_logradouro,
+        cd_numero,
+        nm_bairro,
+        nm_cidade,
+        sg_estado,
+        cd_cpf: fk_cliente_cpf // Certifique-se que o nome do campo no banco é cd_cpf
+      }
+    });
+
+    res.status(201).json(novoEnd);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao cadastrar endereço" });
+  }
+});
+
 app.listen(3000, () => console.log("Servidor ON na 3000"));

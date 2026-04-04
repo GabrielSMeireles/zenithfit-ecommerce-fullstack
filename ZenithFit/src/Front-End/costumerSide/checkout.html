@@ -109,186 +109,214 @@
                                 <form class="space-y-4">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-residence-type">Tipo de residência</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-residence-type" type="text"
-                                                placeholder="Ex: Casa, Apartamento" />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-cep">CEP</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-cep" type="text" placeholder="00000-000" />
-                                        </div>
-                                        <div class="md:col-span-2">
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-street">Logradouro</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-street" type="text" placeholder="Rua, Avenida, etc." />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-number">Número</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-number" type="text" placeholder="Ex: 123" />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-neighborhood">Bairro</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-neighborhood" type="text" placeholder="Ex: Jardim Botânico" />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-city">Cidade</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-city" type="text" placeholder="Ex: São Paulo" />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-state">Estado</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-state" type="text" placeholder="Ex: SP" />
-                                        </div>
-                                        <div class="md:col-span-2">
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                                for="add-country">País</label>
-                                            <input
-                                                class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                                                id="add-country" type="text" placeholder="Ex: Brasil" />
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                    for="add-residence-type">
+                                                    Tipo de residência
+                                                </label>
+                                                <select id="add-residence-type" required
+                                                    class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                                    <option value="" disabled selected>Selecione uma opção</option>
+                                                    <option value="Entrega">Entrega</option>
+                                                    <option value="Cobrança">Cobrança</option>
+                                                    <option value="Ambas">Ambas</option>
+                                                </select>
                                         </div>
                                     </div>
-                                    <div class="flex justify-end gap-4 pt-4">
-                                        <button
-                                            class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-6 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
-                                            type="reset">Cancelar</button>
-                                        <button
-                                            class="bg-primary text-white font-semibold py-2 px-6 rounded-md hover:opacity-90 transition-opacity"
-                                            type="submit">Adicionar Endereço</button>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-cep">CEP</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-cep" type="text" placeholder="00000-000" />
                                     </div>
-                                </form>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-street">Logradouro</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-street" type="text" placeholder="Rua, Avenida, etc." />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-number">Número</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-number" type="text" placeholder="Ex: 123" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-neighborhood">Bairro</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-neighborhood" type="text" placeholder="Ex: Jardim Botânico" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-city">Cidade</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-city" type="text" placeholder="Ex: São Paulo" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                            for="add-state">Estado</label>
+                                        <input
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            id="add-state" type="text" placeholder="Ex: SP" />
+                                    </div>
                             </div>
-                        </details>
+                            <div class="flex justify-end gap-4 pt-4">
+                                <button
+                                    class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-6 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                                    type="reset">Cancelar</button>
+                                <button
+                                    class="bg-primary text-white font-semibold py-2 px-6 rounded-md hover:opacity-90 transition-opacity"
+                                    type="submit">Adicionar Endereço</button>
+                            </div>
+                            </form>
                     </div>
+                    </details>
                 </div>
-                <div class="md:col-span-1 sticky top-8">
-                    <div class="bg-gray-100 dark:bg-gray-800/50 rounded-lg p-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumo do Pedido</h3>
-                        <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                            <div class="flex justify-between">
-                                <span>Subtotal (2 itens)</span>
-                                <span>R$ 229,98</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Frete</span>
-                                <span class="font-semibold text-gray-800 dark:text-gray-200">R$ 15,50</span>
-                            </div>
+            </div>
+            <div class="md:col-span-1 sticky top-8">
+                <div class="bg-gray-100 dark:bg-gray-800/50 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumo do Pedido</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                        <div class="flex justify-between">
+                            <span>Subtotal (2 itens)</span>
+                            <span>R$ 229,98</span>
                         </div>
-                        <div class="border-t border-gray-300 dark:border-gray-700 my-4"></div>
-                        <div class="flex justify-between font-bold text-gray-900 dark:text-white text-lg">
-                            <span>Total</span>
-                            <span>R$ 245,48</span>
+                        <div class="flex justify-between">
+                            <span>Frete</span>
+                            <span class="font-semibold text-gray-800 dark:text-gray-200">R$ 15,50</span>
                         </div>
-                        <a href="checkoutPagamento.html"
-                            class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-center">
-                            Continuar para Pagamento
-                        </a>
                     </div>
+                    <div class="border-t border-gray-300 dark:border-gray-700 my-4"></div>
+                    <div class="flex justify-between font-bold text-gray-900 dark:text-white text-lg">
+                        <span>Total</span>
+                        <span>R$ 245,48</span>
+                    </div>
+                    <a href="checkoutPagamento.html"
+                        class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-center">
+                        Continuar para Pagamento
+                    </a>
                 </div>
             </div>
         </div>
+        </div>
     </main>
     </div>
-    <script>
-        const API_URL = "http://localhost:3000";
+    <!-- Cole este bloco no lugar do seu script atual -->
+   <script>
+    const API_URL = "http://localhost:3000";
+    const cpf = localStorage.getItem('cliente_cpf');
 
-        const cpf = localStorage.getItem('cliente_cpf');
-        if (!cpf) { // Use o mesmo nome!
-            alert("Usuário não identificado. Por favor, faça login.");
-            window.location.href = 'login.html';
-        }
+    if (!cpf) {
+        alert("Usuário não identificado. Por favor, faça login.");
+        window.location.href = 'login.html';
+    }
 
-        async function carregarEnderecos() {
-    const container = document.getElementById('address-container');
-    try {
-        const response = await fetch(`${API_URL}/clientes/${cpf}`);
-        if (!response.ok) throw new Error("Cliente não encontrado na API");
+    // --- FUNÇÃO PARA CARREGAR ENDEREÇOS ---
+    async function carregarEnderecos() {
+        const container = document.getElementById('address-container');
+        try {
+            const response = await fetch(`${API_URL}/clientes/${cpf}`);
+            if (!response.ok) throw new Error("Cliente não encontrado");
 
-        const data = await response.json();
-        console.log("Dados da API:", data); // Verifique isso no console!
+            const data = await response.json();
+            const clienteReal = data.cliente || data;
 
-        // AJUSTE CRUCIAL: Tenta pegar o cliente ou o data direto
-        const clienteReal = data.cliente || data;
+            if (!clienteReal || !clienteReal.enderecos || clienteReal.enderecos.length === 0) {
+                container.innerHTML = `<p class="text-amber-500 p-4 border border-dashed border-amber-200 rounded-lg">Nenhum endereço cadastrado.</p>`;
+                return;
+            }
 
-        // Se clienteReal for undefined, o erro de 'reading enderecos' acontece aqui.
-        // Por isso, verificamos se ele existe primeiro:
-        if (!clienteReal || !clienteReal.enderecos) {
-            console.warn("Estrutura de dados inesperada ou cliente sem endereços");
-            container.innerHTML = `<p class="text-amber-500">Nenhum endereço vinculado a este perfil.</p>`;
-            return;
-        }
-
-        container.innerHTML = clienteReal.enderecos.map((end, index) => {
-            const isSelected = index === 0;
-            return `
-                <label class="block p-4 border-2 ${isSelected ? 'border-primary bg-gray-50' : 'border-gray-300'} rounded-lg cursor-pointer hover:border-primary transition-all">
+            container.innerHTML = clienteReal.enderecos.map((end, index) => {
+                const isSelected = index === 0;
+                return `
+                <label class="block p-4 border-2 ${isSelected ? 'border-primary bg-gray-50' : 'border-gray-300'} rounded-lg cursor-pointer hover:border-primary transition-all mb-3">
                     <div class="flex justify-between items-start">
                         <div class="flex items-start space-x-4">
                             <input ${isSelected ? 'checked' : ''} class="mt-1 h-4 w-4 text-primary" name="delivery_address" type="radio" value="${end.cd_endereco}" onchange="atualizarEstiloSelecao(this)" />
                             <div>
-                                <p class="font-semibold text-gray-900">${end.nm_logradouro || 'Endereço'}</p>
+                                <p class="font-semibold text-gray-900">${end.nm_logradouro}, ${end.cd_numero}</p>
                                 <p class="text-gray-500 text-sm">${end.nm_bairro} - ${end.nm_cidade}/${end.sg_estado}</p>
-                                <p class="text-gray-400 text-xs font-mono">${end.cd_cep}</p>
+                                <span class="inline-block mt-1 text-[10px] bg-slate-200 px-2 py-0.5 rounded uppercase font-bold text-slate-600">${end.nm_tipo_endereco}</span>
                             </div>
                         </div>
                     </div>
                 </label>`;
-        }).join('');
-
-    } catch (error) {
-        console.error("Erro ao carregar:", error);
-        container.innerHTML = "<p class='text-red-500'>Erro ao carregar endereços. Verifique a conexão com o servidor.</p>";
+            }).join('');
+        } catch (error) {
+            container.innerHTML = "<p class='text-red-500'>Erro ao carregar endereços.</p>";
+        }
     }
-}
 
-        function atualizarEstiloSelecao(radio) {
-            // Remove destaque de todos
-            document.querySelectorAll('#address-container label').forEach(label => {
-                label.classList.remove('border-primary', 'bg-gray-50', 'dark:bg-gray-800/20');
-                label.classList.add('border-gray-300', 'dark:border-gray-700');
+    // --- FUNÇÃO PARA SALVAR (CORRIGIDA E SEM PAÍS) ---
+    async function salvarNovoEndereco(e) {
+        e.preventDefault(); 
+        
+        const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Salvando...";
+
+        // Objeto ajustado para a sua realidade (SEM PAÍS)
+        const novoEndereco = {
+            nm_tipo_endereco: document.getElementById('add-residence-type').value,
+            cd_cep: document.getElementById('add-cep').value,
+            nm_logradouro: document.getElementById('add-street').value,
+            cd_numero: document.getElementById('add-number').value,
+            nm_bairro: document.getElementById('add-neighborhood').value,
+            nm_cidade: document.getElementById('add-city').value,
+            sg_estado: document.getElementById('add-state').value,
+            fk_cliente_cpf: cpf
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/enderecos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(novoEndereco)
             });
 
-            // Adiciona destaque ao selecionado
-            const label = radio.closest('label');
-            label.classList.add('border-primary', 'bg-gray-50', 'dark:bg-gray-800/20');
-            label.classList.remove('border-gray-300', 'dark:border-gray-700');
+            if (response.ok) {
+                alert("Endereço cadastrado com sucesso!");
+                form.reset();
+                document.querySelector('details').open = false;
+                await carregarEnderecos(); 
+            } else {
+                const erro = await response.json();
+                alert("Erro no servidor: " + (erro.mensagem || "Verifique os campos."));
+            }
+        } catch (err) {
+            console.error("Erro na requisição:", err);
+            alert("Erro de conexão: Certifique-se que o backend está rodando e o CORS está ativo.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Adicionar Endereço";
         }
+    }
 
-        function editarEndereco(id) {
-            console.log("Editando endereço ID:", id);
-            // Lógica para abrir modal ou redirecionar
+    function atualizarEstiloSelecao(radio) {
+        document.querySelectorAll('#address-container label').forEach(label => {
+            label.classList.remove('border-primary', 'bg-gray-50');
+            label.classList.add('border-gray-300');
+        });
+        radio.closest('label').classList.add('border-primary', 'bg-gray-50');
+    }
+
+    // Inicialização correta
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEnderecos();
+        const form = document.querySelector('form');
+        if(form) {
+            form.addEventListener('submit', salvarNovoEndereco);
         }
-
-        // Chama a função ao carregar a página
-        window.onload = carregarEnderecos;
-    </script>
-
+    });
+</script>
 </body>
 
 </html>
