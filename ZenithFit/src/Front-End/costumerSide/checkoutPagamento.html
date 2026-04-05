@@ -111,7 +111,7 @@
                             Adicionar novo cartão
                         </button>
                         <div id="container-novo-cartao" class="mt-6 space-y-4">
-                            
+
                         </div>
                     </div>
                 </section>
@@ -122,15 +122,22 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Apenas um tipo de cupom pode ser utilizado
                         por compra.</p>
                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                        <!-- Procure este trecho no seu HTML e adicione o ID e o onclick -->
                         <div class="flex space-x-4">
-                            <input
+                            <input id="input-cupom"
                                 class="flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                                 placeholder="Insira o código do cupom" type="text" />
-                            <button
+                            <button onclick="aplicarCupom()"
                                 class="px-6 py-2 bg-primary text-white font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
                                 type="button">
                                 Aplicar
                             </button>
+                        </div>
+
+                        <!-- No resumo do pedido (Aside), vamos dar um ID para o desconto -->
+                        <div class="flex justify-between text-green-600 dark:text-green-400">
+                            <span class="">Desconto Cupom</span>
+                            <span id="resumo-desconto" class="font-medium">- R$ 0,00</span>
                         </div>
                         <div
                             class="flex items-start mt-4 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 p-3 rounded-md">
@@ -230,8 +237,8 @@
         const cpf = localStorage.getItem('cliente_cpf');
         const valorFrete = parseFloat(localStorage.getItem('checkout_valor_frete') || 0);
         const idModalidade = localStorage.getItem('checkout_id_modalidade');
-
-
+        let cupomAplicado = null; // Guardará o objeto do cupom vindo do banco
+        let valorDesconto = 0;
         const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
         const subtotal = itensCarrinho.reduce((acc, item) => {
             // 1. Limpa o valor do produto (remove R$, espaços e troca vírgula por ponto)
@@ -244,7 +251,67 @@
             // 3. Soma ao acumulador
             return acc + (preco * quantidade);
         }, 0);
+        async function aplicarCupom() {
+            const codigoInput = document.getElementById('input-cupom');
+            const codigo = codigoInput.value.trim();
 
+            if (!codigo) {
+                alert("Digite um código de cupom.");
+                return;
+            }
+
+            try {
+                // Chamada para a rota que você já tem no Back-end
+                const response = await fetch(`http://localhost:3000/cupons/${codigo}`);
+
+                if (!response.ok) {
+                    throw new Error("Cupom inválido, expirado ou já utilizado.");
+                }
+
+                const cupom = await response.json();
+
+                // 1. Salva o cupom no estado global da página
+                cupomAplicado = cupom;
+
+                // 2. Define o valor do desconto (convertendo para número)
+                valorDesconto = parseFloat(cupom.vl_desconto);
+
+                alert(`Cupom "${codigo}" de R$ ${valorDesconto.toFixed(2)} aplicado!`);
+
+                // 3. Bloqueia o input para não aplicarem dois cupons (conforme sua regra de negócio)
+                codigoInput.disabled = true;
+
+                // 4. Atualiza os números na tela
+                atualizarTotais();
+
+            } catch (error) {
+                alert(error.message);
+                cupomAplicado = null;
+                valorDesconto = 0;
+                atualizarTotais();
+            }
+        }
+
+        // Criamos uma função separada para atualizar os valores na tela
+        function atualizarTotais() {
+            const totalSemCupom = subtotal + valorFrete;
+
+            // Calcula o total garantindo que não fique negativo
+            const totalFinal = Math.max(0, totalSemCupom - valorDesconto);
+
+            // Atualiza os elementos na tela
+            document.getElementById('resumo-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-frete-valor').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+
+            // Atualiza o valor do desconto no resumo
+            const elDesconto = document.getElementById('resumo-desconto');
+            if (elDesconto) {
+                elDesconto.innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
+            }
+
+            // Atualiza o Total Final
+            document.getElementById('resumo-total').innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
+        }
         async function inicializarPagamento() {
             if (!cpf) {
                 alert("Sessão expirada. Faça login novamente.");
@@ -268,19 +335,19 @@
         }
 
         function renderizarCartoes(cartoes) {
-    const container = document.getElementById('cards-container');
-    container.innerHTML = '';
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
 
-    if (cartoes.length === 0) {
-        container.innerHTML = '<p class="text-sm text-red-500">Nenhum cartão cadastrado.</p>';
-        return;
-    }
+            if (cartoes.length === 0) {
+                container.innerHTML = '<p class="text-sm text-red-500">Nenhum cartão cadastrado.</p>';
+                return;
+            }
 
-    cartoes.forEach((cartao) => {
-        const div = document.createElement('div');
-        div.className = "p-4 border rounded-lg border-gray-200 dark:border-gray-700 mb-4";
+            cartoes.forEach((cartao) => {
+                const div = document.createElement('div');
+                div.className = "p-4 border rounded-lg border-gray-200 dark:border-gray-700 mb-4";
 
-        div.innerHTML = `
+                div.innerHTML = `
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <input class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded card-checkbox" 
@@ -312,88 +379,89 @@
                 <p class="text-[10px] text-gray-400 mt-1">* Mínimo R$ 10,00</p>
             </div>
         `;
-        container.appendChild(div);
-    });
-}
-
-
-document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const checkboxes = document.querySelectorAll('.card-checkbox:checked');
-    const totalPedido = subtotal + valorFrete;
-    let somaValoresInformados = 0;
-    const pagamentos = [];
-
-    if (checkboxes.length === 0) {
-        alert("Selecione pelo menos um cartão para o pagamento.");
-        return;
-    }
-
-    // Validar cada cartão selecionado
-    for (let cb of checkboxes) {
-        const idCartao = cb.getAttribute('data-id');
-        const inputValor = document.getElementById(`valor-card-${idCartao}`);
-        const valor = parseFloat(inputValor.value);
-
-        if (isNaN(valor) || valor < 10) {
-            alert(`O valor no cartão final ${cb.nextElementSibling.querySelector('span:last-child').innerText.slice(-4)} deve ser de no mínimo R$ 10,00.`);
-            return;
+                container.appendChild(div);
+            });
         }
 
-        somaValoresInformados += valor;
-        pagamentos.push({
-            cd_cartao: Number(idCartao),
-            vl_pago: valor
+
+        document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const checkboxes = document.querySelectorAll('.card-checkbox:checked');
+            const totalPedido = subtotal + valorFrete;
+            let somaValoresInformados = 0;
+            const pagamentos = [];
+
+            if (checkboxes.length === 0) {
+                alert("Selecione pelo menos um cartão para o pagamento.");
+                return;
+            }
+
+            // Validar cada cartão selecionado
+            for (let cb of checkboxes) {
+                const idCartao = cb.getAttribute('data-id');
+                const inputValor = document.getElementById(`valor-card-${idCartao}`);
+                const valor = parseFloat(inputValor.value);
+
+                if (isNaN(valor) || valor < 10) {
+                    alert(`O valor no cartão final ${cb.nextElementSibling.querySelector('span:last-child').innerText.slice(-4)} deve ser de no mínimo R$ 10,00.`);
+                    return;
+                }
+
+                somaValoresInformados += valor;
+                pagamentos.push({
+                    cd_cartao: Number(idCartao),
+                    vl_pago: valor
+                });
+            }
+
+            // Validar se a soma dos cartões bate com o total do pedido
+            // Usamos .toFixed(2) para evitar problemas de precisão do JS (ex: 0.1 + 0.2)
+            const totalComDesconto = (subtotal + valorFrete) - valorDesconto;
+            if (somaValoresInformados.toFixed(2) !== totalComDesconto.toFixed(2)) {
+                alert(`A soma dos cartões (R$ ${somaValoresInformados.toFixed(2)}) deve ser igual ao total com desconto (R$ ${totalComDesconto.toFixed(2)}).`);
+                return;
+            }
+
+            const enderecoId = localStorage.getItem('checkout_id_endereco');
+            const dadosPedido = {
+                cpf: cpf,
+                cd_endereco: Number(enderecoId),
+                cd_modalidade: Number(idModalidade),
+                itens: itensCarrinho.map(item => ({
+                    cd_produto: item.cd_produto,
+                    qt_item: item.qt_item,
+                    vl_unitario: item.vl_produto,
+                    nm_tamanho: item.nm_tamanho || "G"
+                })),
+                pagamentos: pagamentos,
+                cupons: []
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/pedidos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosPedido)
+                });
+
+                if (response.ok) {
+                    localStorage.removeItem('carrinho');
+                    window.location.href = 'sucessoCompra.html';
+                } else {
+                    const erro = await response.json();
+                    alert("Erro: " + erro.message);
+                }
+            } catch (error) {
+                alert("Erro de conexão.");
+            }
         });
-    }
 
-    // Validar se a soma dos cartões bate com o total do pedido
-    // Usamos .toFixed(2) para evitar problemas de precisão do JS (ex: 0.1 + 0.2)
-    if (somaValoresInformados.toFixed(2) !== totalPedido.toFixed(2)) {
-        alert(`A soma dos valores (R$ ${somaValoresInformados.toFixed(2)}) não coincide com o total do pedido (R$ ${totalPedido.toFixed(2)}).`);
-        return;
-    }
-
-    const enderecoId = localStorage.getItem('checkout_id_endereco');
-    const dadosPedido = {
-        cpf: cpf,
-        cd_endereco: Number(enderecoId),
-        cd_modalidade: Number(idModalidade),
-        itens: itensCarrinho.map(item => ({
-            cd_produto: item.cd_produto,
-            qt_item: item.qt_item,
-            vl_unitario: item.vl_produto,
-            nm_tamanho: item.nm_tamanho || "G"
-        })),
-        pagamentos: pagamentos,
-        cupons: [] 
-    };
-
-    try {
-        const response = await fetch('http://localhost:3000/pedidos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosPedido)
-        });
-
-        if (response.ok) {
-            localStorage.removeItem('carrinho');
-            window.location.href = 'sucessoCompra.html';
-        } else {
-            const erro = await response.json();
-            alert("Erro: " + erro.message);
+        // Função para mostrar/esconder o campo de valor
+        function toggleInputValor(id) {
+            const container = document.getElementById(`input-container-${id}`);
+            container.classList.toggle('hidden');
         }
-    } catch (error) {
-        alert("Erro de conexão.");
-    }
-});
-
-// Função para mostrar/esconder o campo de valor
-function toggleInputValor(id) {
-    const container = document.getElementById(`input-container-${id}`);
-    container.classList.toggle('hidden');
-}
 
         // 3. Finalizar Pedido (Evento do Botão)
         document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
@@ -407,6 +475,9 @@ function toggleInputValor(id) {
                 return;
             }
 
+
+            const totalPedidoFinal = Math.max(0, (subtotal + valorFrete) - valorDesconto);
+
             const dadosPedido = {
                 cpf: cpf,
                 cd_endereco: Number(enderecoId),
@@ -414,13 +485,12 @@ function toggleInputValor(id) {
                 itens: itensCarrinho.map(item => ({
                     cd_produto: item.cd_produto,
                     qt_item: item.qt_item,
-                    vl_unitario: item.vl_produto,
+                    vl_unitario: parseFloat(String(item.vl_produto).replace('R$', '').replace(',', '.').trim()),
                     nm_tamanho: item.nm_tamanho || "G"
                 })),
-                pagamentos: [
-                    { cd_cartao: Number(cartaoSelecionado), vl_pago: subtotal + valorFrete }
-                ],
-                cupons: [] // Adicione lógica de cupom se houver
+                pagamentos: pagamentos,
+                // ADICIONE ISSO: Pega o nome do código se houver cupom aplicado
+                cupons: cupomAplicado ? [cupomAplicado.nm_codigo] : []
             };
 
             try {
@@ -483,13 +553,13 @@ function toggleInputValor(id) {
 
 
         // Função que injeta o formulário na página
-function adicionarNovoCartaoPagina() {
-    const container = document.getElementById('container-novo-cartao');
-    
-    // Se já tiver um formulário aberto, não faz nada ou foca nele
-    if (document.getElementById('form-novo-cartao-inline')) return;
+        function adicionarNovoCartaoPagina() {
+            const container = document.getElementById('container-novo-cartao');
 
-    const formHtml = `
+            // Se já tiver um formulário aberto, não faz nada ou foca nele
+            if (document.getElementById('form-novo-cartao-inline')) return;
+
+            const formHtml = `
         <div id="form-novo-cartao-inline" class="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800/50 relative">
             <button onclick="fecharFormularioNovo()" class="absolute top-2 right-2 text-gray-400 hover:text-red-500">
                 <span class="material-symbols-outlined">close</span>
@@ -525,73 +595,73 @@ function adicionarNovoCartaoPagina() {
             </button>
         </div>
     `;
-    container.innerHTML = formHtml;
-}
-
-function fecharFormularioNovo() {
-    document.getElementById('container-novo-cartao').innerHTML = '';
-}
-
-
-async function salvarNovoCartaoInline() {
-    const cpfCliente = localStorage.getItem('cliente_cpf');
-
-    // 1. Captura os elementos primeiro
-    const elNum = document.getElementById('num_cartao');
-    const elNome = document.getElementById('nome_cartao');
-    const elValidade = document.getElementById('validade_cartao');
-    const elCvv = document.getElementById('cvv_cartao');
-    const elBandeira = document.getElementById('id_bandeira');
-
-    // 2. Verifica se os elementos existem e extrai os valores
-    const numCartao = elNum ? elNum.value.replace(/\s+/g, '') : '';
-    const nomeImpresso = elNome ? elNome.value : '';
-    const validade = elValidade ? elValidade.value : '';
-    const cvv = elCvv ? elCvv.value : '';
-    const bandeiraId = elBandeira ? elBandeira.value : '';
-
-    // 3. Validação (o que estava disparando o seu erro)
-    if (!numCartao || !nomeImpresso || !validade || !cvv) {
-        alert("Por favor, preencha todos os campos do cartão.");
-        return;
-    }
-
-    const dadosCartao = {
-        cd_cpf_cliente: cpfCliente,
-        cd_numero_cartao: numCartao,
-        nm_nome_impresso_cartao: nomeImpresso,
-        // No seu backend Prisma, dt_validade_cartao é DateTime. 
-        // O input date retorna YYYY-MM-DD, precisamos converter para ISO:
-        dt_validade_cartao: new Date(validade + "T12:00:00Z").toISOString(), 
-        cd_cvv_cartao: cvv,
-        cd_bandeira: Number(bandeiraId)
-    };
-
-    try {
-        const response = await fetch('http://localhost:3000/cartoes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosCartao)
-        });
-
-        if (response.ok) {
-            alert("Cartão adicionado com sucesso!");
-            fecharFormularioNovo(); 
-            // Recarrega a lista de cartões para o novo aparecer
-            await inicializarPagamento(); 
-        } else {
-            const erro = await response.json();
-            alert("Erro ao salvar: " + (erro.message || "Dados inválidos"));
+            container.innerHTML = formHtml;
         }
-    } catch (error) {
-        console.error("Erro na requisição:", error);
-        alert("Erro de conexão com o servidor.");
-    }
-}
+
+        function fecharFormularioNovo() {
+            document.getElementById('container-novo-cartao').innerHTML = '';
+        }
+
+
+        async function salvarNovoCartaoInline() {
+            const cpfCliente = localStorage.getItem('cliente_cpf');
+
+            // 1. Captura os elementos primeiro
+            const elNum = document.getElementById('num_cartao');
+            const elNome = document.getElementById('nome_cartao');
+            const elValidade = document.getElementById('validade_cartao');
+            const elCvv = document.getElementById('cvv_cartao');
+            const elBandeira = document.getElementById('id_bandeira');
+
+            // 2. Verifica se os elementos existem e extrai os valores
+            const numCartao = elNum ? elNum.value.replace(/\s+/g, '') : '';
+            const nomeImpresso = elNome ? elNome.value : '';
+            const validade = elValidade ? elValidade.value : '';
+            const cvv = elCvv ? elCvv.value : '';
+            const bandeiraId = elBandeira ? elBandeira.value : '';
+
+            // 3. Validação (o que estava disparando o seu erro)
+            if (!numCartao || !nomeImpresso || !validade || !cvv) {
+                alert("Por favor, preencha todos os campos do cartão.");
+                return;
+            }
+
+            const dadosCartao = {
+                cd_cpf_cliente: cpfCliente,
+                cd_numero_cartao: numCartao,
+                nm_nome_impresso_cartao: nomeImpresso,
+                // No seu backend Prisma, dt_validade_cartao é DateTime. 
+                // O input date retorna YYYY-MM-DD, precisamos converter para ISO:
+                dt_validade_cartao: new Date(validade + "T12:00:00Z").toISOString(),
+                cd_cvv_cartao: cvv,
+                cd_bandeira: Number(bandeiraId)
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/cartoes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosCartao)
+                });
+
+                if (response.ok) {
+                    alert("Cartão adicionado com sucesso!");
+                    fecharFormularioNovo();
+                    // Recarrega a lista de cartões para o novo aparecer
+                    await inicializarPagamento();
+                } else {
+                    const erro = await response.json();
+                    alert("Erro ao salvar: " + (erro.message || "Dados inválidos"));
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+                alert("Erro de conexão com o servidor.");
+            }
+        }
         inicializarPagamento();
 
     </script>
-   
+
 </body>
 
 </html>
