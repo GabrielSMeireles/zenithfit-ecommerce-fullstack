@@ -66,9 +66,6 @@
           if (response.ok) {
             const dados = await response.json();
 
-            // Se você alterou o Back-end para Opção 1 (objeto direto):
-            // O dado vem como { cd_cpf: '...', nm_nome_cliente: '...' }
-            // Então salvamos direto do 'dados':
             localStorage.setItem('cliente_cpf', dados.cd_cpf);
             localStorage.setItem('user_name', dados.nm_nome_cliente);
 
