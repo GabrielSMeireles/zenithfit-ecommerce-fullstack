@@ -211,7 +211,6 @@
                                 </div>
                             </div>
 
-                            <!-- O JavaScript vai preencher esta div -->
                             <div id="shipping-options-container" class="space-y-3">
                                 <p class="text-gray-500">Carregando opções de frete...</p>
                             </div>
@@ -222,7 +221,6 @@
                     <div class="bg-gray-100 dark:bg-gray-800/50 rounded-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumo do Pedido</h3>
                         <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                            <!-- Substitua os valores fixos por esses IDs -->
                             <div class="flex justify-between">
                                 <span>Subtotal</span>
                                 <span id="resumo-subtotal">R$ 0,00</span>
@@ -455,7 +453,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             carregarEnderecos();
-            // Mostra o subtotal do carrinho imediatamente, sem esperar selecionar frete
             document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-total').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
             const form = document.querySelector('details form');
