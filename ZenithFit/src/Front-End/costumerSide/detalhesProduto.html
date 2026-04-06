@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Detalhe da Camisa</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <script>
         tailwind.config = {
@@ -18,12 +18,8 @@
                         "background-light": "#F8F8F8",
                         "background-dark": "#121212",
                     },
-                    fontFamily: {
-                        display: ["Urbanist", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.5rem",
-                    },
+                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    borderRadius: { DEFAULT: "0.5rem" },
                 },
             },
         };
@@ -33,8 +29,10 @@
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display text-zinc-800 dark:text-zinc-200">
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" style="font-family: 'Inter', sans-serif;">
+<body class="bg-background-light dark:bg-background-dark font-display text-zinc-800 dark:text-zinc-200" style="font-family: 'Inter', sans-serif;">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="homepage.html" class="flex items-center flex-shrink-0">
@@ -50,92 +48,107 @@
                     <a href="dashboardCliente.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">account_circle</span>
                     </a>
-                    <a href="carrinho.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <!-- Ícone do carrinho com badge de quantidade -->
+                    <a href="carrinho.html" class="relative p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <span class="material-symbols-outlined">shopping_cart</span>
+                        <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">0</span>
                     </a>
                 </div>
             </div>
         </div>
     </header>
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <main class="py-12 md:py-16">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+
+                <!-- GALERIA -->
                 <div class="flex flex-col-reverse md:flex-row gap-4">
-                    <div class="flex md:flex-col gap-3 justify-center md:justify-start">
-                        <img alt="Thumbnail da camisa oversized marrom vista de frente" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-primary" src="images/mahoraga.png"
-                        />
-                        <img alt="Thumbnail da camisa oversized marrom vista de costas" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-300 dark:hover:border-zinc-600" src="images/mahoraga.png"
-                        />
-                        <img alt="Thumbnail detalhe do tecido da camisa" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-300 dark:hover:border-zinc-600" src="images/mahoraga.png"
-                        />
+                    <div id="thumbnails" class="flex md:flex-col gap-3 justify-center md:justify-start">
+                        <img alt="Thumb 1" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-primary" src="images/mahoraga.png" />
+                        <img alt="Thumb 2" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-300" src="images/mahoraga.png" />
+                        <img alt="Thumb 3" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-300" src="images/mahoraga.png" />
                     </div>
                     <div class="flex-1">
-                        <img alt="Camisa oversized marrom com estampa 'FORCE' em destaque" class="w-full h-auto object-cover rounded-xl" src="images/mahoraga.png"
-                        />
+                        <img id="main-image" alt="Produto" class="w-full h-auto object-cover rounded-xl" src="images/mahoraga.png" />
                     </div>
                 </div>
+
+                <!-- INFORMAÇÕES DO PRODUTO -->
                 <div class="flex flex-col">
                     <div>
-                        <!-- brand removed -->
-                        <h1 class="text-4xl font-extrabold text-zinc-900 dark:text-white mt-1">Camisa Oversized Force</h1>
-                        <p class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 mt-2">R$129,99</p>
+                        <h1 id="produto-nome" class="text-4xl font-extrabold text-zinc-900 dark:text-white mt-1">Carregando...</h1>
+                        <p id="produto-preco" class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 mt-2">—</p>
                     </div>
+
                     <div class="mt-6">
-                        <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed">A Camisa Oversized Force é a combinação perfeita de estilo e conforto. Feita com tecido premium, oferece um caimento solto e moderno, ideal para treinos e para o dia a dia. A estampa exclusiva "Force" na parte de trás adiciona
-                            um toque de atitude ao seu visual.</p>
+                        <p id="produto-descricao" class="text-zinc-600 dark:text-zinc-300 leading-relaxed">—</p>
                         <ul class="mt-4 space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
                             <li><span class="font-semibold text-zinc-700 dark:text-zinc-300">Tecido:</span> 100% Algodão Premium</li>
                             <li><span class="font-semibold text-zinc-700 dark:text-zinc-300">Caimento:</span> Oversized</li>
                         </ul>
                     </div>
+
                     <div class="mt-8 space-y-6">
-                        <div>
-                            <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Cor: Marrom</h3>
-                            <div class="flex items-center space-x-2 mt-2">
-                                <button class="w-8 h-8 rounded-full bg-[#5D473A] ring-2 ring-offset-2 ring-primary ring-offset-background-light dark:ring-offset-background-dark"></button>
-                                <button class="w-8 h-8 rounded-full bg-black border-2 border-zinc-200 dark:border-zinc-700"></button>
-                                <button class="w-8 h-8 rounded-full bg-white border-2 border-zinc-200 dark:border-zinc-700"></button>
-                            </div>
-                        </div>
+                        <!-- TAMANHO -->
                         <div>
                             <div class="flex justify-between items-center">
                                 <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Tamanho</h3>
-                                <a class="text-sm font-medium text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200" href="#">Guia de Medidas</a>
+                                <a class="text-sm font-medium text-zinc-500 hover:text-zinc-700" href="#">Guia de Medidas</a>
                             </div>
-                            <div class="grid grid-cols-4 gap-2 mt-2">
-                                <button class="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">P</button>
-                                <button class="px-4 py-2 border bg-primary text-white rounded-lg text-sm font-medium">M</button>
-                                <button class="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">G</button>
-                                <button class="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">GG</button>
+                            <div id="tamanhos" class="grid grid-cols-4 gap-2 mt-2">
+                                <button data-tamanho="P"  class="tamanho-btn px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">P</button>
+                                <button data-tamanho="M"  class="tamanho-btn px-4 py-2 border bg-primary text-white rounded-lg text-sm font-medium">M</button>
+                                <button data-tamanho="G"  class="tamanho-btn px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">G</button>
+                                <button data-tamanho="GG" class="tamanho-btn px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">GG</button>
                             </div>
                         </div>
+
+                        <!-- QUANTIDADE + ESTOQUE -->
                         <div class="flex items-end gap-4">
                             <div>
-                                <label class="text-sm font-semibold text-zinc-800 dark:text-zinc-200" for="quantity">Quantidade</label>
+                                <label class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Quantidade</label>
                                 <div class="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-lg mt-2">
-                                    <button class="px-3 py-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-l-lg">-</button>
-                                    <input class="w-12 text-center bg-transparent border-x border-zinc-300 dark:border-zinc-700 focus:ring-0 focus:outline-none" id="quantity" type="text" value="1" />
-                                    <button class="px-3 py-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-r-lg">+</button>
+                                    <button id="btn-menos" class="px-3 py-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-l-lg">-</button>
+                                    <input id="quantity" class="w-12 text-center bg-transparent border-x border-zinc-300 dark:border-zinc-700 focus:ring-0 focus:outline-none" type="text" value="1" />
+                                    <button id="btn-mais" class="px-3 py-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-r-lg">+</button>
                                 </div>
                             </div>
-                            <div class="flex items-center text-sm text-green-600 dark:text-green-400">
-                                <span class="material-icons-outlined mr-1 text-base">check_circle</span>
-                                <span>Em estoque</span>
+                            <div id="estoque-status" class="flex items-center text-sm text-green-600 dark:text-green-400">
+                                <span class="material-symbols-outlined mr-1 text-base">check_circle</span>
+                                <span id="estoque-texto">Em estoque</span>
                             </div>
                         </div>
                     </div>
+
+                    <!-- BOTÃO ADICIONAR AO CARRINHO -->
                     <div class="mt-8">
-                        <a href="carrinho.html" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-lg text-base hover:opacity-90 transition-opacity flex items-center justify-center gap-2 block">
-                            <span class="material-icons-outlined text-xl">shopping_cart</span> Adicionar ao Carrinho
-                        </a>
+                        <!--
+                            CORREÇÃO PRINCIPAL:
+                            Substituído <a href="carrinho.html"> por <button type="button">.
+                            Um link navega imediatamente ao ser clicado, impedindo que o
+                            localStorage seja salvo antes do redirecionamento.
+                            Agora o JS salva o item e SÓ ENTÃO redireciona manualmente.
+                        -->
+                        <button
+                            id="btn-carrinho"
+                            type="button"
+                            class="w-full bg-primary text-white font-bold py-3 px-6 rounded-lg text-base hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                        >
+                            <span class="material-symbols-outlined text-xl">shopping_cart</span>
+                            <span>Adicionar ao Carrinho</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
     <script>
         const API = "http://localhost:3000";
+        let produtoAtual = null;
 
+        // ── CARREGAR PRODUTO ──────────────────────────────────────────────
         async function carregarProduto() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get("id");
@@ -149,99 +162,142 @@
                 const res = await fetch(`${API}/produtos/${id}`);
                 if (!res.ok) throw new Error("Produto não encontrado");
                 const produto = await res.json();
+                produtoAtual = produto;
                 renderizarProduto(produto);
+                atualizarBadgeCarrinho();
             } catch (e) {
                 console.error(e);
                 document.querySelector("main").innerHTML = `<p class="text-center py-20 text-slate-400">Erro ao carregar produto.</p>`;
             }
         }
 
+        // ── RENDERIZAR PRODUTO ────────────────────────────────────────────
         function renderizarProduto(produto) {
-            const imagem     = produto.nm_imagem_url || 'images/placeholder.png';
+            const imagem = produto.nm_imagem_url || 'images/placeholder.png';
             const semEstoque = produto.qt_estoque === 0;
 
-            document.querySelector("h1").textContent = produto.nm_produto;
-
-            document.querySelector("p.text-2xl").textContent =
+            // Textos
+            document.getElementById('produto-nome').textContent = produto.nm_produto;
+            document.getElementById('produto-preco').textContent =
                 `R$ ${Number(produto.vl_produto).toFixed(2).replace('.', ',')}`;
-
-            document.querySelector("p.text-zinc-600.dark\\:text-zinc-300").textContent =
+            document.getElementById('produto-descricao').textContent =
                 produto.ds_produto || "Sem descrição disponível.";
 
-            document.querySelector(".flex-1 img").src = imagem;
-            document.querySelector(".flex-1 img").alt = produto.nm_produto;
-
-            document.querySelectorAll(".flex.md\\:flex-col img").forEach(img => {
+            // Imagens
+            document.getElementById('main-image').src = imagem;
+            document.getElementById('main-image').alt = produto.nm_produto;
+            document.querySelectorAll('#thumbnails img').forEach(img => {
                 img.src = imagem;
                 img.alt = produto.nm_produto;
             });
 
-            const estoqueEl = document.querySelector(".flex.items-center.text-sm.text-green-600");
+            // Estoque
+            const statusEl   = document.getElementById('estoque-status');
+            const textoEl    = document.getElementById('estoque-texto');
+            const btnCarrinho = document.getElementById('btn-carrinho');
+
             if (semEstoque) {
-                estoqueEl.className = "flex items-center text-sm text-red-500";
-                estoqueEl.querySelector("span:last-child").textContent = "Sem estoque";
+                statusEl.className = "flex items-center text-sm text-red-500 dark:text-red-400";
+                statusEl.querySelector('span.material-symbols-outlined').textContent = 'cancel';
+                textoEl.textContent = "Sem estoque";
+                btnCarrinho.disabled = true;
+                btnCarrinho.classList.add("opacity-50", "cursor-not-allowed");
+                btnCarrinho.querySelector('span:last-child').textContent = "Produto esgotado";
             } else {
-                estoqueEl.querySelector("span:last-child").textContent = `Em estoque (${produto.qt_estoque})`;
+                textoEl.textContent = `Em estoque (${produto.qt_estoque})`;
             }
-
-            const btnCarrinho = document.querySelector("a[href='carrinho.html']");
-            if (semEstoque) {
-                btnCarrinho.classList.add("opacity-50", "pointer-events-none");
-                btnCarrinho.querySelector("span:last-child").textContent = "Produto esgotado";
-            }
-
-            btnCarrinho.addEventListener("click", (e) => {
-                if (semEstoque) return;
-
-                const tamanhoSelecionado = document.querySelector(".grid.grid-cols-4 button.bg-primary")?.textContent?.trim() || "M";
-                const quantidade         = parseInt(document.getElementById("quantity").value) || 1;
-                const carrinho           = JSON.parse(localStorage.getItem("carrinho") || "[]");
-
-                const itemExistente = carrinho.find(i =>
-                    i.cd_produto === produto.cd_produto && i.nm_tamanho === tamanhoSelecionado
-                );
-
-                if (itemExistente) {
-                    itemExistente.qt_item += quantidade;
-                } else {
-                    carrinho.push({
-                        cd_produto:    produto.cd_produto,
-                        nm_produto:    produto.nm_produto,
-                        vl_unitario:   Number(produto.vl_produto),
-                        nm_imagem_url: produto.nm_imagem_url,
-                        nm_tamanho:    tamanhoSelecionado,
-                        qt_item:       quantidade
-                    });
-                }
-
-                localStorage.setItem("carrinho", JSON.stringify(carrinho));
-            });
         }
 
-        // Seleção de tamanho
-        document.querySelectorAll(".grid.grid-cols-4 button").forEach(btn => {
-            btn.addEventListener("click", () => {
-                document.querySelectorAll(".grid.grid-cols-4 button").forEach(b => {
-                    b.className = "px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800";
+        // ── SELEÇÃO DE TAMANHO ────────────────────────────────────────────
+        let tamanhoSelecionado = "M";
+
+        document.querySelectorAll('.tamanho-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                tamanhoSelecionado = btn.dataset.tamanho;
+                document.querySelectorAll('.tamanho-btn').forEach(b => {
+                    b.className = "tamanho-btn px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800";
                 });
-                btn.className = "px-4 py-2 border bg-primary text-white rounded-lg text-sm font-medium";
+                btn.className = "tamanho-btn px-4 py-2 border bg-primary text-white rounded-lg text-sm font-medium";
             });
         });
 
-        // Quantidade
-        document.querySelectorAll(".flex.items-center.border button").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const input = document.getElementById("quantity");
-                let val     = parseInt(input.value) || 1;
-                if (btn.textContent === "+") val++;
-                if (btn.textContent === "-" && val > 1) val--;
-                input.value = val;
-            });
+        // ── CONTROLE DE QUANTIDADE ────────────────────────────────────────
+        document.getElementById('btn-mais').addEventListener('click', () => {
+            const input = document.getElementById('quantity');
+            input.value = parseInt(input.value || 1) + 1;
         });
+
+        document.getElementById('btn-menos').addEventListener('click', () => {
+            const input = document.getElementById('quantity');
+            const val = parseInt(input.value || 1);
+            if (val > 1) input.value = val - 1;
+        });
+
+        // ── ADICIONAR AO CARRINHO ─────────────────────────────────────────
+        /*
+            CORREÇÃO:
+            O campo salvo agora é sempre 'vl_unitario' (Number),
+            alinhado com o que carrinho.html e checkoutPagamento.html esperam.
+            Antes usava 'vl_produto', causando NaN nos totais.
+        */
+        document.getElementById('btn-carrinho').addEventListener('click', () => {
+            if (!produtoAtual) return;
+            if (produtoAtual.qt_estoque === 0) return;
+
+            const quantidade = parseInt(document.getElementById('quantity').value) || 1;
+            const carrinho   = JSON.parse(localStorage.getItem('carrinho') || '[]');
+
+            const itemExistente = carrinho.find(i =>
+                i.cd_produto === produtoAtual.cd_produto &&
+                i.nm_tamanho === tamanhoSelecionado
+            );
+
+            if (itemExistente) {
+                itemExistente.qt_item += quantidade;
+            } else {
+                carrinho.push({
+                    cd_produto:    produtoAtual.cd_produto,
+                    nm_produto:    produtoAtual.nm_produto,
+                    vl_unitario:   Number(produtoAtual.vl_produto), // campo correto
+                    nm_imagem_url: produtoAtual.nm_imagem_url || '',
+                    nm_tamanho:    tamanhoSelecionado,
+                    qt_item:       quantidade
+                });
+            }
+
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+            // Feedback visual antes de navegar
+            const btn = document.getElementById('btn-carrinho');
+            const textoOriginal = btn.querySelector('span:last-child').textContent;
+            btn.querySelector('span:last-child').textContent = "Adicionado!";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.querySelector('span:last-child').textContent = textoOriginal;
+                btn.disabled = false;
+                atualizarBadgeCarrinho();
+                // Redireciona SOMENTE após salvar no localStorage
+                window.location.href = 'carrinho.html';
+            }, 600);
+        });
+
+        // ── BADGE DO CARRINHO NO ÍCONE ────────────────────────────────────
+        function atualizarBadgeCarrinho() {
+            const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+            const total = carrinho.reduce((acc, i) => acc + i.qt_item, 0);
+            const badge = document.getElementById('cart-badge');
+            if (!badge) return;
+            if (total > 0) {
+                badge.textContent = total;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
 
         carregarProduto();
     </script>
 
 </body>
-
 </html>

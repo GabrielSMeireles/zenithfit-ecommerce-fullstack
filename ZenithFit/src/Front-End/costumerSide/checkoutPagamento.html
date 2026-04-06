@@ -169,35 +169,7 @@
                 <div
                     class="bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-8 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">Resumo do pedido</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <div class="relative">
-                                <img alt="Camisa oversized Maharaga"
-                                    class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700"
-                                    src="images/mahoraga.png" />
-                                <span
-                                    class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <p class="font-medium text-gray-900 dark:text-gray-100">Camisa oversized Maharaga</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Tamanho: G</p>
-                            </div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">R$99,99</p>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="relative">
-                                <img alt="Camisa oversized Limitless"
-                                    class="w-20 h-20 object-cover rounded-md border border-gray-200 dark:border-gray-700"
-                                    src="images/limitless.png" />
-                                <span
-                                    class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <p class="font-medium text-gray-900 dark:text-gray-100">Camisa oversized Limitless</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Tamanho: G</p>
-                            </div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">R$129,99</p>
-                        </div>
+                    <div id="resumo-itens-lista" class="space-y-4">
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
                     <div class="space-y-3 text-sm">
@@ -215,8 +187,8 @@
                                     class="font-medium text-gray-900 dark:text-gray-100">R$0,00</span>
                             </div>
                             <div class="flex justify-between text-green-600 dark:text-green-400">
-                                <span class="">Desconto Cupom</span>
-                                <span class="font-medium">- R$24,49</span>
+                                <span>Desconto Cupom</span>
+                                <span id="resumo-desconto-aside" class="font-medium">- R$ 0,00</span>
                             </div>
                         </div>
                         <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
@@ -233,23 +205,25 @@
     <script>
 
 
-        const clienteLogado = JSON.parse(localStorage.getItem('cliente_cpf')); // Objeto salvo no login
-        const cpf = localStorage.getItem('cliente_cpf');
-        const valorFrete = parseFloat(localStorage.getItem('checkout_valor_frete') || 0);
-        const idModalidade = localStorage.getItem('checkout_id_modalidade');
-        let cupomAplicado = null; // Guardará o objeto do cupom vindo do banco
-        let valorDesconto = 0;
-        const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+        const clienteLogado = localStorage.getItem('cliente_cpf');
+        const cpf           = localStorage.getItem('cliente_cpf');
+        const valorFrete    = parseFloat(localStorage.getItem('checkout_valor_frete') || '0') || 0;
+        const idModalidade  = localStorage.getItem('checkout_id_modalidade');
+        let   cupomAplicado = null;
+        let   valorDesconto = 0;
+
+        let itensCarrinho = [];
+        try {
+            itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+        } catch (e) {
+            console.error('Carrinho inválido no localStorage:', e);
+            itensCarrinho = [];
+        }
+
         const subtotal = itensCarrinho.reduce((acc, item) => {
-            // 1. Limpa o valor do produto (remove R$, espaços e troca vírgula por ponto)
-            const precoLimpo = String(item.vl_produto).replace('R$', '').replace(',', '.').trim();
-            const preco = parseFloat(precoLimpo) || 0;
-
-            // 2. Garante que a quantidade seja um número inteiro
-            const quantidade = parseInt(item.qt_item) || 0;
-
-            // 3. Soma ao acumulador
-            return acc + (preco * quantidade);
+            const v = item.vl_unitario ?? item.vl_produto ?? 0;
+            const preco = parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
+            return acc + (preco * (parseInt(item.qt_item) || 0));
         }, 0);
         async function aplicarCupom() {
             const codigoInput = document.getElementById('input-cupom');
@@ -309,6 +283,11 @@
                 elDesconto.innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
             }
 
+            const elDescontoAside = document.getElementById('resumo-desconto-aside');
+            if (elDescontoAside) {
+                elDescontoAside.innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
+            }
+
             // Atualiza o Total Final
             document.getElementById('resumo-total').innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
         }
@@ -324,13 +303,20 @@
             document.getElementById('resumo-frete-valor').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-total').innerText = `R$ ${(subtotal + valorFrete).toFixed(2).replace('.', ',')}`;
 
+            renderizarItensResumo();
             // Buscar Cartões do Banco
             try {
                 const response = await fetch(`http://localhost:3000/clientes/${cpf}`);
-                const cliente = await response.json();
-                renderizarCartoes(cliente.cartoes);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                // O backend pode retornar o objeto direto ou aninhado em { cliente: {...} }
+                const clienteReal = data.cliente || data;
+                const cartoes = clienteReal.cartoes || [];
+                renderizarCartoes(cartoes);
             } catch (error) {
                 console.error("Erro ao buscar cartões:", error);
+                document.getElementById('cards-container').innerHTML =
+                    `<p class="text-sm text-red-500">Erro ao carregar cartões: ${error.message}</p>`;
             }
         }
 
@@ -404,7 +390,9 @@
                 const valor = parseFloat(inputValor.value);
 
                 if (isNaN(valor) || valor < 10) {
-                    alert(`O valor no cartão final ${cb.nextElementSibling.querySelector('span:last-child').innerText.slice(-4)} deve ser de no mínimo R$ 10,00.`);
+                    const ultimos4 = cb.closest('div[id^="input-container-"]')?.previousElementSibling
+                        ?.querySelector('.text-gray-500')?.innerText?.slice(-4) || '????';
+                    alert(`O valor informado no cartão **** ${ultimos4} deve ser de no mínimo R$ 10,00.`);
                     return;
                 }
 
@@ -431,11 +419,11 @@
                 itens: itensCarrinho.map(item => ({
                     cd_produto: item.cd_produto,
                     qt_item: item.qt_item,
-                    vl_unitario: item.vl_produto,
+                    vl_unitario: item.vl_unitario,
                     nm_tamanho: item.nm_tamanho || "G"
                 })),
-                pagamentos: pagamentos,
-                cupons: []
+                pagamentos: pagamentos,   // ← estava faltando
+                cupons: cupomAplicado ? [cupomAplicado.nm_codigo] : []
             };
 
             try {
@@ -462,55 +450,6 @@
             const container = document.getElementById(`input-container-${id}`);
             container.classList.toggle('hidden');
         }
-
-        // 3. Finalizar Pedido (Evento do Botão)
-        document.getElementById('paymentForm2').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const cartaoSelecionado = document.querySelector('input[name="payment_method"]:checked')?.value;
-            const enderecoId = localStorage.getItem('checkout_id_endereco'); // Salvo na tela anterior
-
-            if (!cartaoSelecionado) {
-                alert("Selecione um cartão para o pagamento.");
-                return;
-            }
-
-
-            const totalPedidoFinal = Math.max(0, (subtotal + valorFrete) - valorDesconto);
-
-            const dadosPedido = {
-                cpf: cpf,
-                cd_endereco: Number(enderecoId),
-                cd_modalidade: Number(idModalidade),
-                itens: itensCarrinho.map(item => ({
-                    cd_produto: item.cd_produto,
-                    qt_item: item.qt_item,
-                    vl_unitario: parseFloat(String(item.vl_produto).replace('R$', '').replace(',', '.').trim()),
-                    nm_tamanho: item.nm_tamanho || "G"
-                })),
-                pagamentos: pagamentos,
-                // ADICIONE ISSO: Pega o nome do código se houver cupom aplicado
-                cupons: cupomAplicado ? [cupomAplicado.nm_codigo] : []
-            };
-
-            try {
-                const response = await fetch('http://localhost:3000/pedidos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosPedido)
-                });
-
-                if (response.ok) {
-                    localStorage.removeItem('carrinho'); // Limpa carrinho após sucesso
-                    window.location.href = 'sucessoCompra.html';
-                } else {
-                    const erro = await response.json();
-                    alert("Erro ao finalizar: " + erro.message);
-                }
-            } catch (error) {
-                alert("Erro de conexão com o servidor.");
-            }
-        });
 
         async function salvarNovoCartao(event) {
             event.preventDefault();
@@ -658,6 +597,39 @@
                 alert("Erro de conexão com o servidor.");
             }
         }
+
+        function renderizarItensResumo() {
+            const container = document.getElementById('resumo-itens-lista');
+            if (!container) return;
+
+            if (!itensCarrinho || itensCarrinho.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-400">Nenhum item no carrinho.</p>`;
+                return;
+            }
+
+            container.innerHTML = itensCarrinho.map(item => {
+                const preco = parseFloat(String(item.vl_unitario ?? item.vl_produto ?? 0)
+                    .replace('R$', '').replace(',', '.').trim()) || 0;
+                return `
+                <div class="flex items-center mb-4">
+                    <div class="relative flex-shrink-0">
+                        <img alt="${item.nm_produto}"
+                            class="w-16 h-16 object-cover rounded-md border border-gray-200 dark:border-gray-700"
+                            src="${item.nm_imagem_url || 'images/placeholder.png'}"
+                            onerror="this.src='images/placeholder.png'" />
+                        <span class="absolute -top-2 -right-2 bg-gray-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">${item.qt_item}</span>
+                    </div>
+                    <div class="ml-3 flex-grow min-w-0">
+                        <p class="font-medium text-gray-900 dark:text-gray-100 text-sm truncate">${item.nm_produto}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Tam: ${item.nm_tamanho || '-'}</p>
+                    </div>
+                    <p class="font-medium text-gray-900 dark:text-gray-100 text-sm ml-2 flex-shrink-0">
+                        R$ ${(preco * item.qt_item).toFixed(2).replace('.', ',')}
+                    </p>
+                </div>`;
+            }).join('');
+        }
+
         inicializarPagamento();
 
     </script>

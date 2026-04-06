@@ -6,34 +6,30 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Visualização do Carrinho</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script>
         tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              colors: {
-                primary: "#1A1A1A",
-                "background-light": "#F5F5F5",
-                "background-dark": "#101010",
-                "surface-light": "#FFFFFF",
-                "surface-dark": "#1F1F1F",
-                "text-light": "#1A1A1A",
-                "text-dark": "#E0E0E0",
-                "text-muted-light": "#6B7280",
-                "text-muted-dark": "#9CA3AF",
-                "border-light": "#E5E7EB",
-                "border-dark": "#374151",
-              },
-              fontFamily: {
-                display: ["Poppins", "sans-serif"],
-              },
-              borderRadius: {
-                DEFAULT: "0.5rem", // 8px
-              },
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1A1A1A",
+                        "background-light": "#F5F5F5",
+                        "background-dark": "#101010",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1F1F1F",
+                        "text-light": "#1A1A1A",
+                        "text-dark": "#E0E0E0",
+                        "text-muted-light": "#6B7280",
+                        "text-muted-dark": "#9CA3AF",
+                        "border-light": "#E5E7EB",
+                        "border-dark": "#374151",
+                    },
+                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    borderRadius: { DEFAULT: "0.5rem" },
+                },
             },
-          },
         };
     </script>
     <style>
@@ -41,8 +37,10 @@
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" style="font-family: 'Inter', sans-serif;">
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark" style="font-family: 'Inter', sans-serif;">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="homepage.html" class="flex items-center flex-shrink-0">
@@ -65,122 +63,187 @@
             </div>
         </div>
     </header>
+
     <div class="container mx-auto px-4 py-8 md:py-16">
         <header class="mb-10 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold text-text-light dark:text-text-dark">Meu Carrinho</h1>
+            <h1 class="text-3xl md:text-4xl font-bold">Meu Carrinho</h1>
             <p class="text-text-muted-light dark:text-text-muted-dark mt-2">Revise seus itens e finalize a sua compra.</p>
         </header>
+
         <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- ITENS -->
             <main class="w-full lg:w-2/3">
-                <div class="space-y-6">
-                    <div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg p-4 opacity-60">
-                        <div class="bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 rounded-md p-3 mb-4 flex items-start gap-3">
-                            <span class="material-symbols-outlined mt-0.5">warning</span>
-                            <div>
-                                <h3 class="font-semibold">Item Removido Automaticamente</h3>
-                                <p class="text-sm">O tempo de reserva deste item expirou e ele não está mais disponível.</p>
-                            </div>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img alt="Camisa oversized preta com design de esqueleto" class="w-24 h-24 sm:w-28 sm:h-28 rounded-md object-cover flex-shrink-0" src="images/kokushibo.png"
-                            />
-                            <div class="flex-grow text-center sm:text-left">
-                                <h2 class="font-semibold text-lg text-text-light dark:text-text-dark line-through">Camisa oversized Kokushibo</h2>
-                                <div class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
-                                    <span>Tamanho: GG</span> | <span>Cor: Preto</span>
-                                </div>
-                                <div class="text-lg font-medium text-text-muted-light dark:text-text-muted-dark mt-2 line-through">
-                                    R$129,99
-                                </div>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <button class="w-32 h-10 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-md cursor-not-allowed" disabled="">
-                                    Indisponível
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg p-4">
-                        <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img alt="Camisa oversized branca com design de aranha" class="w-24 h-24 sm:w-28 sm:h-28 rounded-md object-cover flex-shrink-0" src="images/spider.png"
-                            />
-                            <div class="flex-grow text-center sm:text-left">
-                                <h2 class="font-semibold text-lg text-text-light dark:text-text-dark">Camisa oversized Spider</h2>
-                                <div class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
-                                    <span>Tamanho: G</span> | <span>Cor: Branco</span>
-                                </div>
-                                <div class="text-lg font-medium text-text-light dark:text-text-dark mt-2">
-                                    R$129,99
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 flex-shrink-0">
-                                <button class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="material-symbols-outlined text-xl">remove</span>
-                                </button>
-                                <input class="w-12 h-10 text-center bg-transparent border-border-light dark:border-border-dark rounded-md focus:ring-primary focus:border-primary" type="text" value="1" />
-                                <button class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="material-symbols-outlined text-xl">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg p-4">
-                        <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img alt="Camisa oversized preta com design de símbolo" class="w-24 h-24 sm:w-28 sm:h-28 rounded-md object-cover flex-shrink-0" src="images/symbol.png"
-                            />
-                            <div class="flex-grow text-center sm:text-left">
-                                <h2 class="font-semibold text-lg text-text-light dark:text-text-dark">Camisa oversized Symbol</h2>
-                                <div class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
-                                    <span>Tamanho: M</span> | <span>Cor: Preto</span>
-                                </div>
-                                <div class="text-lg font-medium text-text-light dark:text-text-dark mt-2">
-                                    R$129,99
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 flex-shrink-0">
-                                <button class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="material-symbols-outlined text-xl">remove</span>
-                                </button>
-                                <input class="w-12 h-10 text-center bg-transparent border-border-light dark:border-border-dark rounded-md focus:ring-primary focus:border-primary" type="text" value="1" />
-                                <button class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="material-symbols-outlined text-xl">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div id="container-itens" class="space-y-6">
+                    <p class="text-center text-gray-400 py-10">Carregando carrinho...</p>
                 </div>
             </main>
+
+            <!-- RESUMO -->
             <aside class="w-full lg:w-1/3">
                 <div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg p-6 sticky top-8">
                     <h2 class="text-2xl font-bold mb-6">Resumo do Pedido</h2>
                     <div class="space-y-3 mb-6 text-text-muted-light dark:text-text-muted-dark">
                         <div class="flex justify-between">
-                            <span>Subtotal</span>
-                            <span class="text-text-light dark:text-text-dark">R$259,98</span>
+                            <span>Subtotal (<span id="resumo-qtd">0</span> iten(s))</span>
+                            <span id="resumo-subtotal" class="text-text-light dark:text-text-dark font-medium">R$ 0,00</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Frete</span>
-                            <span class="text-text-light dark:text-text-dark">Grátis</span>
+                            <span class="text-text-light dark:text-text-dark">Calculado no checkout</span>
                         </div>
                     </div>
                     <div class="border-t border-border-light dark:border-border-dark my-6"></div>
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-lg font-medium">Total</span>
-                        <span class="text-2xl font-bold text-text-light dark:text-text-dark">R$259,98</span>
+                        <span id="resumo-total" class="text-2xl font-bold">R$ 0,00</span>
                     </div>
-                    <a href="checkout.html" class="block w-full bg-primary text-white py-3 rounded-md font-semibold text-lg hover:opacity-90 transition-opacity text-center">
+                    <a href="checkout.html" id="btn-checkout"
+                        class="block w-full bg-primary text-white py-3 rounded-md font-semibold text-lg hover:opacity-90 transition-opacity text-center">
                         Finalizar Compra
                     </a>
                     <div class="mt-4 text-center">
-                        <a class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-white transition-colors" href="produtos.html">
-              Continuar comprando
-            </a>
+                        <a class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-white transition-colors"
+                            href="produtos.html">
+                            Continuar comprando
+                        </a>
                     </div>
                 </div>
             </aside>
+
         </div>
     </div>
 
-</body>
+    <script>
+        /*
+            CORREÇÃO PRINCIPAL:
+            Todos os cálculos agora lêem 'item.vl_unitario' (Number),
+            que é o campo salvo pelo detalhesProduto.html corrigido.
+            Antes, checkoutPagamento.html lia 'item.vl_produto' — campo errado —
+            resultando em NaN no subtotal.
+        */
 
+        let carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+
+        function salvarCarrinho() {
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        }
+
+        // Garante que o preço nunca vira NaN independente de como foi salvo
+        function precoSeguro(item) {
+            const v = item.vl_unitario ?? item.vl_produto ?? 0;
+            return parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
+        }
+
+        function calcularSubtotal() {
+            return carrinho.reduce((acc, item) => acc + precoSeguro(item) * (item.qt_item || 0), 0);
+        }
+
+        function totalItens() {
+            return carrinho.reduce((acc, item) => acc + (item.qt_item || 0), 0);
+        }
+
+        function atualizarResumo() {
+            const subtotal  = calcularSubtotal();
+            const formatado = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-subtotal').textContent = formatado;
+            document.getElementById('resumo-total').textContent    = formatado;
+            document.getElementById('resumo-qtd').textContent      = totalItens();
+
+            // Desabilita botão de checkout se carrinho vazio
+            const btnCheckout = document.getElementById('btn-checkout');
+            if (carrinho.length === 0) {
+                btnCheckout.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                btnCheckout.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function renderizarCarrinho() {
+            const container = document.getElementById('container-itens');
+
+            if (carrinho.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16">
+                        <span class="material-symbols-outlined text-6xl text-gray-300">shopping_cart</span>
+                        <p class="text-gray-400 mt-4 text-lg">Seu carrinho está vazio.</p>
+                        <a href="produtos.html" class="mt-4 inline-block bg-primary text-white px-6 py-2 rounded-md font-semibold hover:opacity-90">
+                            Ver Produtos
+                        </a>
+                    </div>`;
+                atualizarResumo();
+                return;
+            }
+
+            container.innerHTML = carrinho.map((item, index) => {
+                const preco    = precoSeguro(item);
+                const subtotal = preco * (item.qt_item || 0);
+
+                return `
+                <div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg p-4">
+                    <div class="flex flex-col sm:flex-row gap-4 items-center">
+                        <img
+                            src="${item.nm_imagem_url || 'images/placeholder.png'}"
+                            alt="${item.nm_produto || 'Produto'}"
+                            class="w-24 h-24 sm:w-28 sm:h-28 rounded-md object-cover flex-shrink-0"
+                            onerror="this.src='images/placeholder.png'"
+                        />
+                        <div class="flex-grow text-center sm:text-left">
+                            <h2 class="font-semibold text-lg">${item.nm_produto || 'Produto'}</h2>
+                            <div class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
+                                <span>Tamanho: ${item.nm_tamanho || '-'}</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:gap-4 mt-2">
+                                <span class="text-sm text-text-muted-light dark:text-text-muted-dark">
+                                    Unitário: R$ ${preco.toFixed(2).replace('.', ',')}
+                                </span>
+                                <span class="text-base font-semibold">
+                                    Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center gap-3 flex-shrink-0">
+                            <div class="flex items-center gap-2">
+                                <button onclick="alterarQuantidade(${index}, -1)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <span class="material-symbols-outlined text-xl">remove</span>
+                                </button>
+                                <span class="w-8 text-center font-semibold">${item.qt_item}</span>
+                                <button onclick="alterarQuantidade(${index}, 1)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full border border-border-light dark:border-border-dark hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <span class="material-symbols-outlined text-xl">add</span>
+                                </button>
+                            </div>
+                            <button onclick="removerItem(${index})"
+                                class="text-xs text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors">
+                                <span class="material-symbols-outlined text-base">delete</span>
+                                Remover
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            atualizarResumo();
+        }
+
+        function alterarQuantidade(index, delta) {
+            carrinho[index].qt_item += delta;
+            if (carrinho[index].qt_item <= 0) {
+                carrinho.splice(index, 1);
+            }
+            salvarCarrinho();
+            renderizarCarrinho();
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            salvarCarrinho();
+            renderizarCarrinho();
+        }
+
+        renderizarCarrinho();
+    </script>
+
+</body>
 </html>

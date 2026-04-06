@@ -225,7 +225,7 @@
                             <!-- Substitua os valores fixos por esses IDs -->
                             <div class="flex justify-between">
                                 <span>Subtotal</span>
-                                <span id="resumo-subtotal">R$ 229,98</span> <!-- Valor fixo de exemplo -->
+                                <span id="resumo-subtotal">R$ 0,00</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Frete (<span id="frete-nome">---</span>)</span>
@@ -237,10 +237,10 @@
                                 <span>Total</span>
                                 <span id="resumo-total">R$ 229,98</span>
                             </div>
-                            <a href="checkoutPagamento.html"
-                                class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-center">
+                            <button onclick="continuarParaPagamento()"
+                                class="block mt-6 w-full bg-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-colors text-center w-full">
                                 Continuar para Pagamento
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -363,7 +363,12 @@
 
         // Valor base do subtotal (idealmente viria do seu carrinho/localStorage)
         // Variável para armazenar o subtotal vindo do seu carrinho
-        let subtotalGlobal = 229.98; // Exemplo: Pegue isso do seu localStorage do carrinho
+        function precoSeguro(item) {
+            const v = item.vl_unitario ?? item.vl_produto ?? 0;
+            return parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
+        }
+        const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+        let subtotalGlobal = itensCarrinho.reduce((acc, item) => acc + precoSeguro(item) * (item.qt_item || 0), 0);
 
         async function carregarFretesDoBanco() {
             try {
@@ -411,13 +416,16 @@
             const valorFrete = parseFloat(input.value);
             const nomeFrete = input.getAttribute('data-label');
             const idModalidade = input.getAttribute('data-id'); // IMPORTANTE para o banco
+            const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+            subtotalGlobal = itensCarrinho.reduce((acc, item) => acc + (Number(item.vl_unitario) * item.qt_item), 0);
 
             const total = subtotalGlobal + valorFrete;
 
             // Atualiza a tela
             document.getElementById('frete-nome').innerText = nomeFrete;
-            document.getElementById('resumo-frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-            document.getElementById('resumo-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-frete').innerText    = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-total').innerText    = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
             // Estilização visual
             document.querySelectorAll('#shipping-options-container label').forEach(l => l.classList.remove('border-primary', 'bg-gray-50'));
@@ -427,6 +435,10 @@
             // Guardamos o ID da modalidade para enviar na rota /pedidos
             localStorage.setItem('checkout_id_modalidade', idModalidade);
             localStorage.setItem('checkout_valor_frete', valorFrete);
+            const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');
+            if (enderecoSelecionado) {
+                localStorage.setItem('checkout_id_endereco', enderecoSelecionado.value);
+            }
         }
 
         async function finalizarPedidoNoBanco() {
@@ -461,6 +473,35 @@
                 window.location.href = "confirmacao.html";
             }
         }
+
+        function continuarParaPagamento() {
+        const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');
+        const freteSelecionado    = document.querySelector('input[name="shipping_method"]:checked');
+
+        if (!enderecoSelecionado) {
+            alert("Selecione um endereço de entrega.");
+            return;
+        }
+        if (!freteSelecionado) {
+            alert("Selecione uma opção de frete.");
+            return;
+        }
+
+        localStorage.setItem('checkout_id_endereco',  enderecoSelecionado.value);
+        localStorage.setItem('checkout_id_modalidade', freteSelecionado.getAttribute('data-id'));
+        localStorage.setItem('checkout_valor_frete',   parseFloat(freteSelecionado.value));
+        window.location.href = 'checkoutPagamento.html';
+    }
+
+    // TAMBÉM: inicializar o subtotal na tela ao carregar (antes só aparecia ao selecionar frete)
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEnderecos();
+        // Mostra o subtotal do carrinho imediatamente, sem esperar selecionar frete
+        document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
+        document.getElementById('resumo-total').innerText    = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
+        const form = document.querySelector('details form');
+        if (form) form.addEventListener('submit', salvarNovoEndereco);
+    });
     </script>
 </body>
 
