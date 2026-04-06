@@ -247,7 +247,6 @@
             </div>
     </main>
     </div>
-    <!-- Cole este bloco no lugar do seu script atual -->
     <script>
         const API_URL = "http://localhost:3000";
         const cpf = localStorage.getItem('cliente_cpf');
@@ -257,7 +256,6 @@
             window.location.href = 'login.html';
         }
 
-        // --- FUNÇÃO PARA CARREGAR ENDEREÇOS ---
         async function carregarEnderecos() {
             const container = document.getElementById('address-container');
             try {
@@ -272,7 +270,6 @@
                     return;
                 }
 
-                // Localize o container.innerHTML.map dentro de carregarEnderecos e substitua por este:
                 container.innerHTML = clienteReal.enderecos.map((end, index) => {
                     const isSelected = index === 0;
                     return `
@@ -281,7 +278,7 @@
             <div class="flex items-start space-x-4">
                 <input ${isSelected ? 'checked' : ''} class="mt-1 h-4 w-4 text-primary" name="delivery_address" type="radio" value="${end.cd_endereco}" onchange="atualizarEstiloSelecao(this)" />
                 <div>
-                    <!-- O APELIDO AGORA É O TÍTULO -->
+                    
                     <p class="font-bold text-gray-900 text-lg uppercase tracking-wide">${end.nm_identificacao || 'Endereço'}</p>
                     <p class="text-gray-600">${end.nm_logradouro}, ${end.cd_numero}</p>
                     <p class="text-gray-500 text-sm">${end.nm_bairro} - ${end.nm_cidade}/${end.sg_estado}</p>
@@ -296,7 +293,6 @@
             }
         }
 
-        // --- FUNÇÃO PARA SALVAR (CORRIGIDA E SEM PAÍS) ---
         async function salvarNovoEndereco(e) {
             e.preventDefault();
 
@@ -305,10 +301,8 @@
             submitBtn.disabled = true;
             submitBtn.innerText = "Salvando...";
 
-            // Objeto ajustado para a sua realidade (SEM PAÍS)
-            // Dentro da função salvarNovoEndereco, atualize o objeto novoEndereco:
             const novoEndereco = {
-                nm_identificacao: document.getElementById('add-nickname').value, // <-- Adicionado aqui
+                nm_identificacao: document.getElementById('add-nickname').value, 
                 nm_tipo_endereco: document.getElementById('add-residence-type').value,
                 cd_cep: document.getElementById('add-cep').value,
                 nm_logradouro: document.getElementById('add-street').value,
@@ -361,8 +355,8 @@
             }
         });
 
-        // Valor base do subtotal (idealmente viria do seu carrinho/localStorage)
-        // Variável para armazenar o subtotal vindo do seu carrinho
+       
+        // Variável para armazenar o subtotal vindo do carrinho
         function precoSeguro(item) {
             const v = item.vl_unitario ?? item.vl_produto ?? 0;
             return parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
@@ -376,12 +370,11 @@
                 const modalidades = await response.json();
 
                 const container = document.getElementById('shipping-options-container');
-                container.innerHTML = ''; // Limpa o "Carregando..."
+                container.innerHTML = ''; 
 
                 modalidades.forEach(mod => {
                     const valorFormatado = parseFloat(mod.vl_fixo).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 
-                    // Criamos o HTML dinamicamente
                     const label = document.createElement('label');
                     label.className = "flex items-center justify-between p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-all";
 
@@ -409,13 +402,13 @@
             }
         }
 
-        // Chame a função ao iniciar a página
+        // Chama a função ao iniciar a página
         carregarFretesDoBanco();
 
         function atualizarResumoFrete(input) {
             const valorFrete = parseFloat(input.value);
             const nomeFrete = input.getAttribute('data-label');
-            const idModalidade = input.getAttribute('data-id'); // IMPORTANTE para o banco
+            const idModalidade = input.getAttribute('data-id'); 
             const itensCarrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
             subtotalGlobal = itensCarrinho.reduce((acc, item) => acc + (Number(item.vl_unitario) * item.qt_item), 0);
 
@@ -424,15 +417,14 @@
             // Atualiza a tela
             document.getElementById('frete-nome').innerText = nomeFrete;
             document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
-            document.getElementById('resumo-frete').innerText    = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-            document.getElementById('resumo-total').innerText    = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
             // Estilização visual
             document.querySelectorAll('#shipping-options-container label').forEach(l => l.classList.remove('border-primary', 'bg-gray-50'));
             input.closest('label').classList.add('border-primary', 'bg-gray-50');
 
-            // SALVANDO PARA O BANCO:
-            // Guardamos o ID da modalidade para enviar na rota /pedidos
+            // Guarda o ID da modalidade pra enviar pro banco
             localStorage.setItem('checkout_id_modalidade', idModalidade);
             localStorage.setItem('checkout_valor_frete', valorFrete);
             const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');
@@ -441,67 +433,34 @@
             }
         }
 
-        async function finalizarPedidoNoBanco() {
-            const cpfCliente = "123..."; // Pegue do login
-            const idEndereco = 10; // Pegue do endereço selecionado na tela
-            const idModalidade = localStorage.getItem('checkout_id_modalidade');
-
-            // Itens que estão no carrinho (Exemplo)
-            const itensCarrinho = [
-                { cd_produto: 1, qt_item: 2, vl_unitario: 50.00, nm_tamanho: "M" }
-            ];
-
-            const corpoPedido = {
-                cpf: cpfCliente,
-                cd_endereco: Number(idEndereco),
-                cd_modalidade: Number(idModalidade),
-                itens: itensCarrinho,
-                pagamentos: [
-                    { cd_cartao: 5, vl_pago: 125.00 } // Exemplo de um cartão pagando tudo
-                ],
-                cupons: [] // Códigos dos cupons se houver
-            };
-
-            const response = await fetch('http://localhost:3000/pedidos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(corpoPedido)
-            });
-
-            if (response.ok) {
-                alert("Pedido realizado com sucesso!");
-                window.location.href = "confirmacao.html";
-            }
-        }
 
         function continuarParaPagamento() {
-        const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');
-        const freteSelecionado    = document.querySelector('input[name="shipping_method"]:checked');
+            const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');
+            const freteSelecionado = document.querySelector('input[name="shipping_method"]:checked');
 
-        if (!enderecoSelecionado) {
-            alert("Selecione um endereço de entrega.");
-            return;
+            if (!enderecoSelecionado) {
+                alert("Selecione um endereço de entrega.");
+                return;
+            }
+            if (!freteSelecionado) {
+                alert("Selecione uma opção de frete.");
+                return;
+            }
+
+            localStorage.setItem('checkout_id_endereco', enderecoSelecionado.value);
+            localStorage.setItem('checkout_id_modalidade', freteSelecionado.getAttribute('data-id'));
+            localStorage.setItem('checkout_valor_frete', parseFloat(freteSelecionado.value));
+            window.location.href = 'checkoutPagamento.html';
         }
-        if (!freteSelecionado) {
-            alert("Selecione uma opção de frete.");
-            return;
-        }
 
-        localStorage.setItem('checkout_id_endereco',  enderecoSelecionado.value);
-        localStorage.setItem('checkout_id_modalidade', freteSelecionado.getAttribute('data-id'));
-        localStorage.setItem('checkout_valor_frete',   parseFloat(freteSelecionado.value));
-        window.location.href = 'checkoutPagamento.html';
-    }
-
-    // TAMBÉM: inicializar o subtotal na tela ao carregar (antes só aparecia ao selecionar frete)
-    document.addEventListener('DOMContentLoaded', () => {
-        carregarEnderecos();
-        // Mostra o subtotal do carrinho imediatamente, sem esperar selecionar frete
-        document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
-        document.getElementById('resumo-total').innerText    = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
-        const form = document.querySelector('details form');
-        if (form) form.addEventListener('submit', salvarNovoEndereco);
-    });
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarEnderecos();
+            // Mostra o subtotal do carrinho imediatamente, sem esperar selecionar frete
+            document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-total').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
+            const form = document.querySelector('details form');
+            if (form) form.addEventListener('submit', salvarNovoEndereco);
+        });
     </script>
 </body>
 

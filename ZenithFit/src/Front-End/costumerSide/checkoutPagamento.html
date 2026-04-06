@@ -134,7 +134,7 @@
                             </button>
                         </div>
 
-                        <!-- No resumo do pedido (Aside), vamos dar um ID para o desconto -->
+                        <!-- id desconto -->
                         <div class="flex justify-between text-green-600 dark:text-green-400">
                             <span class="">Desconto Cupom</span>
                             <span id="resumo-desconto" class="font-medium">- R$ 0,00</span>
@@ -252,7 +252,7 @@
 
                 alert(`Cupom "${codigo}" de R$ ${valorDesconto.toFixed(2)} aplicado!`);
 
-                // 3. Bloqueia o input para não aplicarem dois cupons (conforme sua regra de negócio)
+                // 3. Bloqueia o input para não aplicarem dois cupons
                 codigoInput.disabled = true;
 
                 // 4. Atualiza os números na tela
@@ -266,7 +266,7 @@
             }
         }
 
-        // Criamos uma função separada para atualizar os valores na tela
+        // atualizar os valores na tela
         function atualizarTotais() {
             const totalSemCupom = subtotal + valorFrete;
 
@@ -404,7 +404,7 @@
             }
 
             // Validar se a soma dos cartões bate com o total do pedido
-            // Usamos .toFixed(2) para evitar problemas de precisão do JS (ex: 0.1 + 0.2)
+            // .toFixed(2) para evitar problemas de precisão do JS 
             const totalComDesconto = (subtotal + valorFrete) - valorDesconto;
             if (somaValoresInformados.toFixed(2) !== totalComDesconto.toFixed(2)) {
                 alert(`A soma dos cartões (R$ ${somaValoresInformados.toFixed(2)}) deve ser igual ao total com desconto (R$ ${totalComDesconto.toFixed(2)}).`);
@@ -454,7 +454,6 @@
         async function salvarNovoCartao(event) {
             event.preventDefault();
 
-            // Pegamos o CPF que salvamos no localStorage lá no Login
             const cpfCliente = localStorage.getItem('cliente_cpf');
 
             const dadosCartao = {
@@ -559,7 +558,7 @@
             const cvv = elCvv ? elCvv.value : '';
             const bandeiraId = elBandeira ? elBandeira.value : '';
 
-            // 3. Validação (o que estava disparando o seu erro)
+            // 3. Validação
             if (!numCartao || !nomeImpresso || !validade || !cvv) {
                 alert("Por favor, preencha todos os campos do cartão.");
                 return;

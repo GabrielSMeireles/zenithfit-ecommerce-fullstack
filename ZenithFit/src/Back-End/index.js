@@ -5,8 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 connection();
-// --- ROTAS ---
-// 1. Criar cliente (Atualizado)
+// 1. Criar cliente
 app.post("/clientes", async (req, res) => {
     try {
         const dados = req.body;
@@ -22,12 +21,10 @@ app.post("/clientes", async (req, res) => {
                 cd_genero: Number(dados.cd_genero) || 1,
                 cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
                 cd_status: 1,
-                // ADICIONE ESTA LINHA ABAIXO:
                 nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular",
-                // Localize o app.post("/clientes") e altere o bloco de endereços:
                 enderecos: {
                     create: dados.enderecos.map((end) => ({
-                        nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
+                        nm_identificacao: end.nm_identificacao || "Casa",
                         cd_cep: end.cd_cep,
                         nm_logradouro: end.nm_logradouro,
                         cd_numero: end.cd_numero,
@@ -64,9 +61,7 @@ app.get("/clientes", async (req, res) => {
                 genero: true,
                 tipo_telefone: true,
                 status_cliente: true,
-                // 🔥 adicionando endereços
                 enderecos: true,
-                // 🔥 adicionando cartões + bandeira
                 cartoes: {
                     include: {
                         bandeira: true
@@ -85,7 +80,7 @@ app.get("/clientes/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
         const cliente = await prisma.cliente.findUnique({
-            where: { cd_cpf: cpf.trim() }, //trim remove os espaços em branco
+            where: { cd_cpf: cpf.trim() },
             include: {
                 genero: true,
                 tipo_telefone: true,
@@ -106,12 +101,11 @@ app.get("/clientes/:cpf", async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar cliente" });
     }
 });
-// 4. ATUALIZAR (Atualizado)
+// 4. ATUALIZAR
 app.put("/clientes/:cpf", async (req, res) => {
     try {
         const cpf = req.params.cpf.trim();
         const dados = req.body;
-        // 1. Objeto de atualização básica
         const updateData = {
             nm_nome_cliente: dados.nm_nome_cliente,
             dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
@@ -125,19 +119,15 @@ app.put("/clientes/:cpf", async (req, res) => {
             updateData.cd_senha = dados.nm_senha;
         }
         const resultado = await prisma.$transaction(async (tx) => {
-            // Remove registros antigos para evitar duplicidade ou lixo
             await tx.endereco.deleteMany({ where: { cd_cpf: cpf } });
             await tx.cartao_credito.deleteMany({ where: { cd_cpf: cpf } });
             return await tx.cliente.update({
                 where: { cd_cpf: cpf },
                 data: {
                     ...updateData,
-                    // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
-                    // Dentro do prisma.$transaction no PUT
-                    // Localize o app.put("/clientes/:cpf") e altere o map dentro da transação:
                     enderecos: {
                         create: (dados.enderecos || []).map((end) => ({
-                            nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
+                            nm_identificacao: end.nm_identificacao || "Casa",
                             cd_cep: end.cd_cep,
                             nm_logradouro: end.nm_logradouro,
                             cd_numero: end.cd_numero,
@@ -151,10 +141,10 @@ app.put("/clientes/:cpf", async (req, res) => {
                         create: (dados.cartoes || []).map((c) => ({
                             cd_numero_cartao: c.cd_numero_cartao,
                             nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
-                            cd_seguranca: c.cd_seguranca || "000", // Evita erro se o campo sumir na edição
+                            cd_seguranca: c.cd_seguranca || "000",
                             dt_validade_cartao: new Date(c.dt_validade_cartao),
                             cd_bandeira: Number(c.cd_bandeira || 1),
-                            cartao_preferencial: !!c.cartao_preferencial // Garante que é booleano
+                            cartao_preferencial: !!c.cartao_preferencial
                         }))
                     }
                 }
@@ -168,11 +158,10 @@ app.put("/clientes/:cpf", async (req, res) => {
         res.status(500).json({ message: "Erro ao atualizar cliente" });
     }
 });
-// 5. Deletar (Atualizado para remover endereço)
+// 5. Deletar
 app.delete("/clientes/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
-        // 🔥 remove cartões primeiro
         await prisma.$transaction(async (tx) => {
             await tx.cartao_credito.deleteMany({
                 where: { cd_cpf: cpf }
@@ -195,11 +184,7 @@ app.delete("/clientes/:cpf", async (req, res) => {
 });
 app.post("/pedidos", async (req, res) => {
     try {
-        const { cpf, cd_endereco, cd_modalidade, // Agora recebemos o ID da modalidade de frete
-        itens, // Cada item agora deve ter: cd_produto, qt_item, vl_unitario, nm_tamanho
-        pagamentos, // Array de { cd_cartao, vl_pago }
-        cupons // Array de códigos (strings)
-         } = req.body;
+        const { cpf, cd_endereco, cd_modalidade, itens, pagamentos, cupons } = req.body;
         const resultado = await prisma.$transaction(async (tx) => {
             // 1. Buscar valor real do Frete no Banco
             const modalidade = await tx.modalidade_Frete.findUnique({
@@ -232,17 +217,15 @@ app.post("/pedidos", async (req, res) => {
                     cd_modalidade: cd_modalidade,
                     vl_total: vl_total_pedido,
                     vl_frete: vl_frete,
-                    cd_status_pedido: 1, // "Em Processamento"
-                    // Itens com Tamanho
+                    cd_status_pedido: 1,
                     itens: {
                         create: itens.map((i) => ({
                             cd_produto: i.cd_produto,
                             qt_item: i.qt_item,
                             vl_unitario: i.vl_unitario,
-                            nm_tamanho: i.nm_tamanho // Agora salvando o tamanho (P, M, G...)
+                            nm_tamanho: i.nm_tamanho
                         }))
                     },
-                    // Pagamentos (Múltiplos cartões)
                     pagamentos: {
                         create: pagamentos.map((p) => ({
                             cd_cartao: p.cd_cartao,
@@ -251,7 +234,6 @@ app.post("/pedidos", async (req, res) => {
                     }
                 }
             });
-            // 6. Vincular Cupons e desativar se for Cupom de TROCA
             for (const cupom of cuponsParaVincular) {
                 await tx.cupom_Pedido.create({
                     data: {
@@ -275,13 +257,11 @@ app.post("/pedidos", async (req, res) => {
         res.status(500).json({ message: error.message || "Erro ao processar compra" });
     }
 });
-// 6. Listar Produtos (Para a Home e Carrinho)
+// 6. Listar Produtos
 app.get("/produtos", async (req, res) => {
     try {
         const produtos = await prisma.produto.findMany({
-            where: {
-            // Opcional: você pode adicionar um campo 'fl_ativo' no futuro
-            }
+            where: {}
         });
         res.status(200).json(produtos);
     }
@@ -289,7 +269,7 @@ app.get("/produtos", async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar produtos" });
     }
 });
-// 7. Buscar um produto específico (Opcional, mas útil para a página de detalhes)
+// 7. Buscar um produto específico
 app.get("/produtos/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -304,7 +284,7 @@ app.get("/produtos/:id", async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar detalhes do produto" });
     }
 });
-// Listar modalidades de frete (necessário para o checkout)
+// Listar modalidades de frete 
 app.get("/fretes", async (req, res) => {
     try {
         const modalidades = await prisma.modalidade_Frete.findMany();
@@ -314,7 +294,41 @@ app.get("/fretes", async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar modalidades de frete" });
     }
 });
-// Listar pedidos do cliente (necessário para a tela de pedidos)
+app.get("/pedidos", async (req, res) => {
+    try {
+        const pedidos = await prisma.pedido.findMany({
+            include: {
+                cliente: { select: { nm_nome_cliente: true, cd_cpf: true } },
+                itens: { include: { produto: true } },
+                pagamentos: { include: { cartao: { include: { bandeira: true } } } },
+                cupons_usados: { include: { cupom: true } },
+                modalidade: true,
+                status_pedido: true,
+                endereco_entrega: true,
+            },
+            orderBy: { dt_pedido: "desc" }
+        });
+        res.status(200).json(pedidos);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao buscar todos os pedidos" });
+    }
+});
+app.patch("/pedidos/:id/status", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { cd_status_pedido } = req.body;
+        const pedido = await prisma.pedido.update({
+            where: { cd_pedido: Number(id) },
+            data: { cd_status_pedido: Number(cd_status_pedido) }
+        });
+        res.status(200).json(pedido);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Erro ao atualizar status do pedido" });
+    }
+});
+// Listar pedidos do cliente 
 app.get("/pedidos/:cpf", async (req, res) => {
     try {
         const { cpf } = req.params;
@@ -357,8 +371,6 @@ app.get("/cupons/:codigo", async (req, res) => {
 app.post("/login", async (req, res) => {
     try {
         const { email, senha, nm_email, cd_senha } = req.body;
-        // Como no front você pode estar enviando 'email' ou 'nm_email'
-        // vamos garantir que pegamos o valor correto
         const emailLogin = email || nm_email;
         const senhaLogin = senha || cd_senha;
         if (!emailLogin || !senhaLogin) {
@@ -371,12 +383,10 @@ app.post("/login", async (req, res) => {
             },
         });
         // Verifica se o cliente existe e se a senha confere
-        // NOTA: Se você estiver usando Bcrypt, aqui deve usar o bcrypt.compare
         if (!cliente || cliente.cd_senha !== senhaLogin) {
             return res.status(401).json({ message: "E-mail ou senha incorretos." });
         }
-        // Se chegou aqui, login deu certo
-        // Retornamos os dados básicos do cliente (sem a senha por segurança)
+        // Retornamos os dados do cliente
         const { cd_senha: _, ...clienteSemSenha } = cliente;
         res.status(200).json(clienteSemSenha);
     }
@@ -406,14 +416,12 @@ app.post('/cartoes', async (req, res) => {
         res.status(500).json({ error: "Erro ao salvar cartão" });
     }
 });
-// Rota para adicionar apenas um endereço novo
 app.post("/enderecos", async (req, res) => {
     try {
-        const { nm_identificacao, // Pegue o apelido vindo do front
-        nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
+        const { nm_identificacao, nm_tipo_endereco, cd_cep, nm_logradouro, cd_numero, nm_bairro, nm_cidade, sg_estado, fk_cliente_cpf } = req.body;
         const novoEnd = await prisma.endereco.create({
             data: {
-                nm_identificacao, // Salve aqui
+                nm_identificacao,
                 nm_tipo_endereco,
                 cd_cep,
                 nm_logradouro,
