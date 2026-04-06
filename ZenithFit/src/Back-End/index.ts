@@ -7,9 +7,7 @@ app.use(express.json());
 app.use(cors());
 connection();
 
-// --- ROTAS ---
-
-// 1. Criar cliente (Atualizado)
+// 1. Criar cliente
 app.post("/clientes", async (req: Request, res: Response) => {
   try {
     const dados = req.body;
@@ -26,13 +24,11 @@ app.post("/clientes", async (req: Request, res: Response) => {
         cd_genero: Number(dados.cd_genero) || 1,
         cd_tipo_telefone: Number(dados.cd_tipo_telefone) || 1,
         cd_status: 1,
-        // ADICIONE ESTA LINHA ABAIXO:
         nm_identificacao_telefone: dados.nm_identificacao_telefone || "Celular",
 
-        // Localize o app.post("/clientes") e altere o bloco de endereços:
         enderecos: {
           create: dados.enderecos.map((end: any) => ({
-            nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
+            nm_identificacao: end.nm_identificacao || "Casa", 
             cd_cep: end.cd_cep,
             nm_logradouro: end.nm_logradouro,
             cd_numero: end.cd_numero,
@@ -74,10 +70,8 @@ app.get("/clientes", async (req: Request, res: Response) => {
         tipo_telefone: true,
         status_cliente: true,
 
-        // 🔥 adicionando endereços
         enderecos: true,
 
-        // 🔥 adicionando cartões + bandeira
         cartoes: {
           include: {
             bandeira: true
@@ -96,7 +90,7 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
   try {
     const { cpf } = req.params;
     const cliente = await prisma.cliente.findUnique({
-      where: { cd_cpf: cpf.trim() }, //trim remove os espaços em branco
+      where: { cd_cpf: cpf.trim() }, 
       include: {
         genero: true,
         tipo_telefone: true,
@@ -118,14 +112,13 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
   }
 });
 
-// 4. ATUALIZAR (Atualizado)
+// 4. ATUALIZAR
 
 app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
     const cpf = req.params.cpf.trim();
     const dados = req.body;
 
-    // 1. Objeto de atualização básica
     const updateData: any = {
       nm_nome_cliente: dados.nm_nome_cliente,
       dt_nascimento: dados.dt_nascimento ? new Date(dados.dt_nascimento) : undefined,
@@ -141,7 +134,6 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
     }
 
     const resultado = await prisma.$transaction(async (tx) => {
-      // Remove registros antigos para evitar duplicidade ou lixo
       await tx.endereco.deleteMany({ where: { cd_cpf: cpf } });
       await tx.cartao_credito.deleteMany({ where: { cd_cpf: cpf } });
 
@@ -149,12 +141,9 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
         where: { cd_cpf: cpf },
         data: {
           ...updateData,
-          // O segredo: usamos (dados.enderecos || []) para nunca dar undefined.map
-          // Dentro do prisma.$transaction no PUT
-          // Localize o app.put("/clientes/:cpf") e altere o map dentro da transação:
           enderecos: {
             create: (dados.enderecos || []).map((end: any) => ({
-              nm_identificacao: end.nm_identificacao || "Casa", // <--- ADICIONE ESTA LINHA
+              nm_identificacao: end.nm_identificacao || "Casa", 
               cd_cep: end.cd_cep,
               nm_logradouro: end.nm_logradouro,
               cd_numero: end.cd_numero,
@@ -168,10 +157,10 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
             create: (dados.cartoes || []).map((c: any) => ({
               cd_numero_cartao: c.cd_numero_cartao,
               nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
-              cd_seguranca: c.cd_seguranca || "000", // Evita erro se o campo sumir na edição
+              cd_seguranca: c.cd_seguranca || "000", 
               dt_validade_cartao: new Date(c.dt_validade_cartao),
               cd_bandeira: Number(c.cd_bandeira || 1),
-              cartao_preferencial: !!c.cartao_preferencial // Garante que é booleano
+              cartao_preferencial: !!c.cartao_preferencial 
             }))
           }
         }
@@ -186,12 +175,10 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
   }
 });
 
-// 5. Deletar (Atualizado para remover endereço)
+// 5. Deletar
 app.delete("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
     const { cpf } = req.params;
-
-    // 🔥 remove cartões primeiro
     await prisma.$transaction(async (tx) => {
 
       await tx.cartao_credito.deleteMany({
@@ -224,10 +211,10 @@ app.post("/pedidos", async (req: Request, res: Response) => {
     const {
       cpf,
       cd_endereco,
-      cd_modalidade, // Agora recebemos o ID da modalidade de frete
-      itens,         // Cada item agora deve ter: cd_produto, qt_item, vl_unitario, nm_tamanho
-      pagamentos,    // Array de { cd_cartao, vl_pago }
-      cupons         // Array de códigos (strings)
+      cd_modalidade, 
+      itens,         
+      pagamentos,    
+      cupons         
     } = req.body;
 
     const resultado = await prisma.$transaction(async (tx) => {
@@ -269,19 +256,18 @@ app.post("/pedidos", async (req: Request, res: Response) => {
           cd_modalidade: cd_modalidade,
           vl_total: vl_total_pedido,
           vl_frete: vl_frete,
-          cd_status_pedido: 1, // "Em Processamento"
+          cd_status_pedido: 1, 
 
-          // Itens com Tamanho
           itens: {
             create: itens.map((i: any) => ({
               cd_produto: i.cd_produto,
               qt_item: i.qt_item,
               vl_unitario: i.vl_unitario,
-              nm_tamanho: i.nm_tamanho // Agora salvando o tamanho (P, M, G...)
+              nm_tamanho: i.nm_tamanho
             }))
           },
 
-          // Pagamentos (Múltiplos cartões)
+
           pagamentos: {
             create: pagamentos.map((p: any) => ({
               cd_cartao: p.cd_cartao,
@@ -291,7 +277,6 @@ app.post("/pedidos", async (req: Request, res: Response) => {
         }
       });
 
-      // 6. Vincular Cupons e desativar se for Cupom de TROCA
       for (const cupom of cuponsParaVincular) {
         await tx.cupom_Pedido.create({
           data: {
@@ -318,12 +303,11 @@ app.post("/pedidos", async (req: Request, res: Response) => {
   }
 });
 
-// 6. Listar Produtos (Para a Home e Carrinho)
+// 6. Listar Produtos
 app.get("/produtos", async (req: Request, res: Response) => {
   try {
     const produtos = await prisma.produto.findMany({
       where: {
-        // Opcional: você pode adicionar um campo 'fl_ativo' no futuro
       }
     });
     res.status(200).json(produtos);
@@ -332,7 +316,7 @@ app.get("/produtos", async (req: Request, res: Response) => {
   }
 });
 
-// 7. Buscar um produto específico (Opcional, mas útil para a página de detalhes)
+// 7. Buscar um produto específico
 app.get("/produtos/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -346,7 +330,7 @@ app.get("/produtos/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Listar modalidades de frete (necessário para o checkout)
+// Listar modalidades de frete 
 app.get("/fretes", async (req: Request, res: Response) => {
   try {
     const modalidades = await prisma.modalidade_Frete.findMany();
@@ -392,7 +376,7 @@ app.patch("/pedidos/:id/status", async (req: Request, res: Response) => {
   }
 });
 
-// Listar pedidos do cliente (necessário para a tela de pedidos)
+// Listar pedidos do cliente 
 app.get("/pedidos/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {
     const { cpf } = req.params;
@@ -438,9 +422,6 @@ app.get("/cupons/:codigo", async (req: Request<{ codigo: string }>, res: Respons
 app.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, senha, nm_email, cd_senha } = req.body;
-
-    // Como no front você pode estar enviando 'email' ou 'nm_email'
-    // vamos garantir que pegamos o valor correto
     const emailLogin = email || nm_email;
     const senhaLogin = senha || cd_senha;
 
@@ -456,13 +437,11 @@ app.post("/login", async (req: Request, res: Response) => {
     });
 
     // Verifica se o cliente existe e se a senha confere
-    // NOTA: Se você estiver usando Bcrypt, aqui deve usar o bcrypt.compare
     if (!cliente || cliente.cd_senha !== senhaLogin) {
       return res.status(401).json({ message: "E-mail ou senha incorretos." });
     }
 
-    // Se chegou aqui, login deu certo
-    // Retornamos os dados básicos do cliente (sem a senha por segurança)
+    // Retornamos os dados do cliente
     const { cd_senha: _, ...clienteSemSenha } = cliente;
 
     res.status(200).json(clienteSemSenha);
@@ -496,11 +475,10 @@ app.post('/cartoes', async (req, res) => {
     }
 });
 
-// Rota para adicionar apenas um endereço novo
 app.post("/enderecos", async (req, res) => {
   try {
     const {
-      nm_identificacao, // Pegue o apelido vindo do front
+      nm_identificacao, 
       nm_tipo_endereco,
       cd_cep,
       nm_logradouro,
@@ -513,7 +491,7 @@ app.post("/enderecos", async (req, res) => {
 
     const novoEnd = await prisma.endereco.create({
       data: {
-        nm_identificacao, // Salve aqui
+        nm_identificacao, 
         nm_tipo_endereco,
         cd_cep,
         nm_logradouro,
