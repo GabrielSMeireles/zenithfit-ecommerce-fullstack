@@ -206,7 +206,6 @@ const STATUS_MAP = {
     5: "Cancelado",
 };
 
-// Mapa de status → quais etapas já foram concluídas
 const ETAPAS = [
     { id: 1, label: "Em Processamento", icon: "schedule" },
     { id: 2, label: "Aprovada",         icon: "check" },
@@ -222,7 +221,6 @@ async function carregarPedido() {
     if (!id) { mostrarErro("ID do pedido não informado."); return; }
 
     try {
-        // Busca todos e filtra pelo id (reutiliza a rota existente)
         const res = await fetch(`${API}/pedidos`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const todos = await res.json();
@@ -240,11 +238,9 @@ function mostrarErro(msg) {
 }
 
 function renderizarPedido(p) {
-    // Breadcrumb e título
     document.getElementById('breadcrumb-id').textContent = `#${p.cd_pedido}`;
     document.getElementById('titulo-pedido').textContent = `Pedido #${p.cd_pedido}`;
 
-    // Informações gerais
     document.getElementById('info-numero').textContent  = `#${p.cd_pedido}`;
     document.getElementById('info-data').textContent    = new Date(p.dt_pedido).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     document.getElementById('info-cliente').textContent = p.cliente?.nm_nome_cliente || p.cd_cpf;
@@ -254,7 +250,6 @@ function renderizarPedido(p) {
         ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, ${end.cd_cep}`
         : '—';
 
-    // Itens
     const tbody = document.getElementById('tabela-itens');
     tbody.innerHTML = (p.itens || []).map(item => {
         const img  = item.produto?.nm_imagem_url || 'images/placeholder.png';
@@ -272,7 +267,6 @@ function renderizarPedido(p) {
         </tr>`;
     }).join('') || `<tr><td colspan="5" class="px-6 py-4 text-center text-slate-400 text-sm">Sem itens.</td></tr>`;
 
-    // Status
     const statusAtual = p.cd_status_pedido;
     document.getElementById('status-label').textContent = STATUS_MAP[statusAtual] || '—';
 
