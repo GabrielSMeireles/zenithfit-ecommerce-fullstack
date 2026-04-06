@@ -87,11 +87,11 @@
         <div class="mb-4 flex flex-wrap items-center gap-2">
           <a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="GestaoPedidos.html">Pedidos</a>
           <span class="text-sm font-medium text-slate-500 dark:text-slate-400">/</span>
-          <span class="text-sm font-medium text-slate-800 dark:text-slate-200">#12345</span>
+          <span id="breadcrumb-id" class="text-sm font-medium text-slate-800 dark:text-slate-200">#...</span>
         </div>
 
         <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <p class="text-4xl font-black leading-tight tracking-[-0.033em] text-slate-900 dark:text-white">Pedido #12345</p>
+          <p id="titulo-pedido" class="text-4xl font-black leading-tight tracking-[-0.033em] text-slate-900 dark:text-white">Carregando...</p>
         </div>
 
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -100,22 +100,22 @@
               <h2 class="mb-4 text-lg font-bold text-slate-900 dark:text-white">Informações Gerais</h2>
               <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2">
                 <div class="flex flex-col gap-1 pr-2">
-                  <p class="text-sm text-slate-500 dark:text-slate-400">Nº do pedido</p>
-                  <p class="font-medium text-slate-800 dark:text-slate-200">#12345</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Nº do pedido</p>
+                    <p id="info-numero" class="font-medium text-slate-800 dark:text-slate-200">—</p>
                 </div>
                 <div class="flex flex-col gap-1 pl-0 sm:pl-2">
-                  <p class="text-sm text-slate-500 dark:text-slate-400">Data</p>
-                  <p class="font-medium text-slate-800 dark:text-slate-200">27 de Outubro, 2023</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Data</p>
+                    <p id="info-data" class="font-medium text-slate-800 dark:text-slate-200">—</p>
                 </div>
                 <div class="flex flex-col gap-1 pr-2">
-                  <p class="text-sm text-slate-500 dark:text-slate-400">Cliente</p>
-                  <a class="font-medium text-primary hover:underline" href="#">Ana Costa</a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Cliente</p>
+                    <p id="info-cliente" class="font-medium text-slate-800 dark:text-slate-200">—</p>
                 </div>
                 <div class="flex flex-col gap-1 pl-0 sm:pl-2">
-                  <p class="text-sm text-slate-500 dark:text-slate-400">Endereço</p>
-                  <p class="font-medium text-slate-800 dark:text-slate-200">Rua das Flores, 123, Cidade, Estado, 12345-678</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Endereço</p>
+                    <p id="info-endereco" class="font-medium text-slate-800 dark:text-slate-200">—</p>
                 </div>
-              </div>
+            </div>
             </div>
 
             <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -131,25 +131,8 @@
                       <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400" scope="col">Preço unitário</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-200 bg-white dark:divide-slate-800 dark:bg-slate-900">
-                    <tr>
-                      <td class="whitespace-nowrap px-6 py-4">
-                        <div class="size-12 rounded-lg bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=100&auto=format&fit=crop')"></div>
-                      </td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">Branco</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">M</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">1</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-slate-800 dark:text-slate-200">R$ 79,90</td>
-                    </tr>
-                    <tr>
-                      <td class="whitespace-nowrap px-6 py-4">
-                        <div class="size-12 rounded-lg bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=100&auto=format&fit=crop')"></div>
-                      </td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">Preto</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">G</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">2</td>
-                      <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-slate-800 dark:text-slate-200">R$ 99,90</td>
-                    </tr>
+                  <tbody id="tabela-itens" class="divide-y divide-slate-200 bg-white dark:divide-slate-800 dark:bg-slate-900">
+                      <tr><td colspan="5" class="px-6 py-4 text-center text-slate-400 text-sm">Carregando itens...</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -160,52 +143,19 @@
             <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <h2 class="mb-4 text-lg font-bold text-slate-900 dark:text-white">Status Atual do Pedido</h2>
               <div class="mb-6 flex items-center justify-center rounded-lg bg-blue-100 p-3 dark:bg-blue-900/40">
-                <span class="font-bold text-blue-600 dark:text-blue-300">Em Trânsito</span>
-              </div>
-              <div class="flex flex-col gap-4">
-                <div class="flex items-center gap-4">
-                  <div class="flex size-8 items-center justify-center rounded-full bg-green-500 text-white">
-                    <span class="material-symbols-outlined text-base">check</span>
-                  </div>
-                  <div>
-                    <p class="font-medium text-slate-800 dark:text-slate-200">Aprovado</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">27/10/2023 - 10:05</p>
-                  </div>
-                </div>
-                <div class="ml-4 h-6 w-px border-l-2 border-dashed border-slate-300 dark:border-slate-700"></div>
-                <div class="flex items-center gap-4">
-                  <div class="flex size-8 items-center justify-center rounded-full bg-primary text-white ring-4 ring-primary/20">
-                    <span class="material-symbols-outlined text-base">local_shipping</span>
-                  </div>
-                  <div>
-                    <p class="font-medium text-slate-800 dark:text-slate-200">Em Trânsito</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">28/10/2023 - 09:30</p>
-                  </div>
-                </div>
-                <div class="ml-4 h-6 w-px border-l-2 border-dashed border-slate-300 dark:border-slate-700"></div>
-                <div class="flex items-center gap-4">
-                  <div class="flex size-8 items-center justify-center rounded-full bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400">
-                    <span class="material-symbols-outlined text-base">home</span>
-                  </div>
-                  <div>
-                    <p class="font-medium text-slate-500 dark:text-slate-400">Entregue</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Pendente</p>
-                  </div>
-                </div>
-              </div>
+                <span id="status-label" class="font-bold text-blue-600 dark:text-blue-300">—</span>
+            </div>
+            <div id="status-timeline" class="flex flex-col gap-4">
+            </div>
             </div>
 
             <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <h2 class="mb-4 text-lg font-bold text-slate-900 dark:text-white">Ações</h2>
               <div class="flex flex-col gap-3">
-                <button onclick="openModal('confirmedModal')" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-primary/90">
-                  <span class="material-symbols-outlined text-base">done_all</span>
-                  <span class="truncate">Confirmar Entrega</span>
-                </button>
-                <button onclick="openModal('cancelledModal')" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
-                  <span class="material-symbols-outlined text-base">cancel</span>
-                  <span class="truncate">Cancelar Pedido</span>
-                </button>
+                <button onclick="atualizarStatus(4).then(() => openModal('confirmedModal'))" ...>Confirmar Entrega</button>
+
+                <button onclick="atualizarStatus(5).then(() => openModal('cancelledModal'))" ...>Cancelar Pedido</button>
+
               </div>
             </div>
           </div>
@@ -245,15 +195,133 @@
       </div>
     </div>
 
-    <script>
-      function openModal(modalId) {
-        document.getElementById(modalId).classList.remove('hidden');
-      }
+<script>
+const API = "http://localhost:3000";
 
-      function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
-      }
-    </script>
+const STATUS_MAP = {
+    1: "Em Processamento",
+    2: "Aprovada",
+    3: "Em Trânsito",
+    4: "Entregue",
+    5: "Cancelado",
+};
+
+// Mapa de status → quais etapas já foram concluídas
+const ETAPAS = [
+    { id: 1, label: "Em Processamento", icon: "schedule" },
+    { id: 2, label: "Aprovada",         icon: "check" },
+    { id: 3, label: "Em Trânsito",      icon: "local_shipping" },
+    { id: 4, label: "Entregue",         icon: "home" },
+];
+
+let pedidoAtual = null;
+
+async function carregarPedido() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) { mostrarErro("ID do pedido não informado."); return; }
+
+    try {
+        // Busca todos e filtra pelo id (reutiliza a rota existente)
+        const res = await fetch(`${API}/pedidos`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const todos = await res.json();
+        pedidoAtual = todos.find(p => String(p.cd_pedido) === String(id));
+        if (!pedidoAtual) throw new Error("Pedido não encontrado.");
+        renderizarPedido(pedidoAtual);
+    } catch (e) {
+        mostrarErro(e.message);
+    }
+}
+
+function mostrarErro(msg) {
+    document.getElementById('titulo-pedido').textContent = "Erro";
+    document.getElementById('info-numero').textContent = msg;
+}
+
+function renderizarPedido(p) {
+    // Breadcrumb e título
+    document.getElementById('breadcrumb-id').textContent = `#${p.cd_pedido}`;
+    document.getElementById('titulo-pedido').textContent = `Pedido #${p.cd_pedido}`;
+
+    // Informações gerais
+    document.getElementById('info-numero').textContent  = `#${p.cd_pedido}`;
+    document.getElementById('info-data').textContent    = new Date(p.dt_pedido).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    document.getElementById('info-cliente').textContent = p.cliente?.nm_nome_cliente || p.cd_cpf;
+
+    const end = p.endereco_entrega;
+    document.getElementById('info-endereco').textContent = end
+        ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, ${end.cd_cep}`
+        : '—';
+
+    // Itens
+    const tbody = document.getElementById('tabela-itens');
+    tbody.innerHTML = (p.itens || []).map(item => {
+        const img  = item.produto?.nm_imagem_url || 'images/placeholder.png';
+        const nome = item.produto?.nm_produto || '—';
+        const preco = `R$ ${Number(item.vl_unitario).toFixed(2).replace('.', ',')}`;
+        return `
+        <tr>
+            <td class="whitespace-nowrap px-6 py-4">
+                <div class="size-12 rounded-lg bg-cover bg-center border border-slate-200" style="background-image: url('${img}')"></div>
+            </td>
+            <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">${nome}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">${item.nm_tamanho || '—'}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 dark:text-slate-300">${item.qt_item}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-slate-800 dark:text-slate-200">${preco}</td>
+        </tr>`;
+    }).join('') || `<tr><td colspan="5" class="px-6 py-4 text-center text-slate-400 text-sm">Sem itens.</td></tr>`;
+
+    // Status
+    const statusAtual = p.cd_status_pedido;
+    document.getElementById('status-label').textContent = STATUS_MAP[statusAtual] || '—';
+
+    const timeline = document.getElementById('status-timeline');
+    timeline.innerHTML = ETAPAS.map((etapa, i) => {
+        const concluida = statusAtual >= etapa.id;
+        const atual     = statusAtual === etapa.id;
+        const circulo   = concluida
+            ? `bg-green-500 text-white`
+            : `bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400`;
+        const anel      = atual ? `ring-4 ring-primary/20 bg-primary text-white` : circulo;
+        const separador = i < ETAPAS.length - 1
+            ? `<div class="ml-4 h-6 w-px border-l-2 border-dashed border-slate-300 dark:border-slate-700"></div>`
+            : '';
+        return `
+        <div class="flex items-center gap-4">
+            <div class="flex size-8 items-center justify-center rounded-full ${anel}">
+                <span class="material-symbols-outlined text-base">${etapa.icon}</span>
+            </div>
+            <div>
+                <p class="font-medium ${concluida ? 'text-slate-800 dark:text-slate-200' : 'text-slate-500 dark:text-slate-400'}">${etapa.label}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">${concluida ? '✓ Concluído' : 'Pendente'}</p>
+            </div>
+        </div>
+        ${separador}`;
+    }).join('');
+}
+
+async function atualizarStatus(novoStatus) {
+    if (!pedidoAtual) return;
+    try {
+        const res = await fetch(`${API}/pedidos/${pedidoAtual.cd_pedido}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cd_status_pedido: novoStatus })
+        });
+        if (!res.ok) throw new Error("Falha ao atualizar status.");
+        pedidoAtual.cd_status_pedido = novoStatus;
+        renderizarPedido(pedidoAtual);
+    } catch (e) {
+        alert("Erro: " + e.message);
+    }
+}
+
+function openModal(id)  { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+carregarPedido();
+</script>
   </div>
 </body>
 </html>

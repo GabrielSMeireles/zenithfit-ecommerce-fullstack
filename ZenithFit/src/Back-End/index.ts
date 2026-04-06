@@ -356,6 +356,42 @@ app.get("/fretes", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/pedidos", async (req: Request, res: Response) => {
+  try {
+    const pedidos = await prisma.pedido.findMany({
+      include: {
+        cliente: { select: { nm_nome_cliente: true, cd_cpf: true } },
+        itens: { include: { produto: true } },
+        pagamentos: { include: { cartao: { include: { bandeira: true } } } },
+        cupons_usados: { include: { cupom: true } },
+        modalidade: true,
+        status_pedido: true,
+        endereco_entrega: true,
+      },
+      orderBy: { dt_pedido: "desc" }
+    });
+    res.status(200).json(pedidos);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao buscar todos os pedidos" });
+  }
+});
+
+app.patch("/pedidos/:id/status", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { cd_status_pedido } = req.body;
+
+    const pedido = await prisma.pedido.update({
+      where: { cd_pedido: Number(id) },
+      data:  { cd_status_pedido: Number(cd_status_pedido) }
+    });
+
+    res.status(200).json(pedido);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao atualizar status do pedido" });
+  }
+});
+
 // Listar pedidos do cliente (necessário para a tela de pedidos)
 app.get("/pedidos/:cpf", async (req: Request<{ cpf: string }>, res: Response) => {
   try {

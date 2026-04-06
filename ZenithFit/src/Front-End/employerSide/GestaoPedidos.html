@@ -90,11 +90,11 @@
             </div>
 
             <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
-                <button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white px-4 text-sm font-medium">Todos</button>
-                <button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Aprovada</button>
-                <button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Em Processamento</button>
-                <button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Em Trânsito</button>
-                <button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Entregue</button>
+                <button data-status="todos"            onclick="filtrarPorStatus(null)"               class="btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white px-4 text-sm font-medium">Todos</button>
+                <button data-status="Aprovada"         onclick="filtrarPorStatus('Aprovada')"         class="btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Aprovada</button>
+                <button data-status="Em Processamento" onclick="filtrarPorStatus('Em Processamento')" class="btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Em Processamento</button>
+                <button data-status="Em Trânsito"      onclick="filtrarPorStatus('Em Trânsito')"      class="btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Em Trânsito</button>
+                <button data-status="Entregue"         onclick="filtrarPorStatus('Entregue')"         class="btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors">Entregue</button>
             </div>
 
             <div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
@@ -109,25 +109,91 @@
                             <th class="px-4 py-4 text-slate-600 text-sm font-semibold text-right">Ações</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-4 py-4 text-slate-900 text-sm font-bold">#12345</td>
-                            <td class="px-4 py-4 text-slate-600 text-sm">Ana Costa</td>
-                            <td class="px-4 py-4 text-slate-600 text-sm">27/10/2023</td>
-                            <td class="px-4 py-4 text-slate-600 text-sm font-medium">R$ 199,90</td>
-                            <td class="px-4 py-4 text-sm">
-                                <span class="inline-flex items-center rounded-full py-1 px-3 text-xs font-semibold bg-blue-50 text-blue-600">Em Processamento</span>
-                            </td>
-                            <td class="px-4 py-4 text-right">
-                                <a href="DetalhamentoPedido.html" class="text-primary text-sm font-bold hover:underline">Detalhar</a>
-                            </td>
+                    <tbody id="tabela-pedidos" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="6" class="px-4 py-8 text-center text-slate-400 text-sm">Carregando pedidos...</td>
                         </tr>
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </main>
     </div>
 </div>
+    <script>
+    const API = "http://localhost:3000";
 
+    const STATUS_MAP = {
+        1: { label: "Em Processamento", class: "bg-blue-50 text-blue-600" },
+        2: { label: "Aprovada",         class: "bg-green-50 text-green-600" },
+        3: { label: "Em Trânsito",      class: "bg-yellow-50 text-yellow-600" },
+        4: { label: "Entregue",         class: "bg-slate-100 text-slate-600" },
+        5: { label: "Cancelado",        class: "bg-red-50 text-red-600" },
+    };
+
+    let todosPedidos = [];
+    let filtroAtivo  = null; // null = todos
+
+    async function carregarPedidos() {
+        try {
+            const res = await fetch(`${API}/pedidos`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            todosPedidos = await res.json();
+            renderizarTabela(todosPedidos);
+        } catch (e) {
+            console.error(e);
+            document.getElementById('tabela-pedidos').innerHTML =
+                `<tr><td colspan="6" class="px-4 py-8 text-center text-red-400 text-sm">Erro ao carregar pedidos: ${e.message}</td></tr>`;
+        }
+    }
+
+    function renderizarTabela(pedidos) {
+        const tbody = document.getElementById('tabela-pedidos');
+        if (!pedidos.length) {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 text-sm">Nenhum pedido encontrado.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = pedidos.map(p => {
+            const status = STATUS_MAP[p.cd_status_pedido] || { label: "Desconhecido", class: "bg-slate-100 text-slate-500" };
+            const data   = new Date(p.dt_pedido).toLocaleDateString('pt-BR');
+            const total  = `R$ ${Number(p.vl_total).toFixed(2).replace('.', ',')}`;
+            const nome   = p.cliente?.nm_nome_cliente || p.cd_cpf;
+
+            return `
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-4 py-4 text-slate-900 text-sm font-bold">#${p.cd_pedido}</td>
+                <td class="px-4 py-4 text-slate-600 text-sm">${nome}</td>
+                <td class="px-4 py-4 text-slate-600 text-sm">${data}</td>
+                <td class="px-4 py-4 text-slate-600 text-sm font-medium">${total}</td>
+                <td class="px-4 py-4 text-sm">
+                    <span class="inline-flex items-center rounded-full py-1 px-3 text-xs font-semibold ${status.class}">
+                        ${status.label}
+                    </span>
+                </td>
+                <td class="px-4 py-4 text-right">
+                    <a href="DetalhamentoPedido.html?id=${p.cd_pedido}" class="text-primary text-sm font-bold hover:underline">Detalhar</a>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    function filtrarPorStatus(statusLabel) {
+        filtroAtivo = statusLabel;
+        const filtrado = statusLabel === null
+            ? todosPedidos
+            : todosPedidos.filter(p => STATUS_MAP[p.cd_status_pedido]?.label === statusLabel);
+        renderizarTabela(filtrado);
+
+        // Atualizar visual dos botões
+        document.querySelectorAll('.btn-filtro').forEach(btn => {
+            const ativo = btn.dataset.status === (statusLabel ?? 'todos');
+            btn.className = ativo
+                ? "btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white px-4 text-sm font-medium"
+                : "btn-filtro flex h-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-medium transition-colors";
+        });
+    }
+
+    carregarPedidos();
+    </script>
 </body>
 </html>
