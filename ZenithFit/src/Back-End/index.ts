@@ -398,7 +398,7 @@ app.get("/pedidos/:cpf", async (req: Request<{ cpf: string }>, res: Response) =>
   }
 });
 
-// Validar cupom antes de finalizar compra
+// Validar cupom
 app.get("/cupons/:codigo", async (req: Request<{ codigo: string }>, res: Response) => {
   try {
     const { codigo } = req.params;
@@ -441,7 +441,7 @@ app.post("/login", async (req: Request, res: Response) => {
       return res.status(401).json({ message: "E-mail ou senha incorretos." });
     }
 
-    // Retornamos os dados do cliente
+    // Retorna os dados do cliente
     const { cd_senha: _, ...clienteSemSenha } = cliente;
 
     res.status(200).json(clienteSemSenha);

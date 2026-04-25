@@ -95,13 +95,11 @@
                 <section class="mb-8">
                     <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Passo 2: Pagamento</h2>
 
-                    <!-- Mantenha o formulário -->
                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
                         <h3 class="font-medium mb-4 text-gray-900 dark:text-gray-100">Cartões salvos</h3>
 
 
                         <div id="cards-container" class="space-y-4">
-                            <!-- O JavaScript vai colocar os cartões aqui dentro automaticamente -->
                             <p class="text-sm text-gray-500">Carregando seus cartões...</p>
                         </div>
 
@@ -122,7 +120,6 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Apenas um tipo de cupom pode ser utilizado
                         por compra.</p>
                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                        <!-- Procure este trecho no seu HTML e adicione o ID e o onclick -->
                         <div class="flex space-x-4">
                             <input id="input-cupom"
                                 class="flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
@@ -235,7 +232,6 @@
             }
 
             try {
-                // Chamada para a rota que você já tem no Back-end
                 const response = await fetch(`http://localhost:3000/cupons/${codigo}`);
 
                 if (!response.ok) {
