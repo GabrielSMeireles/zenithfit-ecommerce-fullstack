@@ -22,7 +22,7 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     cy.intercept('POST', '**/pedidos').as('finalizarPedido');
 
     // --- PARTE 1: LOGIN ---
-    cy.visit('http://127.0.0.1:5500/zenithfit2/ZenithFit/src/Front-End/costumerSide/telaLogin.html');    
+    cy.visit('src/Front-End/costumerSide/telaLogin.html');    
     cy.contains('button', 'ENTRAR').click();
     cy.contains('button', 'Cliente').click();
     cy.get('#login-email-address').type('gabriel@email.com');
