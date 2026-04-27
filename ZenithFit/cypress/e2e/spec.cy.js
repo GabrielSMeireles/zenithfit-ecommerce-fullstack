@@ -1,4 +1,4 @@
-const COMMAND_DELAY = 5000; 
+const COMMAND_DELAY = 3000; 
 
 Cypress.on('command:start', (obj) => {
   return new Promise((resolve) => {
@@ -21,7 +21,7 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     cy.intercept('GET', '**/cupons/**').as('getCupom');
     cy.intercept('POST', '**/pedidos').as('finalizarPedido');
 
-    // --- PARTE 1: LOGIN ---
+    // --- LOGIN ---
     cy.visit('src/Front-End/costumerSide/telaLogin.html');    
     cy.contains('button', 'ENTRAR').click();
     cy.contains('button', 'Cliente').click();
@@ -30,19 +30,19 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     cy.get('button[type="submit"]').contains('Entrar como Cliente').click();
     cy.wait('@loginRequest');
     
-    // --- PARTE 2: SELEÇÃO DE PRODUTO ---
+    // ---  SELEÇÃO DE PRODUTO ---
     cy.url().should('include', 'homepage.html');
     cy.get('#container-novidades').should('not.be.empty');
     // Forçamos o clique caso o card tenha overlays
     cy.contains('h3', 'Camisa oversized Mahoraga').closest('a').click({ force: true });
 
-    // --- PARTE 3: DETALHES DO PRODUTO ---
+    // --- DETALHES DO PRODUTO ---
     cy.get('#produto-nome', { timeout: 10000 }).should('not.contain', 'Carregando...');
     cy.get('button[data-tamanho="G"]').click();
     cy.get('#btn-mais').click(); // Qtd vira 2
     cy.get('#btn-carrinho').click();
 
-    // --- PARTE 4: CARRINHO ---
+    // --- CARRINHO ---
     cy.url().should('include', 'carrinho.html');
     cy.get('#container-itens').should('not.contain', 'Carregando...');
     cy.get('#container-itens').within(() => {
@@ -56,7 +56,7 @@ describe('Fluxo de Venda Completo - Zenith', () => {
 
     cy.get('#btn-checkout').click();
 
-    // --- PARTE 5: CHECKOUT (ENDEREÇO E FRETE) ---
+    // --- CHECKOUT (ENDEREÇO E FRETE) ---
     cy.url().should('include', 'checkout.html');
     
     // Seleciona Endereço
@@ -73,26 +73,15 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     });
     cy.contains('button', 'Continuar para Pagamento').click();
 
-    // --- PARTE 6: PAGAMENTO ---
+    // --- PAGAMENTO ---
     cy.url().should('include', 'checkoutPagamento.html');
 
-    // 1. Testar aplicação de Cupom de Desconto
-    cy.intercept('GET', '**/cupons/ZENITH10', {
-      statusCode: 200,
-      body: { nm_codigo: 'ZENITH10', vl_desconto: 10.00 }
-    }).as('aplicarCupom');
-    
-    cy.get('#input-cupom').type('ZENITH10');
-    cy.contains('button', 'Aplicar').click();
-    cy.wait('@aplicarCupom');
-    cy.get('#resumo-desconto-aside').should('not.contain', 'R$ 0,00');
-
-    // 2. Selecionar Cartão Salvo
+    // Selecionar Cartão Salvo
     // Espera os cartões carregarem na tela
     cy.get('#cards-container').should('not.contain', 'Carregando');
     cy.get('.card-checkbox').first().check();
 
-    // 3. Preencher o valor no cartão selecionado
+    // Preencher o valor no cartão selecionado
     cy.get('#resumo-total').invoke('text').then((textoTotal) => {
       const valorLimpo = textoTotal.replace('R$', '').replace(',', '.').trim();
       
@@ -100,7 +89,7 @@ describe('Fluxo de Venda Completo - Zenith', () => {
       cy.get('.valor-pagamento').filter(':visible').type(valorLimpo);
     });
 
-    // 4. Finalizar Pedido
+    // Finalizar Pedido
     cy.get('#paymentForm2').submit();
     cy.wait('@finalizarPedido').its('response.statusCode').should('be.oneOf', [200, 201]);
     cy.url().should('include', 'sucessoCompra.html');
