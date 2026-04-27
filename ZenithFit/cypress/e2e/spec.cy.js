@@ -1,7 +1,6 @@
 const COMMAND_DELAY = 5000; 
 
 Cypress.on('command:start', (obj) => {
-  // Criamos uma promessa que o Cypress é obrigado a esperar antes de iniciar o comando
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
@@ -9,7 +8,7 @@ Cypress.on('command:start', (obj) => {
   });
 });
 
-// Mantemos o overwrite do type para as letras aparecerem devagar
+// Delay
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
   return originalFn(element, text, { delay: 100, ...options });
 });
@@ -17,7 +16,7 @@ Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
 describe('Fluxo de Venda Completo - Zenith', () => {
   it('Deve realizar a jornada completa: Login -> Seleção -> Carrinho -> Checkout -> Pagamento', () => {
     
-    // --- MOCKS DE API (Prepare os intercepts antes das ações) ---
+    // --- MOCKS DE API
     cy.intercept('POST', '**/login').as('loginRequest');
     cy.intercept('GET', '**/cupons/**').as('getCupom');
     cy.intercept('POST', '**/pedidos').as('finalizarPedido');
@@ -74,10 +73,10 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     });
     cy.contains('button', 'Continuar para Pagamento').click();
 
-    // --- PARTE 6: PAGAMENTO (A NOVA PARTE) ---
+    // --- PARTE 6: PAGAMENTO ---
     cy.url().should('include', 'checkoutPagamento.html');
 
-    // 1. Testar aplicação de Cupom (Opcional, mas bom validar)
+    // 1. Testar aplicação de Cupom de Desconto
     cy.intercept('GET', '**/cupons/ZENITH10', {
       statusCode: 200,
       body: { nm_codigo: 'ZENITH10', vl_desconto: 10.00 }
@@ -94,9 +93,7 @@ describe('Fluxo de Venda Completo - Zenith', () => {
     cy.get('.card-checkbox').first().check();
 
     // 3. Preencher o valor no cartão selecionado
-    // Pegamos o total final calculado na tela para preencher o input do cartão
     cy.get('#resumo-total').invoke('text').then((textoTotal) => {
-      // Limpa a string "R$ 150,00" para "150.00"
       const valorLimpo = textoTotal.replace('R$', '').replace(',', '.').trim();
       
       // Localiza o input de valor do cartão que foi aberto pelo toggleInputValor
@@ -105,8 +102,6 @@ describe('Fluxo de Venda Completo - Zenith', () => {
 
     // 4. Finalizar Pedido
     cy.get('#paymentForm2').submit();
-
-    // --- PARTE 7: SUCESSO ---
     cy.wait('@finalizarPedido').its('response.statusCode').should('be.oneOf', [200, 201]);
     cy.url().should('include', 'sucessoCompra.html');
     
