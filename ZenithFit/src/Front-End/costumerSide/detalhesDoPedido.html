@@ -107,15 +107,11 @@
             </div>
             <div class="p-6 flex-grow">
                 <div class="flex items-start space-x-4 mb-6">
-                    <img alt="Camisa oversized Limitless" class="w-24 h-24 object-cover rounded"
-                        src="images/limitless.png" />
-                    <div>
-                        <p class="text-lg font-semibold text-zinc-900 dark:text-white">Camisa oversized Limitless</p>
-                        <p class="text-sm text-zinc-600 dark:text-zinc-400">Tamanho: M</p>
-                        <p class="text-sm text-zinc-600 dark:text-zinc-400">Cor: Preto</p>
-                    </div>
+
                 </div>
                 <form id="exchangeForm">
+                    <div id="modal-itens-container" class="mb-6">
+                    </div>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-md font-medium text-zinc-700 dark:text-zinc-300 mb-2"
@@ -165,18 +161,17 @@
 
         const container = document.getElementById('container-pedido');
         const idPedido = new URLSearchParams(window.location.search).get('id');
+        let pedidoAtual = null;
+
 
         async function carregarDetalhesDoPedido() {
-            // 1. Verifica se temos um ID
             if (!idPedido) {
                 container.innerHTML = '<p class="text-red-500">ID do pedido não informado.</p>';
                 return;
             }
 
-            // 2. Mostra mensagem de carregamento
             container.innerHTML = '<p class="text-center text-zinc-500 col-span-full py-12">Carregando detalhes do pedido...</p>';
 
-            // 3. Obtém o CPF do cliente logado
             const cpfLogado = localStorage.getItem('cliente_cpf');
             if (!cpfLogado) {
                 container.innerHTML = '<p class="text-red-500">Usuário não autenticado.</p>';
@@ -184,58 +179,61 @@
             }
 
             try {
-                // 4. Busca todos os pedidos desse cliente
                 const resposta = await fetch(`http://localhost:3000/pedidos/${cpfLogado}`);
                 if (!resposta.ok) throw new Error('Erro ao carregar pedidos');
 
-                const pedidos = await resposta.json();
+                const pedidos = await resposta.json();      // array com todos os pedidos
 
-                // 5. Encontra o pedido específico pelo ID (convertendo para string para comparar)
+                // 1. Encontra o pedido específico
                 const pedido = pedidos.find(p => String(p.cd_pedido) === idPedido);
 
+                // 2. Verifica se existe
                 if (!pedido) {
                     container.innerHTML = '<p class="text-red-500">Pedido não encontrado.</p>';
                     return;
                 }
 
-                // 6. Renderiza os detalhes do pedido
+                // 3. Guarda na variável global (para o modal de troca)
+                pedidoAtual = pedido;
+
+                // 4. Renderiza os detalhes
                 renderizarDetalhes(pedido);
+
             } catch (erro) {
                 container.innerHTML = `<p class="text-red-500">Erro: ${erro.message}</p>`;
             }
         }
 
         function renderizarDetalhes(pedido) {
-    // Formatações básicas
-    const data = new Date(pedido.dt_pedido).toLocaleDateString('pt-BR', {
-        day: '2-digit', month: 'long', year: 'numeric'
-    });
-    const valorTotal = Number(pedido.vl_total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    const valorFrete = Number(pedido.vl_frete).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    const statusNome = pedido.status_pedido?.nm_status || 'Desconhecido';
-    
-    const coresStatus = {
-        'Em Processamento': 'yellow',
-        'Aprovada': 'blue',
-        'Em Trânsito': 'purple',
-        'Entregue': 'green',
-        'Cancelado': 'red'
-    };
-    const cor = coresStatus[statusNome] || 'gray';
-    
-    const end = pedido.endereco_entrega;
-    const enderecoStr = end 
-        ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, CEP ${end.cd_cep}`
-        : 'Endereço não informado';
-    
-    const modalidadeStr = pedido.modalidade?.nm_modalidade || 'Não informada';
-    
-    const itensHTML = pedido.itens?.map(item => {
-        const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
-        const nome = item.produto?.nm_produto || '—';
-        const tamanho = item.nm_tamanho || '—';
-        const preco = Number(item.vl_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        return `
+            const data = new Date(pedido.dt_pedido).toLocaleDateString('pt-BR', {
+                day: '2-digit', month: 'long', year: 'numeric'
+            });
+            const valorTotal = Number(pedido.vl_total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const valorFrete = Number(pedido.vl_frete).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const statusNome = pedido.status_pedido?.nm_status || 'Desconhecido';
+
+            const coresStatus = {
+                'Em Processamento': 'yellow',
+                'Aprovada': 'blue',
+                'Em Trânsito': 'purple',
+                'Entregue': 'green',
+                'Cancelado': 'red'
+            };
+            const cor = coresStatus[statusNome] || 'gray';
+
+            const end = pedido.endereco_entrega;
+            const enderecoStr = end
+                ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, CEP ${end.cd_cep}`
+                : 'Endereço não informado';
+
+            const modalidadeStr = pedido.modalidade?.nm_modalidade || 'Não informada';
+
+            const itensHTML = pedido.itens?.map(item => {
+                const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
+                const nome = item.produto?.nm_produto || '—';
+                const tamanho = item.nm_tamanho || '—';
+                const preco = Number(item.vl_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                return `
             <tr>
                 <td class="px-4 py-3"><img src="${imagem}" class="w-16 h-16 object-cover rounded-lg border" /></td>
                 <td class="px-4 py-3 text-sm">${nome}</td>
@@ -244,24 +242,24 @@
                 <td class="px-4 py-3 text-sm text-right">${preco}</td>
             </tr>
         `;
-    }).join('') || '<tr><td colspan="5" class="text-center py-4">Nenhum item</td></tr>';
-    
-    const pagamentosHTML = pedido.pagamentos?.map(pag => {
-        const valor = Number(pag.vl_pago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const cartaoFinal = pag.cartao?.cd_numero_cartao?.slice(-4) || '—';
-        const bandeira = pag.cartao?.bandeira?.nm_bandeira || '';
-        return `<div class="flex justify-between text-sm"><span>${bandeira} final ${cartaoFinal}</span><span>${valor}</span></div>`;
-    }).join('') || '<p class="text-sm">Sem pagamentos</p>';
-    
-    const cuponsHTML = pedido.cupons_usados?.length > 0
-        ? pedido.cupons_usados.map(c => {
-            const codigo = c.cupom?.nm_codigo;
-            const desconto = Number(c.cupom?.vl_desconto).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            return `<div class="text-sm">${codigo} (-${desconto})</div>`;
-        }).join('')
-        : '<p class="text-sm">Nenhum cupom</p>';
-    
-    container.innerHTML = `
+            }).join('') || '<tr><td colspan="5" class="text-center py-4">Nenhum item</td></tr>';
+
+            const pagamentosHTML = pedido.pagamentos?.map(pag => {
+                const valor = Number(pag.vl_pago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const cartaoFinal = pag.cartao?.cd_numero_cartao?.slice(-4) || '—';
+                const bandeira = pag.cartao?.bandeira?.nm_bandeira || '';
+                return `<div class="flex justify-between text-sm"><span>${bandeira} final ${cartaoFinal}</span><span>${valor}</span></div>`;
+            }).join('') || '<p class="text-sm">Sem pagamentos</p>';
+
+            const cuponsHTML = pedido.cupons_usados?.length > 0
+                ? pedido.cupons_usados.map(c => {
+                    const codigo = c.cupom?.nm_codigo;
+                    const desconto = Number(c.cupom?.vl_desconto).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    return `<div class="text-sm">${codigo} (-${desconto})</div>`;
+                }).join('')
+                : '<p class="text-sm">Nenhum cupom</p>';
+
+            container.innerHTML = `
         <div class="space-y-6">
             <div class="flex justify-between items-start">
                 <div>
@@ -317,12 +315,62 @@
             </div>
         </div>
     `;
-}
+        }
 
 
 
         function openExchangeModal() {
+            if (!pedidoAtual || !pedidoAtual.itens || pedidoAtual.itens.length === 0) {
+                alert('Nenhum item disponível para troca.');
+                return;
+            }
+
+            const itensContainer = document.getElementById('modal-itens-container');
+
+            // Cria um pequeno select para escolher o item
+            const opcoes = pedidoAtual.itens.map((item, index) => `
+        <option value="${index}">
+            ${item.produto?.nm_produto || 'Produto'} - Tam: ${item.nm_tamanho || 'N/A'} | Qtd: ${item.qt_item}
+        </option>
+    `).join('');
+
+            itensContainer.innerHTML = `
+        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Item a ser trocado</label>
+        <select id="item-troca" class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg mb-4">
+            ${opcoes}
+        </select>
+        <div id="item-detalhes" class="flex items-start space-x-4">
+            <!-- Detalhes do item selecionado aparecerão aqui -->
+        </div>
+    `;
+
+            atualizarDetalhesItem(0);
+
+            document.getElementById('item-troca').addEventListener('change', function (e) {
+                atualizarDetalhesItem(parseInt(this.value));
+            });
+
             document.getElementById('exchangeModal').classList.remove('hidden');
+        }
+
+        function atualizarDetalhesItem(index) {
+            const item = pedidoAtual.itens[index];
+            if (!item) return;
+
+            const detalhesDiv = document.getElementById('item-detalhes');
+            const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
+            const nome = item.produto?.nm_produto || 'Produto';
+            const tamanho = item.nm_tamanho || 'N/A';
+            const cor = item.produto?.ds_produto || '—'; // Se houver campo de cor, adapte
+
+            detalhesDiv.innerHTML = `
+        <img alt="${nome}" class="w-24 h-24 object-cover rounded" src="${imagem}" />
+        <div>
+            <p class="text-lg font-semibold text-zinc-900 dark:text-white">${nome}</p>
+            <p class="text-sm text-zinc-600 dark:text-zinc-400">Tamanho: ${tamanho}</p>
+            <p class="text-sm text-zinc-600 dark:text-zinc-400">Cor: ${cor}</p>
+        </div>
+    `;
         }
 
         function closeExchangeModal() {
@@ -332,15 +380,37 @@
 
         function submitExchange(event) {
             event.preventDefault();
+
             const reason = document.getElementById('reason').value;
             const description = document.getElementById('description').value;
+            const itemSelect = document.getElementById('item-troca');
 
             if (!reason) {
-                alert('Por favor, selecione um motivo para a troca.');
+                alert('Selecione um motivo.');
+                return;
+            }
+            if (!itemSelect || itemSelect.selectedIndex === -1) {
+                alert('Nenhum item selecionado.');
                 return;
             }
 
-            alert('Solicitação de troca enviada com sucesso! Você receberá as instruções por e-mail.');
+            const itemIndex = parseInt(itemSelect.value);
+            const item = pedidoAtual.itens[itemIndex];
+
+            // Aqui você pode montar um objeto para enviar ao backend
+            const dadosTroca = {
+                cd_pedido: pedidoAtual.cd_pedido,
+                cd_item: item.cd_item,        // talvez precise do ID do item
+                motivo: reason,
+                descricao: description,
+            };
+
+            console.log('Enviando troca:', dadosTroca);
+
+            // Quando a rota estiver pronta:
+            // fetch('http://localhost:3000/trocas', { method: 'POST', body: JSON.stringify(dadosTroca) })
+
+            alert('Solicitação de troca enviada com sucesso!');
             closeExchangeModal();
         }
 
