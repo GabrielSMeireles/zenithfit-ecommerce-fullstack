@@ -6,27 +6,28 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Meus Pedidos (Visão de Blocos Grandes)</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
-              extend: {
-                colors: {
-                  primary: "#18181B",
-                  "background-light": "#F4F4F5",
-                  "background-dark": "#09090B",
+                extend: {
+                    colors: {
+                        primary: "#18181B",
+                        "background-light": "#F4F4F5",
+                        "background-dark": "#09090B",
+                    },
+                    fontFamily: {
+                        display: ["Urbanist", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
                 },
-                fontFamily: {
-                  display: ["Urbanist", "sans-serif"],
-                },
-                borderRadius: {
-                  DEFAULT: "0.5rem",
-                },
-              },
             },
-          };
+        };
     </script>
     <style>
         .material-icons-outlined {
@@ -37,26 +38,32 @@
 
 <body class="font-display bg-background-light dark:bg-background-dark text-zinc-900 dark:text-zinc-100 antialiased">
     <div class="min-h-screen flex">
-        <aside class="w-64 bg-white dark:bg-zinc-900 flex-shrink-0 p-6 border-r border-zinc-200 dark:border-zinc-800 hidden md:flex flex-col">
+        <aside
+            class="w-64 bg-white dark:bg-zinc-900 flex-shrink-0 p-6 border-r border-zinc-200 dark:border-zinc-800 hidden md:flex flex-col">
             <a href="homepage.html" class="mb-10 flex justify-center items-center hover:opacity-80 transition-opacity">
                 <img alt="Zenith Logo" class="h-16" src="images/logo-zenith.png" />
             </a>
             <nav class="flex flex-col space-y-2">
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg" href="dashboardCliente.html">
+                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                    href="dashboardCliente.html">
                     <span class="material-icons-outlined text-xl">dashboard</span> Dashboard
                 </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-primary dark:text-white bg-zinc-100 dark:bg-zinc-800 rounded-lg font-semibold" href="pedidosCliente.html">
+                <a class="flex items-center gap-3 px-4 py-2 text-primary dark:text-white bg-zinc-100 dark:bg-zinc-800 rounded-lg font-semibold"
+                    href="pedidosCliente.html">
                     <span class="material-icons-outlined text-xl">shopping_bag</span> Meus Pedidos
                 </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg" href="enderecosCliente.html">
+                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                    href="enderecosCliente.html">
                     <span class="material-icons-outlined text-xl">location_on</span> Endereços
                 </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg" href="cartoesCliente.html">
+                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                    href="cartoesCliente.html">
                     <span class="material-icons-outlined text-xl">credit_card</span> Cartões
                 </a>
             </nav>
             <div class="mt-auto">
-                <a class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" href="#">
+                <a class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                    href="#">
                     <span class="material-icons-outlined text-xl">logout</span> Sair
                 </a>
             </div>
@@ -70,149 +77,152 @@
                         <span class="text-sm text-zinc-900 dark:text-white font-medium">Meus Pedidos</span>
                     </div>
                     <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">Meus Pedidos</h2>
-                    <p class="text-zinc-500 dark:text-zinc-400 mt-1">Acompanhe o histórico completo de todos os seus pedidos.</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 mt-1">Acompanhe o histórico completo de todos os seus
+                        pedidos.</p>
                 </div>
                 <div class="flex items-center gap-4 mt-4 md:mt-0">
                     <button class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800">
                         <span class="material-icons-outlined">notifications</span>
                     </button>
-                    <img alt="Avatar do usuário" class="w-10 h-10 rounded-full border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARqJjuqIPdxATHMDc5yZ4MwPJJpt6kU87SzhLKCRlhzEsRveGs_aNl1kHM6gcynehc7gCUKlmEV_8HS0caxZMDJJju0rH_prXk6skobAzKf4-WK3FSIJCHMSdyUfm58MnKYol16MucsNs9jIQHc9h68nF1bDghFFpnYnbFnxg9g4ZrcyIogsbG9thtN4492DbTWd87TNmofoaMILTjwPV6gMDPSDUw-azNFdxF8-tCO8za24moK2NYJH-6LyMgBjWZFz0EbEsecA"
-                    />
+                    <img alt="Avatar do usuário" class="w-10 h-10 rounded-full border-2 border-primary"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuARqJjuqIPdxATHMDc5yZ4MwPJJpt6kU87SzhLKCRlhzEsRveGs_aNl1kHM6gcynehc7gCUKlmEV_8HS0caxZMDJJju0rH_prXk6skobAzKf4-WK3FSIJCHMSdyUfm58MnKYol16MucsNs9jIQHc9h68nF1bDghFFpnYnbFnxg9g4ZrcyIogsbG9thtN4492DbTWd87TNmofoaMILTjwPV6gMDPSDUw-azNFdxF8-tCO8za24moK2NYJH-6LyMgBjWZFz0EbEsecA" />
                 </div>
             </header>
             <div class="space-y-6">
                 <div class="flex justify-end">
                     <div class="relative">
-                        <span class="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-                        <input class="w-64 pl-10 pr-4 py-2 rounded-md border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-primary focus:border-primary text-sm" placeholder="Buscar por ID do pedido..." type="text" />
+                        <span
+                            class="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
+                        <input id="search-input"
+                            class="w-64 pl-10 pr-4 py-2 rounded-md border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-primary focus:border-primary text-sm"
+                            placeholder="Buscar..." type="text" />
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
-                        <img alt="Camiseta Limitless" class="w-full h-64 object-cover" src="images/limitless.png"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #ZNT-84302</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">15 Jul, 2024</p>
-                                </div>
-                                <span class="inline-flex items-center bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-<span class="w-2 h-2 me-1.5 bg-green-500 rounded-full"></span>Entregue
-                                </span>
-                            </div>
-                            <div class="mt-auto flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
-                                    <p class="text-xl font-bold text-zinc-900 dark:text-white">R$129,99</p>
-                                </div>
-                                <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html">Ver Detalhes</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
-                        <img alt="Camiseta Toji" class="w-full h-64 object-cover" src="images/toji.png"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #ZNT-81145</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">28 Jun, 2024</p>
-                                </div>
-                                <span class="inline-flex items-center bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-<span class="w-2 h-2 me-1.5 bg-blue-500 rounded-full"></span>Aprovada
-                                </span>
-                            </div>
-                            <div class="mt-auto flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
-                                    <p class="text-xl font-bold text-zinc-900 dark:text-white">R$199,98</p>
-                                </div>
-                                <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html">Ver Detalhes</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
-                        <img alt="Camiseta Kokushibo" class="w-full h-64 object-cover" src="images/kokushibo.png"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #ZNT-79551</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">02 Jun, 2024</p>
-                                </div>
-                                <span class="inline-flex items-center bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-<span class="w-2 h-2 me-1.5 bg-green-500 rounded-full"></span>Entregue
-                                </span>
-                            </div>
-                            <div class="mt-auto flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
-                                    <p class="text-xl font-bold text-zinc-900 dark:text-white">R$99,99</p>
-                                </div>
-                                <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html">Ver Detalhes</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
-                        <img alt="Camiseta Symbol" class="w-full h-64 object-cover" src="images/symbol.png"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #ZNT-78103</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">15 Mai, 2024</p>
-                                </div>
-                                <span class="inline-flex items-center bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-<span class="w-2 h-2 me-1.5 bg-yellow-500 rounded-full"></span>Em Processamento
-                                </span>
-                            </div>
-                            <div class="mt-auto flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
-                                    <p class="text-xl font-bold text-zinc-900 dark:text-white">R$259,98</p>
-                                </div>
-                                <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html">Ver Detalhes</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
-                        <img alt="Camiseta Spider" class="w-full h-64 object-cover" src="images/spider.png"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #ZNT-75001</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">21 Abr, 2024</p>
-                                </div>
-                                <span class="inline-flex items-center bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-<span class="w-2 h-2 me-1.5 bg-red-500 rounded-full"></span>Cancelada
-                                </span>
-                            </div>
-                            <div class="mt-auto flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
-                                    <p class="text-xl font-bold text-zinc-900 dark:text-white">R$99,99</p>
-                                </div>
-                                <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html">Ver Detalhes</a>
-                            </div>
-                        </div>
-                    </div>
+                <div id="pedidos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
                 </div>
-                <div class="pt-4 flex items-center justify-between text-sm text-zinc-600 dark:text-zinc-400">
-                    <span>Mostrando 1-5 de 32 pedidos</span>
-                    <div class="inline-flex items-center gap-2">
-                        <button class="p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50" disabled="">
-                            <span class="material-icons-outlined text-base">chevron_left</span>
-                        </button>
-                        <span>Página 1 de 7</span>
-                        <button class="p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                            <span class="material-icons-outlined text-base">chevron_right</span>
-                        </button>
+
+            </div>
+            <div class="pt-4 flex items-center justify-between text-sm text-zinc-600 dark:text-zinc-400">
+                <span>Mostrando 1-5 de 32 pedidos</span>
+                <div class="inline-flex items-center gap-2">
+                    <button class="p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50"
+                        disabled="">
+                        <span class="material-icons-outlined text-base">chevron_left</span>
+                    </button>
+                    <span>Página 1 de 7</span>
+                    <button class="p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                        <span class="material-icons-outlined text-base">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+    </div>
+    </main>
+    <script>
+
+        const container = document.getElementById('pedidos-container');
+        let todosPedidos = [];
+
+        const cpfLogado = localStorage.getItem('cliente_cpf');
+        async function carregarPedidos() {
+            try {
+                container.innerHTML = '<p class="text-center text-zinc-500 col-span-full py-12">Carregando pedidos...</p>';
+                const resposta = await fetch(`http://localhost:3000/pedidos/${cpfLogado}`);
+                if (!resposta.ok) throw new Error('Erro ao carregar pedidos');
+                const pedidos = await resposta.json();
+                todosPedidos = pedidos;
+                renderizarPedidos(pedidos);
+            }
+            catch (erro) {
+                console.error('Erro:', erro);
+            }
+
+        }
+
+
+        function renderizarPedidos(pedidos) {
+    container.innerHTML = '';
+    
+    if (pedidos.length === 0) {
+        container.innerHTML = '<p class="text-center text-zinc-500 col-span-full py-12">Nenhum pedido encontrado.</p>';
+        return;
+    }
+    
+    container.innerHTML = pedidos.map(pedido => {
+        const data = new Date(pedido.dt_pedido).toLocaleDateString('pt-BR', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        });
+        
+        const valor = Number(pedido.vl_total).toLocaleString('pt-BR', {
+            style: 'currency', currency: 'BRL'
+        });
+        
+        const statusNome = pedido.status_pedido?.nm_status || 'Desconhecido';
+        
+        const coresStatus = {
+            'Em Processamento': 'yellow',
+            'Aprovada': 'blue',
+            'Em Trânsito': 'purple',
+            'Entregue': 'green',
+            'Cancelado': 'red'
+        };
+        const cor = coresStatus[statusNome] || 'gray';
+        
+        const imagem = pedido.itens?.[0]?.produto?.nm_imagem_url || 'images/placeholder.png';
+        
+        return `
+            <div class="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col">
+                <img alt="Imagem do pedido" class="w-full h-64 object-cover" src="${imagem}" />
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-bold text-lg text-zinc-900 dark:text-white">Pedido #${pedido.cd_pedido}</p>
+                            <p class="text-sm text-zinc-500 dark:text-zinc-400">${data}</p>
+                        </div>
+                        <span class="inline-flex items-center bg-${cor}-100 dark:bg-${cor}-900/40 text-${cor}-800 dark:text-${cor}-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            <span class="w-2 h-2 me-1.5 bg-${cor}-500 rounded-full"></span>${statusNome}
+                        </span>
+                    </div>
+                    <div class="mt-auto flex justify-between items-end">
+                        <div>
+                            <p class="text-sm text-zinc-500 dark:text-zinc-400">Valor Total</p>
+                            <p class="text-xl font-bold text-zinc-900 dark:text-white">${valor}</p>
+                        </div>
+                        <a class="font-semibold text-primary dark:text-white hover:underline text-sm" href="detalhesDoPedido.html?id=${pedido.cd_pedido}">
+                            Ver Detalhes
+                        </a>
                     </div>
                 </div>
             </div>
-        </main>
+        `;
+    }).join(''); 
+}
+function filtrarPedidos(){
+
+    const termoBusca= document.getElementById('search-input').value.trim().toLowerCase();
+
+    if(termoBusca ==='')
+    {
+        renderizarPedidos(todosPedidos);
+        return; 
+    }
+
+    const filtrados = todosPedidos.filter(pedido => {
+    const numeroPedido = String(pedido.cd_pedido);
+    const statusPedido = (pedido.status_pedido?.nm_status || '').toLowerCase();
+    
+    return numeroPedido.includes(termoBusca) || statusPedido.includes(termoBusca);
+});
+    
+    renderizarPedidos(filtrados);
+}
+    document.getElementById('search-input').addEventListener('input', filtrarPedidos);
+
+carregarPedidos();
+
+
+    </script>
     </div>
 
 </body>
