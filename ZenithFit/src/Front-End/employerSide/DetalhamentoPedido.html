@@ -149,14 +149,12 @@
             </div>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div id="acoes-container" class="rounded-xl">
               <h2 class="mb-4 text-lg font-bold text-slate-900 dark:text-white">Ações</h2>
-              <div class="flex flex-col gap-3">
-                <button onclick="atualizarStatus(4).then(() => openModal('confirmedModal'))" ...>Confirmar Entrega</button>
-
-                <button onclick="atualizarStatus(5).then(() => openModal('cancelledModal'))" ...>Cancelar Pedido</button>
+              <div id="acoes-botoes" class="flex flex-col gap-3">
 
               </div>
+              
             </div>
           </div>
         </div>
@@ -212,6 +210,23 @@ const ETAPAS = [
     { id: 3, label: "Em Trânsito",      icon: "local_shipping" },
     { id: 4, label: "Entregue",         icon: "home" },
 ];
+
+const TRANSICOES_PERMITIDAS = {
+1:[2,5],
+2:[3,5],
+3:[4,5],
+4:[],
+5:[]
+}
+
+const BOTOES_ACAO = {
+
+    2: { label: "Aprovar Pedido", icon: "check", classe: "bg-primary text-white hover:bg-primary/90" },
+    3: { label: "Enviar para Transporte", icon: "local_shipping", classe: "bg-amber-500 text-white hover:bg-amber-600" },
+    4: { label: "Confirmar Entrega", icon: "home", classe: "bg-green-600 text-white hover:bg-green-700" },
+    5: { label: "Cancelar Pedido", icon: "cancel", classe: "bg-red-600 text-white hover:bg-red-700" }
+};
+
 
 let pedidoAtual = null;
 
@@ -293,10 +308,28 @@ function renderizarPedido(p) {
         </div>
         ${separador}`;
     }).join('');
+
+    gerarBotoesAcoes(p.cd_status_pedido);
 }
 
 async function atualizarStatus(novoStatus) {
     if (!pedidoAtual) return;
+
+    const statusAtual= pedidoAtual.cd_status_pedido;
+
+    if(statusAtual === 4 || statusAtual === 5) {
+      alert("Não é possível alterar o status de um pedido já entregue ou cancelado.");
+      return;
+    }
+
+    //verifica se a transição é permitida
+    const transicoes= TRANSICOES_PERMITIDAS[statusAtual];
+    if(!transicoes.includes(novoStatus)){
+      const descricaoAtual = STATUS_MAP[statusAtual];
+      const descricaoNova = STATUS_MAP[novoStatus];
+      alert(`Transição de "${descricaoAtual}" para "${descricaoNova}" não é permitida.`);
+      return;
+    }
     try {
         const res = await fetch(`${API}/pedidos/${pedidoAtual.cd_pedido}/status`, {
             method: 'PATCH',
@@ -306,9 +339,39 @@ async function atualizarStatus(novoStatus) {
         if (!res.ok) throw new Error("Falha ao atualizar status.");
         pedidoAtual.cd_status_pedido = novoStatus;
         renderizarPedido(pedidoAtual);
+        return true;
     } catch (e) {
         alert("Erro: " + e.message);
+        return false;
     }
+}
+
+function gerarBotoesAcoes(statusAtual){
+  const container = document.getElementById('acoes-botoes');
+  if(!container) return;
+
+  const transicoes = TRANSICOES_PERMITIDAS[statusAtual] || [];
+
+  //Gera um botão pra cada transição
+  container.innerHTML = transicoes.map(novoStatus => {
+    const cfg = BOTOES_ACAO[novoStatus];
+    if(!cfg) return '';
+
+    let modalId = '';
+    if(novoStatus === 4) modalId = 'confirmedModal';
+    else if(novoStatus ===5) modalId = 'cancelledModal';
+
+    const onclick=modalId
+    ? `atualizarStatus(${novoStatus}).then(s => { if (s) openModal('${modalId}') })`
+    :`atualizarStatus(${novoStatus})`;
+
+    return `
+    <button onclick="${onclick}" class="flex items-center gap-2 justify-center ${cfg.classe} font-bold py-2.5 rounded-lg">
+        <span class="material-symbols-outlined">${cfg.icon}</span>
+        ${cfg.label}
+    </button>`;
+
+  }).join('');
 }
 
 function openModal(id)  { document.getElementById(id).classList.remove('hidden'); }
