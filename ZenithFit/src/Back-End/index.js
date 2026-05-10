@@ -527,5 +527,64 @@ app.patch("/trocas/:id/status", async (req, res) => {
         res.status(500).json({ message: "Erro ao atualizar status da troca." });
     }
 });
+// Obter detalhes de uma troca específica
+app.get("/trocas/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const troca = await prisma.troca.findUnique({
+            where: { cd_troca: Number(id) },
+            include: {
+                pedido: {
+                    select: {
+                        cd_pedido: true,
+                        dt_pedido: true,
+                        vl_total: true,
+                        cliente: { select: { nm_nome_cliente: true, cd_cpf: true } },
+                    },
+                },
+                item: {
+                    include: {
+                        produto: { select: { nm_produto: true, nm_imagem_url: true } },
+                    },
+                },
+                status_troca: true,
+            },
+        });
+        if (!troca) {
+            return res.status(404).json({ message: "Troca não encontrada." });
+        }
+        // Formata a resposta para facilitar o front‑end
+        const resultado = {
+            cd_troca: troca.cd_troca,
+            dt_solicitacao: troca.dt_solicitacao,
+            motivo: troca.ds_motivo,
+            descricao: troca.ds_descricao,
+            status: troca.status_troca.nm_status,
+            cd_status: troca.cd_status_troca,
+            pedido: {
+                numero: troca.pedido.cd_pedido,
+                data: troca.pedido.dt_pedido,
+                valor: troca.pedido.vl_total,
+                cliente: troca.pedido.cliente?.nm_nome_cliente,
+                cpf: troca.pedido.cliente?.cd_cpf,
+            },
+            item: troca.item
+                ? {
+                    cd_item: troca.item.cd_item,
+                    nome: troca.item.produto?.nm_produto,
+                    imagem: troca.item.produto?.nm_imagem_url,
+                    tamanho: troca.item.nm_tamanho,
+                    quantidade: troca.item.qt_item,
+                    valor_unitario: troca.item.vl_unitario,
+                }
+                : null,
+        };
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao buscar detalhes da troca." });
+    }
+});
 app.listen(3000, () => console.log("Servidor ON na 3000"));
 //# sourceMappingURL=index.js.map
