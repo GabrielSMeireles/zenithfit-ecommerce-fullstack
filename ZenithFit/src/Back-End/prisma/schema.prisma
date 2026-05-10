@@ -120,6 +120,7 @@ model Pedido {
   itens         Item_Pedido[]
   pagamentos    Pagamento_Pedido[]
   cupons_usados Cupom_Pedido[]
+  trocas Troca[] 
 }
 
 model Item_Pedido {
@@ -134,6 +135,7 @@ model Item_Pedido {
   // RELAÇÃO COM PRODUTO
   produto    Produto @relation(fields: [cd_produto], references: [cd_produto])
   cd_produto Int
+  trocas Troca[] 
 }
 
 model Pagamento_Pedido {
@@ -176,4 +178,27 @@ model Modalidade_Frete {
   nm_modalidade String
   vl_fixo       Decimal  @db.Decimal(10, 2)
   pedidos       Pedido[]
+}
+
+
+model Troca {
+  cd_troca        Int             @id @default(autoincrement())
+  dt_solicitacao  DateTime        @default(now())
+  ds_motivo       String
+  ds_descricao    String?
+  cd_status_troca Int             @default(1)
+
+  // Relacionamentos
+  pedido          Pedido          @relation(fields: [cd_pedido], references: [cd_pedido])
+  cd_pedido       Int
+  status_troca    Status_troca    @relation(fields: [cd_status_troca], references: [cd_status_troca])
+
+  item            Item_Pedido?    @relation(fields: [cd_item], references: [cd_item])
+  cd_item         Int?
+}
+
+model Status_troca {
+  cd_status_troca Int     @id @default(autoincrement())
+  nm_status       String
+  trocas          Troca[]
 }

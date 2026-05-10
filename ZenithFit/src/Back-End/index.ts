@@ -510,5 +510,104 @@ app.post("/enderecos", async (req, res) => {
 });
 
 
+//troca
+
+app.post("/trocas", async (req: Request, res: Response) => {
+  try {
+    const { cd_pedido, cd_item, motivo, descricao } = req.body;
+
+    // Validação básica
+    if (!cd_pedido || !motivo) {
+      return res.status(400).json({ message: "Pedido e motivo são obrigatórios." });
+    }
+
+    // Cria a troca com status "Pendente" (cd_status_troca = 1)
+    const novatroca = await prisma.troca.create({
+      data: {
+        cd_pedido: Number(cd_pedido),
+        cd_item: cd_item ? Number(cd_item) : null, // opcional
+        ds_motivo: motivo,
+        ds_descricao: descricao || null,
+        cd_status_troca: 1, // 1 = Pendente (verificar Status_troca)
+      },
+    });
+
+    res.status(201).json(novatroca);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao solicitar troca." });
+  }
+});
+
+app.get("/trocas", async (req: Request, res: Response) => {
+  try {
+    const trocas = await prisma.troca.findMany({
+      include: {
+        pedido: {
+          select: {
+            cd_pedido: true,
+            dt_pedido: true,
+            cliente: { select: { nm_nome_cliente: true } },
+          },
+        },
+        item: {
+          include: {
+            produto: { select: { nm_produto: true, nm_imagem_url: true } },
+          },
+        },
+        status_troca: true,
+      },
+      orderBy: { dt_solicitacao: "desc" },
+    });
+
+    // Formata a saída para facilitar o front-end
+    const resultado = trocas.map((t) => ({
+      cd_troca: t.cd_troca,
+      dt_solicitacao: t.dt_solicitacao,
+      motivo: t.ds_motivo,
+      descricao: t.ds_descricao,
+      status: t.status_troca.nm_status,
+      pedido: {
+        numero: t.pedido.cd_pedido,
+        cliente: t.pedido.cliente?.nm_nome_cliente,
+      },
+      item: t.item
+        ? {
+            nome: t.item.produto?.nm_produto,
+            imagem: t.item.produto?.nm_imagem_url,
+            tamanho: t.item.nm_tamanho,
+          }
+        : null,
+    }));
+
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao listar trocas." });
+  }
+});
+
+app.patch("/trocas/:id/status", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { cd_status_troca } = req.body;
+
+    if (!cd_status_troca) {
+      return res.status(400).json({ message: "Novo status é obrigatório." });
+    }
+
+    const trocaAtualizada = await prisma.troca.update({
+      where: { cd_troca: Number(id) },
+      data: { cd_status_troca: Number(cd_status_troca) },
+    });
+
+    res.status(200).json(trocaAtualizada);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao atualizar status da troca." });
+  }
+});
 
 app.listen(3000, () => console.log("Servidor ON na 3000"));
+
+

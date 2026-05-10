@@ -378,13 +378,14 @@
             document.getElementById('exchangeForm').reset();
         }
 
-        function submitExchange(event) {
+        async function submitExchange(event) {
             event.preventDefault();
 
             const reason = document.getElementById('reason').value;
             const description = document.getElementById('description').value;
             const itemSelect = document.getElementById('item-troca');
 
+            // Validações
             if (!reason) {
                 alert('Selecione um motivo.');
                 return;
@@ -397,21 +398,33 @@
             const itemIndex = parseInt(itemSelect.value);
             const item = pedidoAtual.itens[itemIndex];
 
-            // Aqui você pode montar um objeto para enviar ao backend
+            // Monta o objeto exatamente como a API espera
             const dadosTroca = {
                 cd_pedido: pedidoAtual.cd_pedido,
-                cd_item: item.cd_item,        // talvez precise do ID do item
-                motivo: reason,
-                descricao: description,
+                cd_item: item?.cd_item || null, // envia null se não houver item (raro)
+                motivo: reason,                 // "motivo" (singular) como definido na rota
+                descricao: description
             };
 
-            console.log('Enviando troca:', dadosTroca);
+            try {
+                // Faz a requisição POST para a API de trocas
+                const resposta = await fetch('http://localhost:3000/trocas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosTroca)
+                });
 
-            // Quando a rota estiver pronta:
-            // fetch('http://localhost:3000/trocas', { method: 'POST', body: JSON.stringify(dadosTroca) })
+                if (!resposta.ok) {
+                    const erro = await resposta.json();
+                    throw new Error(erro.message || 'Erro ao enviar solicitação');
+                }
 
-            alert('Solicitação de troca enviada com sucesso!');
-            closeExchangeModal();
+                alert('Solicitação de troca enviada com sucesso!');
+                closeExchangeModal();
+            } catch (erro) {
+                alert('Erro: ' + erro.message);
+                console.error(erro);
+            }
         }
 
         // Fechar modal ao clicar fora
