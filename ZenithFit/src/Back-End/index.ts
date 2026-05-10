@@ -28,7 +28,7 @@ app.post("/clientes", async (req: Request, res: Response) => {
 
         enderecos: {
           create: dados.enderecos.map((end: any) => ({
-            nm_identificacao: end.nm_identificacao || "Casa", 
+            nm_identificacao: end.nm_identificacao || "Casa",
             cd_cep: end.cd_cep,
             nm_logradouro: end.nm_logradouro,
             cd_numero: end.cd_numero,
@@ -90,7 +90,7 @@ app.get("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
   try {
     const { cpf } = req.params;
     const cliente = await prisma.cliente.findUnique({
-      where: { cd_cpf: cpf.trim() }, 
+      where: { cd_cpf: cpf.trim() },
       include: {
         genero: true,
         tipo_telefone: true,
@@ -143,7 +143,7 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
           ...updateData,
           enderecos: {
             create: (dados.enderecos || []).map((end: any) => ({
-              nm_identificacao: end.nm_identificacao || "Casa", 
+              nm_identificacao: end.nm_identificacao || "Casa",
               cd_cep: end.cd_cep,
               nm_logradouro: end.nm_logradouro,
               cd_numero: end.cd_numero,
@@ -157,10 +157,10 @@ app.put("/clientes/:cpf", async (req: Request<{ cpf: string }>, res: Response) =
             create: (dados.cartoes || []).map((c: any) => ({
               cd_numero_cartao: c.cd_numero_cartao,
               nm_nome_impresso_cartao: c.nm_nome_impresso_cartao,
-              cd_seguranca: c.cd_seguranca || "000", 
+              cd_seguranca: c.cd_seguranca || "000",
               dt_validade_cartao: new Date(c.dt_validade_cartao),
               cd_bandeira: Number(c.cd_bandeira || 1),
-              cartao_preferencial: !!c.cartao_preferencial 
+              cartao_preferencial: !!c.cartao_preferencial
             }))
           }
         }
@@ -211,10 +211,10 @@ app.post("/pedidos", async (req: Request, res: Response) => {
     const {
       cpf,
       cd_endereco,
-      cd_modalidade, 
-      itens,         
-      pagamentos,    
-      cupons         
+      cd_modalidade,
+      itens,
+      pagamentos,
+      cupons
     } = req.body;
 
     const resultado = await prisma.$transaction(async (tx) => {
@@ -256,7 +256,7 @@ app.post("/pedidos", async (req: Request, res: Response) => {
           cd_modalidade: cd_modalidade,
           vl_total: vl_total_pedido,
           vl_frete: vl_frete,
-          cd_status_pedido: 1, 
+          cd_status_pedido: 1,
 
           itens: {
             create: itens.map((i: any) => ({
@@ -367,7 +367,7 @@ app.patch("/pedidos/:id/status", async (req: Request, res: Response) => {
 
     const pedido = await prisma.pedido.update({
       where: { cd_pedido: Number(id) },
-      data:  { cd_status_pedido: Number(cd_status_pedido) }
+      data: { cd_status_pedido: Number(cd_status_pedido) }
     });
 
     res.status(200).json(pedido);
@@ -453,32 +453,32 @@ app.post("/login", async (req: Request, res: Response) => {
 });
 
 app.post('/cartoes', async (req, res) => {
-    const { cd_cpf_cliente, cd_numero_cartao, nm_nome_impresso_cartao, cd_cvv_cartao, dt_validade_cartao, cd_bandeira } = req.body;
+  const { cd_cpf_cliente, cd_numero_cartao, nm_nome_impresso_cartao, cd_cvv_cartao, dt_validade_cartao, cd_bandeira } = req.body;
 
-    try {
-        await prisma.cartao_credito.create({
-            data: {
-                cd_cpf: cd_cpf_cliente,
-                cd_numero_cartao: cd_numero_cartao,
-                nm_nome_impresso_cartao: nm_nome_impresso_cartao,
-                cd_seguranca: cd_cvv_cartao,
-                dt_validade_cartao: new Date(dt_validade_cartao),
-                cd_bandeira: Number(cd_bandeira),
-                cartao_preferencial: false
-            }
-        });
+  try {
+    await prisma.cartao_credito.create({
+      data: {
+        cd_cpf: cd_cpf_cliente,
+        cd_numero_cartao: cd_numero_cartao,
+        nm_nome_impresso_cartao: nm_nome_impresso_cartao,
+        cd_seguranca: cd_cvv_cartao,
+        dt_validade_cartao: new Date(dt_validade_cartao),
+        cd_bandeira: Number(cd_bandeira),
+        cartao_preferencial: false
+      }
+    });
 
-        res.status(201).json({ message: "Cartão adicionado com sucesso!" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Erro ao salvar cartão" });
-    }
+    res.status(201).json({ message: "Cartão adicionado com sucesso!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao salvar cartão" });
+  }
 });
 
 app.post("/enderecos", async (req, res) => {
   try {
     const {
-      nm_identificacao, 
+      nm_identificacao,
       nm_tipo_endereco,
       cd_cep,
       nm_logradouro,
@@ -491,7 +491,7 @@ app.post("/enderecos", async (req, res) => {
 
     const novoEnd = await prisma.endereco.create({
       data: {
-        nm_identificacao, 
+        nm_identificacao,
         nm_tipo_endereco,
         cd_cep,
         nm_logradouro,
@@ -573,10 +573,10 @@ app.get("/trocas", async (req: Request, res: Response) => {
       },
       item: t.item
         ? {
-            nome: t.item.produto?.nm_produto,
-            imagem: t.item.produto?.nm_imagem_url,
-            tamanho: t.item.nm_tamanho,
-          }
+          nome: t.item.produto?.nm_produto,
+          imagem: t.item.produto?.nm_imagem_url,
+          tamanho: t.item.nm_tamanho,
+        }
         : null,
     }));
 
@@ -587,7 +587,7 @@ app.get("/trocas", async (req: Request, res: Response) => {
   }
 });
 
-app.patch("/trocas/:id/status", async (req: Request, res: Response) => {
+app.patch("/trocas/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
     const { cd_status_troca } = req.body;
@@ -596,12 +596,39 @@ app.patch("/trocas/:id/status", async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Novo status é obrigatório." });
     }
 
-    const trocaAtualizada = await prisma.troca.update({
+    const troca = await prisma.troca.update({
       where: { cd_troca: Number(id) },
       data: { cd_status_troca: Number(cd_status_troca) },
+      include: {
+        item: {
+          include: { produto: true }
+        },
+        pedido: { select: { cd_pedido: true, vl_total: true } }
+      }
     });
 
-    res.status(200).json(trocaAtualizada);
+    // Se foi autorizada e ainda não tem cupom vinculado
+    if (Number(cd_status_troca) === 2 && !troca.cd_cupom) {
+      const valorCupom = troca.item?.vl_unitario || troca.pedido?.vl_total || 0;
+      const codigo = `TROCA-${troca.cd_troca}-${Date.now()}`;
+
+      const novoCupom = await prisma.cupom.create({
+        data: {
+          nm_codigo: codigo,
+          vl_desconto: valorCupom,
+          tp_cupom: "TROCA",
+          fl_ativo: true
+        }
+      });
+
+      // Vincula o cupom à troca
+      await prisma.troca.update({
+        where: { cd_troca: troca.cd_troca },
+        data: { cd_cupom: novoCupom.cd_cupom }
+      });
+    }
+
+    res.status(200).json(troca);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro ao atualizar status da troca." });
@@ -629,6 +656,7 @@ app.get("/trocas/:id", async (req, res) => {
           },
         },
         status_troca: true,
+        cupom: true
       },
     });
 
@@ -637,31 +665,44 @@ app.get("/trocas/:id", async (req, res) => {
     }
 
     // Formata a resposta para facilitar o front‑end
-    const resultado = {
-      cd_troca: troca.cd_troca,
-      dt_solicitacao: troca.dt_solicitacao,
-      motivo: troca.ds_motivo,
-      descricao: troca.ds_descricao,
-      status: troca.status_troca.nm_status,
-      cd_status: troca.cd_status_troca,
-      pedido: {
-        numero: troca.pedido.cd_pedido,
-        data: troca.pedido.dt_pedido,
-        valor: troca.pedido.vl_total,
-        cliente: troca.pedido.cliente?.nm_nome_cliente,
-        cpf: troca.pedido.cliente?.cd_cpf,
-      },
-      item: troca.item
-        ? {
-            cd_item: troca.item.cd_item,
-            nome: troca.item.produto?.nm_produto,
-            imagem: troca.item.produto?.nm_imagem_url,
-            tamanho: troca.item.nm_tamanho,
-            quantidade: troca.item.qt_item,
-            valor_unitario: troca.item.vl_unitario,
-          }
-        : null,
-    };
+   const resultado = {
+  cd_troca: troca.cd_troca,
+  dt_solicitacao: troca.dt_solicitacao,
+  motivo: troca.ds_motivo,
+  descricao: troca.ds_descricao,
+  status: troca.status_troca.nm_status,
+  cd_status: troca.cd_status_troca,
+  pedido: {
+    numero: troca.pedido.cd_pedido,
+    data: troca.pedido.dt_pedido,
+    valor: troca.pedido.vl_total,
+    cliente: troca.pedido.cliente?.nm_nome_cliente,
+    cpf: troca.pedido.cliente?.cd_cpf,
+  },
+  item: troca.item ? {
+    cd_item: troca.item.cd_item,
+    nome: troca.item.produto?.nm_produto,
+    imagem: troca.item.produto?.nm_imagem_url,
+    tamanho: troca.item.nm_tamanho,
+    quantidade: troca.item.qt_item,
+    valor_unitario: troca.item.vl_unitario,
+  } : null,
+  // ✅ cupom no nível raiz
+  cupom: troca.cupom ? {
+    codigo: troca.cupom.nm_codigo,
+    valor: troca.cupom.vl_desconto,
+    ativo: troca.cupom.fl_ativo
+  } : null
+};
+
+res.status(200).json(resultado);
+
+
+
+
+
+
+
 
     res.status(200).json(resultado);
   } catch (error) {

@@ -156,6 +156,8 @@ model Cupom {
   tp_cupom    String // "PROMOCIONAL" ou "TROCA"
   fl_ativo    Boolean        @default(true)
   pedidos     Cupom_Pedido[]
+  trocas          Troca[]
+
 }
 
 model Cupom_Pedido {
@@ -195,6 +197,9 @@ model Troca {
 
   item            Item_Pedido?    @relation(fields: [cd_item], references: [cd_item])
   cd_item         Int?
+
+   cd_cupom        Int?           // novo campo, opcional
+  cupom           Cupom?         @relation(fields: [cd_cupom], references: [cd_cupom])
 }
 
 model Status_troca {

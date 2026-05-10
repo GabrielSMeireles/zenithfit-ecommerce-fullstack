@@ -516,11 +516,35 @@ app.patch("/trocas/:id/status", async (req, res) => {
         if (!cd_status_troca) {
             return res.status(400).json({ message: "Novo status é obrigatório." });
         }
-        const trocaAtualizada = await prisma.troca.update({
+        const troca = await prisma.troca.update({
             where: { cd_troca: Number(id) },
             data: { cd_status_troca: Number(cd_status_troca) },
+            include: {
+                item: {
+                    include: { produto: true }
+                },
+                pedido: { select: { cd_pedido: true, vl_total: true } }
+            }
         });
-        res.status(200).json(trocaAtualizada);
+        // Se foi autorizada e ainda não tem cupom vinculado
+        if (Number(cd_status_troca) === 2 && !troca.cd_cupom) {
+            const valorCupom = troca.item?.vl_unitario || troca.pedido?.vl_total || 0;
+            const codigo = `TROCA-${troca.cd_troca}-${Date.now()}`;
+            const novoCupom = await prisma.cupom.create({
+                data: {
+                    nm_codigo: codigo,
+                    vl_desconto: valorCupom,
+                    tp_cupom: "TROCA",
+                    fl_ativo: true
+                }
+            });
+            // Vincula o cupom à troca
+            await prisma.troca.update({
+                where: { cd_troca: troca.cd_troca },
+                data: { cd_cupom: novoCupom.cd_cupom }
+            });
+        }
+        res.status(200).json(troca);
     }
     catch (error) {
         console.error(error);
@@ -548,6 +572,7 @@ app.get("/trocas/:id", async (req, res) => {
                     },
                 },
                 status_troca: true,
+                cupom: true
             },
         });
         if (!troca) {
@@ -568,17 +593,22 @@ app.get("/trocas/:id", async (req, res) => {
                 cliente: troca.pedido.cliente?.nm_nome_cliente,
                 cpf: troca.pedido.cliente?.cd_cpf,
             },
-            item: troca.item
-                ? {
-                    cd_item: troca.item.cd_item,
-                    nome: troca.item.produto?.nm_produto,
-                    imagem: troca.item.produto?.nm_imagem_url,
-                    tamanho: troca.item.nm_tamanho,
-                    quantidade: troca.item.qt_item,
-                    valor_unitario: troca.item.vl_unitario,
-                }
-                : null,
+            item: troca.item ? {
+                cd_item: troca.item.cd_item,
+                nome: troca.item.produto?.nm_produto,
+                imagem: troca.item.produto?.nm_imagem_url,
+                tamanho: troca.item.nm_tamanho,
+                quantidade: troca.item.qt_item,
+                valor_unitario: troca.item.vl_unitario,
+            } : null,
+            // ✅ cupom no nível raiz
+            cupom: troca.cupom ? {
+                codigo: troca.cupom.nm_codigo,
+                valor: troca.cupom.vl_desconto,
+                ativo: troca.cupom.fl_ativo
+            } : null
         };
+        res.status(200).json(resultado);
         res.status(200).json(resultado);
     }
     catch (error) {

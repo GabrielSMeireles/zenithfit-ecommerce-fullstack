@@ -140,111 +140,126 @@
             }
         }
 
-        function renderizarDetalhes(troca) {
-            document.getElementById('subtitulo-troca').textContent = `Solicitação #TRC-${troca.cd_troca}`;
+       function renderizarDetalhes(troca) {
+    document.getElementById('subtitulo-troca').textContent = `Solicitação #TRC-${troca.cd_troca}`;
 
-            const statusInfo = STATUS_MAP[troca.status] || { cor: "gray", label: troca.status, acoes: [] };
-            const dataPedido = troca.pedido.data ? new Date(troca.pedido.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : "—";
-            const valorPedido = Number(troca.pedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            const item = troca.item;
-            const imagemItem = item?.imagem || 'images/placeholder.png';
-            const nomeItem = item?.nome || 'Item não especificado';
-            const tamanhoItem = item?.tamanho || '—';
-            const valorUnitario = item?.valor_unitario ? Number(item.valor_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—';
+    const statusInfo = STATUS_MAP[troca.status] || { cor: "gray", label: troca.status, acoes: [] };
+    const dataPedido = troca.pedido.data ? new Date(troca.pedido.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : "—";
+    const valorPedido = Number(troca.pedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const item = troca.item;
+    const imagemItem = item?.imagem || 'images/placeholder.png';
+    const nomeItem = item?.nome || 'Item não especificado';
+    const tamanhoItem = item?.tamanho || '—';
+    const valorUnitario = item?.valor_unitario ? Number(item.valor_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—';
 
-            // Determina quais botões exibir
-            const botoesAcao = gerarBotoesAcao(statusInfo.acoes);
+    // Cupom
+    const cupom = troca.cupom;
+    let cupomHTML;
+    if (cupom) {
+        cupomHTML = `
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-4 flex flex-wrap items-center justify-between bg-gray-50 dark:bg-gray-800/50 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Código do Cupom</p>
+                    <p class="text-2xl font-bold text-primary tracking-widest" id="codigo-cupom">${cupom.codigo}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Valor</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">${Number(cupom.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                </div>
+                <button onclick="copiarCupom()" class="h-10 px-4 flex items-center gap-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium text-gray-800 dark:text-gray-200 transition-colors">
+                    <span class="material-symbols-outlined text-base">content_copy</span>
+                    Copiar
+                </button>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">O cliente foi notificado com as instruções para a devolução do item e o cupom de troca.</p>
+        `;
+    } else {
+        cupomHTML = `
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Cupom ainda não gerado. Será criado automaticamente quando a troca for autorizada.</p>
+            </div>
+        `;
+    }
 
-            container.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 flex flex-col gap-6">
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dados da compra original</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400">Nº do Pedido</p>
-                                    <p class="font-medium text-gray-800 dark:text-gray-200">#${troca.pedido.numero}</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400">Data da Compra</p>
-                                    <p class="font-medium text-gray-800 dark:text-gray-200">${dataPedido}</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400">Cliente</p>
-                                    <p class="font-medium text-gray-800 dark:text-gray-200">${troca.pedido.cliente || "—"}</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400">Valor Total</p>
-                                    <p class="font-medium text-gray-800 dark:text-gray-200">${valorPedido}</p>
-                                </div>
-                            </div>
+    // Botões de ação
+    const botoesAcao = gerarBotoesAcao(statusInfo.acoes);
+
+    container.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dados da compra original</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Nº do Pedido</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200">#${troca.pedido.numero}</p>
                         </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Item solicitado para troca</h3>
-                            <div class="flex items-start gap-4">
-                                <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg bg-cover bg-center" style="background-image: url('${imagemItem}');"></div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-gray-800 dark:text-gray-200">${nomeItem}</p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Tamanho: ${tamanhoItem}</p>
-                                    <p class="font-medium text-gray-800 dark:text-gray-200 mt-1">${valorUnitario}</p>
-                                </div>
-                            </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Data da Compra</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200">${dataPedido}</p>
                         </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Motivo informado pelo cliente</h3>
-                            <p class="text-gray-600 dark:text-gray-300 italic">"${troca.descricao || troca.motivo}"</p>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Cliente</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200">${troca.pedido.cliente || "—"}</p>
                         </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Cupom de Troca Gerado</h3>
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-4 flex flex-wrap items-center justify-between bg-gray-50 dark:bg-gray-800/50 gap-4">
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Código do Cupom</p>
-                                    <p class="text-2xl font-bold text-primary tracking-widest" id="codigo-cupom">TROCA${troca.cd_troca}P${troca.pedido.numero}</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Valor</p>
-                                    <p class="text-2xl font-bold text-gray-800 dark:text-white">${valorUnitario}</p>
-                                </div>
-                                <button onclick="copiarCupom()" class="h-10 px-4 flex items-center gap-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium text-gray-800 dark:text-gray-200 transition-colors">
-                                    <span class="material-symbols-outlined text-base">content_copy</span>
-                                    Copiar
-                                </button>
-                            </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">O cliente foi notificado com as instruções para a devolução do item e o cupom de troca.</p>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-1 flex flex-col gap-6">
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Status atual</h3>
-                            <div class="flex items-center">
-                                <span class="inline-flex rounded-full bg-${statusInfo.cor}-100 dark:bg-${statusInfo.cor}-900/50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-${statusInfo.cor}-800 dark:text-${statusInfo.cor}-300">
-                                    ${statusInfo.label}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900" id="acoes-container">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ações</h3>
-                            <div class="flex flex-col gap-3">
-                                ${botoesAcao}
-                            </div>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrar observações</h3>
-                            <textarea id="observacao" class="w-full rounded-lg border-gray-200 bg-white p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-white outline-none" placeholder="Adicione notas internas aqui..." rows="4"></textarea>
-                            <button onclick="salvarObservacao()" class="mt-3 w-full flex h-10 items-center justify-center gap-x-2 rounded-lg border border-gray-300 bg-white px-5 text-sm font-bold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all">
-                                Salvar Observação
-                            </button>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Valor Total</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200">${valorPedido}</p>
                         </div>
                     </div>
                 </div>
-            `;
-        }
+
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Item solicitado para troca</h3>
+                    <div class="flex items-start gap-4">
+                        <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg bg-cover bg-center" style="background-image: url('${imagemItem}');"></div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-gray-800 dark:text-gray-200">${nomeItem}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Tamanho: ${tamanhoItem}</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200 mt-1">${valorUnitario}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Motivo informado pelo cliente</h3>
+                    <p class="text-gray-600 dark:text-gray-300 italic">"${troca.descricao || troca.motivo}"</p>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Cupom de Troca</h3>
+                    ${cupomHTML}
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 flex flex-col gap-6">
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Status atual</h3>
+                    <div class="flex items-center">
+                        <span class="inline-flex rounded-full bg-${statusInfo.cor}-100 dark:bg-${statusInfo.cor}-900/50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-${statusInfo.cor}-800 dark:text-${statusInfo.cor}-300">
+                            ${statusInfo.label}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900" id="acoes-container">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ações</h3>
+                    <div class="flex flex-col gap-3">
+                        ${botoesAcao}
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-slate-900">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrar observações</h3>
+                    <textarea id="observacao" class="w-full rounded-lg border-gray-200 bg-white p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-white outline-none" placeholder="Adicione notas internas aqui..." rows="4"></textarea>
+                    <button onclick="salvarObservacao()" class="mt-3 w-full flex h-10 items-center justify-center gap-x-2 rounded-lg border border-gray-300 bg-white px-5 text-sm font-bold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all">
+                        Salvar Observação
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
         function gerarBotoesAcao(acoes) {
             let html = '';
