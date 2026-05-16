@@ -114,7 +114,6 @@
         // Elemento container principal
         const container = document.getElementById('conteudo-dinamico');
 
-        // Mapeamento de status → ações disponíveis e aparência
         const STATUS_MAP = {
             "Pendente": { cor: "yellow", label: "Pendente", acoes: ["autorizar", "recusar"] },
             "Autorizada": { cor: "green", label: "Autorizada", acoes: ["receber"] },
@@ -179,7 +178,6 @@
         `;
     }
 
-    // Botões de ação
     const botoesAcao = gerarBotoesAcao(statusInfo.acoes);
 
     container.innerHTML = `

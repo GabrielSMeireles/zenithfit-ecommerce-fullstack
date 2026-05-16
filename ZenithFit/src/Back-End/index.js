@@ -527,7 +527,7 @@ app.patch("/trocas/:id/status", async (req, res) => {
             }
         });
         // Se foi autorizada e ainda não tem cupom vinculado
-        if (Number(cd_status_troca) === 2 && !troca.cd_cupom) {
+        if (Number(cd_status_troca) === 4 && !troca.cd_cupom) {
             const valorCupom = troca.item?.vl_unitario || troca.pedido?.vl_total || 0;
             const codigo = `TROCA-${troca.cd_troca}-${Date.now()}`;
             const novoCupom = await prisma.cupom.create({
@@ -608,7 +608,6 @@ app.get("/trocas/:id", async (req, res) => {
                 ativo: troca.cupom.fl_ativo
             } : null
         };
-        res.status(200).json(resultado);
         res.status(200).json(resultado);
     }
     catch (error) {
