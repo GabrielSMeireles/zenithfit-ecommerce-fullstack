@@ -1,438 +1,438 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+    <!DOCTYPE html>
+    <html lang="pt-BR">
 
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Detalhe do Pedido</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#18181B",
-                        "background-light": "#F4F4F5",
-                        "background-dark": "#09090B",
-                    },
-                    fontFamily: {
-                        display: ["Inter", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.5rem",
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Detalhe do Pedido</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: "#18181B",
+                            "background-light": "#F4F4F5",
+                            "background-dark": "#09090B",
+                        },
+                        fontFamily: {
+                            display: ["Inter", "sans-serif"],
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.5rem",
+                        },
                     },
                 },
-            },
-        };
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-size: inherit;
-        }
-    </style>
-</head>
+            };
+        </script>
+        <style>
+            .material-symbols-outlined {
+                font-size: inherit;
+            }
+        </style>
+    </head>
 
-<body class="font-display bg-background-light dark:bg-background-dark text-zinc-900 dark:text-zinc-100 antialiased">
-    <div class="min-h-screen flex">
-        <aside
-            class="w-64 bg-white dark:bg-zinc-900 flex-shrink-0 p-6 border-r border-zinc-200 dark:border-zinc-800 hidden md:flex flex-col">
-            <a href="homepage.html" class="mb-10 flex justify-center items-center hover:opacity-80 transition-opacity">
-                <img alt="Zenith Logo" class="h-16" src="images/logo-zenith.png" />
-            </a>
-            <nav class="flex flex-col space-y-2">
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                    href="dashboardCliente.html">
-                    <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+    <body class="font-display bg-background-light dark:bg-background-dark text-zinc-900 dark:text-zinc-100 antialiased">
+        <div class="min-h-screen flex">
+            <aside
+                class="w-64 bg-white dark:bg-zinc-900 flex-shrink-0 p-6 border-r border-zinc-200 dark:border-zinc-800 hidden md:flex flex-col">
+                <a href="homepage.html" class="mb-10 flex justify-center items-center hover:opacity-80 transition-opacity">
+                    <img alt="Zenith Logo" class="h-16" src="images/logo-zenith.png" />
                 </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-primary dark:text-white bg-zinc-100 dark:bg-zinc-800 rounded-lg font-semibold"
-                    href="pedidosCliente.html">
-                    <span class="material-symbols-outlined text-xl">shopping_bag</span> Meus Pedidos
-                </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                    href="enderecosCliente.html">
-                    <span class="material-symbols-outlined text-xl">location_on</span> Endereços
-                </a>
-                <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                    href="cartoesCliente.html">
-                    <span class="material-symbols-outlined text-xl">credit_card</span> Cartões
-                </a>
-            </nav>
-            <div class="mt-auto">
-                <a class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-                    href="#">
-                    <span class="material-symbols-outlined text-xl">logout</span> Sair
-                </a>
-            </div>
-        </aside>
-        <main class="flex-1">
-            <div class="container mx-auto px-4 py-8 md:py-12">
-                <div class="mb-8">
-                    <nav class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        <a class="hover:underline" href="pedidosCliente.html">Meus Pedidos</a>
-                        <span class="mx-2">/</span>
-                        <span>Detalhe do Pedido</span>
-                    </nav>
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Detalhe do Pedido</h1>
+                <nav class="flex flex-col space-y-2">
+                    <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                        href="dashboardCliente.html">
+                        <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-2 text-primary dark:text-white bg-zinc-100 dark:bg-zinc-800 rounded-lg font-semibold"
+                        href="pedidosCliente.html">
+                        <span class="material-symbols-outlined text-xl">shopping_bag</span> Meus Pedidos
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                        href="enderecosCliente.html">
+                        <span class="material-symbols-outlined text-xl">location_on</span> Endereços
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                        href="cartoesCliente.html">
+                        <span class="material-symbols-outlined text-xl">credit_card</span> Cartões
+                    </a>
+                </nav>
+                <div class="mt-auto">
+                    <a class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                        href="#">
+                        <span class="material-symbols-outlined text-xl">logout</span> Sair
+                    </a>
                 </div>
-                <div id="container-pedido" class="bg-white dark:bg-zinc-800 rounded-lg shadow p-6">
+            </aside>
+            <main class="flex-1">
+                <div class="container mx-auto px-4 py-8 md:py-12">
+                    <div class="mb-8">
+                        <nav class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <a class="hover:underline" href="pedidosCliente.html">Meus Pedidos</a>
+                            <span class="mx-2">/</span>
+                            <span>Detalhe do Pedido</span>
+                        </nav>
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Detalhe do Pedido</h1>
+                    </div>
+                    <div id="container-pedido" class="bg-white dark:bg-zinc-800 rounded-lg shadow p-6">
+                    </div>
+
+
+
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">Precisa trocar algum item? Você pode solicitar a
+                            troca até 7 dias após o recebimento.</p>
+                        <button onclick="openExchangeModal()"
+                            class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center">
+                            <span class="material-symbols-outlined mr-2">swap_horiz</span> Solicitar Troca
+                        </button>
+                    </div>
                 </div>
+            </main>
+        </div>
 
+        <!-- Modal: Solicitação de Troca -->
+        <div id="exchangeModal"
+            class="hidden fixed inset-0 bg-black/60 dark:bg-black/70 flex items-center justify-center p-4 z-50">
+            <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-2xl w-full max-w-lg mx-auto flex flex-col">
+                <div class="p-6 flex justify-between items-center border-b border-zinc-200 dark:border-zinc-700">
+                    <h2 class="text-xl font-bold text-zinc-900 dark:text-white">Solicitação de Troca</h2>
+                    <button onclick="closeExchangeModal()"
+                        class="text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="p-6 flex-grow">
+                    <div class="flex items-start space-x-4 mb-6">
 
-
-                <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Precisa trocar algum item? Você pode solicitar a
-                        troca até 7 dias após o recebimento.</p>
-                    <button onclick="openExchangeModal()"
-                        class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center">
-                        <span class="material-symbols-outlined mr-2">swap_horiz</span> Solicitar Troca
+                    </div>
+                    <form id="exchangeForm">
+                        <div id="modal-itens-container" class="mb-6">
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-md font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                                    for="reason">Motivo da troca</label>
+                                <select
+                                    class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                                    id="reason" name="reason">
+                                    <option value="">Selecione um motivo...</option>
+                                    <option value="tamanho">Tamanho incorreto</option>
+                                    <option value="nao-gostei">Não gostei do produto</option>
+                                    <option value="cor">Cor</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-md font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                                    for="description">Descrição</label>
+                                <textarea
+                                    class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                                    id="description" name="description" rows="4"
+                                    placeholder="Descreva mais detalhes sobre o motivo da troca..."></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-zinc-100 dark:bg-zinc-700/50 rounded-lg flex items-start space-x-3">
+                            <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-400 mt-0.5">info</span>
+                            <p class="text-sm text-zinc-700 dark:text-zinc-300">
+                                Ao confirmar, um novo pedido será gerado com o status 'EM TROCA'. Você receberá as
+                                instruções para envio do produto por e-mail.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div
+                    class="p-6 bg-zinc-50 dark:bg-zinc-700/30 rounded-b-lg border-t border-zinc-200 dark:border-zinc-700 flex justify-end space-x-4">
+                    <button onclick="closeExchangeModal()"
+                        class="px-6 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-600 transition-colors">
+                        Cancelar
+                    </button>
+                    <button onclick="submitExchange(event)"
+                        class="px-6 py-3 text-sm font-semibold text-white bg-primary rounded-md hover:opacity-90 transition-opacity">
+                        Confirmar Troca
                     </button>
                 </div>
             </div>
-        </main>
-    </div>
-
-    <!-- Modal: Solicitação de Troca -->
-    <div id="exchangeModal"
-        class="hidden fixed inset-0 bg-black/60 dark:bg-black/70 flex items-center justify-center p-4 z-50">
-        <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-2xl w-full max-w-lg mx-auto flex flex-col">
-            <div class="p-6 flex justify-between items-center border-b border-zinc-200 dark:border-zinc-700">
-                <h2 class="text-xl font-bold text-zinc-900 dark:text-white">Solicitação de Troca</h2>
-                <button onclick="closeExchangeModal()"
-                    class="text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="p-6 flex-grow">
-                <div class="flex items-start space-x-4 mb-6">
-
-                </div>
-                <form id="exchangeForm">
-                    <div id="modal-itens-container" class="mb-6">
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-md font-medium text-zinc-700 dark:text-zinc-300 mb-2"
-                                for="reason">Motivo da troca</label>
-                            <select
-                                class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                id="reason" name="reason">
-                                <option value="">Selecione um motivo...</option>
-                                <option value="tamanho">Tamanho incorreto</option>
-                                <option value="nao-gostei">Não gostei do produto</option>
-                                <option value="cor">Cor</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-md font-medium text-zinc-700 dark:text-zinc-300 mb-2"
-                                for="description">Descrição</label>
-                            <textarea
-                                class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                id="description" name="description" rows="4"
-                                placeholder="Descreva mais detalhes sobre o motivo da troca..."></textarea>
-                        </div>
-                    </div>
-                    <div class="mt-6 p-4 bg-zinc-100 dark:bg-zinc-700/50 rounded-lg flex items-start space-x-3">
-                        <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-400 mt-0.5">info</span>
-                        <p class="text-sm text-zinc-700 dark:text-zinc-300">
-                            Ao confirmar, um novo pedido será gerado com o status 'EM TROCA'. Você receberá as
-                            instruções para envio do produto por e-mail.
-                        </p>
-                    </div>
-                </form>
-            </div>
-            <div
-                class="p-6 bg-zinc-50 dark:bg-zinc-700/30 rounded-b-lg border-t border-zinc-200 dark:border-zinc-700 flex justify-end space-x-4">
-                <button onclick="closeExchangeModal()"
-                    class="px-6 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-600 transition-colors">
-                    Cancelar
-                </button>
-                <button onclick="submitExchange(event)"
-                    class="px-6 py-3 text-sm font-semibold text-white bg-primary rounded-md hover:opacity-90 transition-opacity">
-                    Confirmar Troca
-                </button>
-            </div>
         </div>
-    </div>
 
-    <script>
+        <script>
 
-        const container = document.getElementById('container-pedido');
-        const idPedido = new URLSearchParams(window.location.search).get('id');
-        let pedidoAtual = null;
+            const container = document.getElementById('container-pedido');
+            const idPedido = new URLSearchParams(window.location.search).get('id');
+            let pedidoAtual = null;
 
 
-        async function carregarDetalhesDoPedido() {
-            if (!idPedido) {
-                container.innerHTML = '<p class="text-red-500">ID do pedido não informado.</p>';
-                return;
-            }
-
-            container.innerHTML = '<p class="text-center text-zinc-500 col-span-full py-12">Carregando detalhes do pedido...</p>';
-
-            const cpfLogado = localStorage.getItem('cliente_cpf');
-            if (!cpfLogado) {
-                container.innerHTML = '<p class="text-red-500">Usuário não autenticado.</p>';
-                return;
-            }
-
-            try {
-                const resposta = await fetch(`http://localhost:3000/pedidos/${cpfLogado}`);
-                if (!resposta.ok) throw new Error('Erro ao carregar pedidos');
-
-                const pedidos = await resposta.json();      // array com todos os pedidos
-
-                // 1. Encontra o pedido específico
-                const pedido = pedidos.find(p => String(p.cd_pedido) === idPedido);
-
-                // 2. Verifica se existe
-                if (!pedido) {
-                    container.innerHTML = '<p class="text-red-500">Pedido não encontrado.</p>';
+            async function carregarDetalhesDoPedido() {
+                if (!idPedido) {
+                    container.innerHTML = '<p class="text-red-500">ID do pedido não informado.</p>';
                     return;
                 }
 
-                // 3. Guarda na variável global (para o modal de troca)
-                pedidoAtual = pedido;
+                container.innerHTML = '<p class="text-center text-zinc-500 col-span-full py-12">Carregando detalhes do pedido...</p>';
 
-                // 4. Renderiza os detalhes
-                renderizarDetalhes(pedido);
-
-            } catch (erro) {
-                container.innerHTML = `<p class="text-red-500">Erro: ${erro.message}</p>`;
-            }
-        }
-
-        function renderizarDetalhes(pedido) {
-            const data = new Date(pedido.dt_pedido).toLocaleDateString('pt-BR', {
-                day: '2-digit', month: 'long', year: 'numeric'
-            });
-            const valorTotal = Number(pedido.vl_total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            const valorFrete = Number(pedido.vl_frete).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            const statusNome = pedido.status_pedido?.nm_status || 'Desconhecido';
-
-            const coresStatus = {
-                'Em Processamento': 'yellow',
-                'Aprovada': 'blue',
-                'Em Trânsito': 'purple',
-                'Entregue': 'green',
-                'Cancelado': 'red'
-            };
-            const cor = coresStatus[statusNome] || 'gray';
-
-            const end = pedido.endereco_entrega;
-            const enderecoStr = end
-                ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, CEP ${end.cd_cep}`
-                : 'Endereço não informado';
-
-            const modalidadeStr = pedido.modalidade?.nm_modalidade || 'Não informada';
-
-            const itensHTML = pedido.itens?.map(item => {
-                const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
-                const nome = item.produto?.nm_produto || '—';
-                const tamanho = item.nm_tamanho || '—';
-                const preco = Number(item.vl_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                return `
-            <tr>
-                <td class="px-4 py-3"><img src="${imagem}" class="w-16 h-16 object-cover rounded-lg border" /></td>
-                <td class="px-4 py-3 text-sm">${nome}</td>
-                <td class="px-4 py-3 text-sm">${tamanho}</td>
-                <td class="px-4 py-3 text-sm">${item.qt_item}</td>
-                <td class="px-4 py-3 text-sm text-right">${preco}</td>
-            </tr>
-        `;
-            }).join('') || '<tr><td colspan="5" class="text-center py-4">Nenhum item</td></tr>';
-
-            const pagamentosHTML = pedido.pagamentos?.map(pag => {
-                const valor = Number(pag.vl_pago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                const cartaoFinal = pag.cartao?.cd_numero_cartao?.slice(-4) || '—';
-                const bandeira = pag.cartao?.bandeira?.nm_bandeira || '';
-                return `<div class="flex justify-between text-sm"><span>${bandeira} final ${cartaoFinal}</span><span>${valor}</span></div>`;
-            }).join('') || '<p class="text-sm">Sem pagamentos</p>';
-
-            const cuponsHTML = pedido.cupons_usados?.length > 0
-                ? pedido.cupons_usados.map(c => {
-                    const codigo = c.cupom?.nm_codigo;
-                    const desconto = Number(c.cupom?.vl_desconto).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                    return `<div class="text-sm">${codigo} (-${desconto})</div>`;
-                }).join('')
-                : '<p class="text-sm">Nenhum cupom</p>';
-
-            container.innerHTML = `
-        <div class="space-y-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-2xl font-bold">Pedido #${pedido.cd_pedido}</p>
-                    <p class="text-sm text-zinc-500">${data}</p>
-                </div>
-                <span class="inline-flex items-center bg-${cor}-100 dark:bg-${cor}-900/40 text-${cor}-800 dark:text-${cor}-300 text-xs font-medium px-3 py-1 rounded-full">
-                    <span class="w-2 h-2 me-1.5 bg-${cor}-500 rounded-full"></span>${statusNome}
-                </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
-                    <h3 class="font-semibold mb-2">Endereço de Entrega</h3>
-                    <p class="text-sm">${enderecoStr}</p>
-                </div>
-                <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
-                    <h3 class="font-semibold mb-2">Modalidade de Frete</h3>
-                    <p class="text-sm">${modalidadeStr}</p>
-                </div>
-            </div>
-            
-            <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
-                <h3 class="font-semibold mb-4">Itens do Pedido</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
-                        <thead>
-                            <tr class="text-left text-xs text-zinc-500 uppercase">
-                                <th class="px-4 py-2">Imagem</th>
-                                <th class="px-4 py-2">Produto</th>
-                                <th class="px-4 py-2">Tamanho</th>
-                                <th class="px-4 py-2">Qtd</th>
-                                <th class="px-4 py-2 text-right">Preço Unit.</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">${itensHTML}</tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
-                <h3 class="font-semibold mb-4">Resumo</h3>
-                <div class="space-y-2">
-                    <div class="flex justify-between text-sm"><span>Frete</span><span>${valorFrete}</span></div>
-                    <div class="flex justify-between text-sm"><span>Cupons</span><span>${cuponsHTML}</span></div>
-                    <div class="flex justify-between font-semibold text-lg border-t pt-2"><span>Total</span><span>${valorTotal}</span></div>
-                </div>
-            </div>
-            
-            <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
-                <h3 class="font-semibold mb-4">Pagamentos</h3>
-                <div class="space-y-2">${pagamentosHTML}</div>
-            </div>
-        </div>
-    `;
-        }
-
-
-
-        function openExchangeModal() {
-            if (!pedidoAtual || !pedidoAtual.itens || pedidoAtual.itens.length === 0) {
-                alert('Nenhum item disponível para troca.');
-                return;
-            }
-
-            const itensContainer = document.getElementById('modal-itens-container');
-
-            // Cria um pequeno select para escolher o item
-            const opcoes = pedidoAtual.itens.map((item, index) => `
-        <option value="${index}">
-            ${item.produto?.nm_produto || 'Produto'} - Tam: ${item.nm_tamanho || 'N/A'} | Qtd: ${item.qt_item}
-        </option>
-    `).join('');
-
-            itensContainer.innerHTML = `
-        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Item a ser trocado</label>
-        <select id="item-troca" class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg mb-4">
-            ${opcoes}
-        </select>
-        <div id="item-detalhes" class="flex items-start space-x-4">
-            <!-- Detalhes do item selecionado aparecerão aqui -->
-        </div>
-    `;
-
-            atualizarDetalhesItem(0);
-
-            document.getElementById('item-troca').addEventListener('change', function (e) {
-                atualizarDetalhesItem(parseInt(this.value));
-            });
-
-            document.getElementById('exchangeModal').classList.remove('hidden');
-        }
-
-        function atualizarDetalhesItem(index) {
-            const item = pedidoAtual.itens[index];
-            if (!item) return;
-
-            const detalhesDiv = document.getElementById('item-detalhes');
-            const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
-            const nome = item.produto?.nm_produto || 'Produto';
-            const tamanho = item.nm_tamanho || 'N/A';
-            const cor = item.produto?.ds_produto || '—'; // Se houver campo de cor, adapte
-
-            detalhesDiv.innerHTML = `
-        <img alt="${nome}" class="w-24 h-24 object-cover rounded" src="${imagem}" />
-        <div>
-            <p class="text-lg font-semibold text-zinc-900 dark:text-white">${nome}</p>
-            <p class="text-sm text-zinc-600 dark:text-zinc-400">Tamanho: ${tamanho}</p>
-            <p class="text-sm text-zinc-600 dark:text-zinc-400">Cor: ${cor}</p>
-        </div>
-    `;
-        }
-
-        function closeExchangeModal() {
-            document.getElementById('exchangeModal').classList.add('hidden');
-            document.getElementById('exchangeForm').reset();
-        }
-
-        async function submitExchange(event) {
-            event.preventDefault();
-
-            const reason = document.getElementById('reason').value;
-            const description = document.getElementById('description').value;
-            const itemSelect = document.getElementById('item-troca');
-
-            // Validações
-            if (!reason) {
-                alert('Selecione um motivo.');
-                return;
-            }
-            if (!itemSelect || itemSelect.selectedIndex === -1) {
-                alert('Nenhum item selecionado.');
-                return;
-            }
-
-            const itemIndex = parseInt(itemSelect.value);
-            const item = pedidoAtual.itens[itemIndex];
-
-            // Monta o objeto exatamente como a API espera
-            const dadosTroca = {
-                cd_pedido: pedidoAtual.cd_pedido,
-                cd_item: item?.cd_item || null, // envia null se não houver item (raro)
-                motivo: reason,                 // "motivo" (singular) como definido na rota
-                descricao: description
-            };
-
-            try {
-                // Faz a requisição POST para a API de trocas
-                const resposta = await fetch('http://localhost:3000/trocas', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosTroca)
-                });
-
-                if (!resposta.ok) {
-                    const erro = await resposta.json();
-                    throw new Error(erro.message || 'Erro ao enviar solicitação');
+                const cpfLogado = localStorage.getItem('cliente_cpf');
+                if (!cpfLogado) {
+                    container.innerHTML = '<p class="text-red-500">Usuário não autenticado.</p>';
+                    return;
                 }
 
-                alert('Solicitação de troca enviada com sucesso!');
-                closeExchangeModal();
-            } catch (erro) {
-                alert('Erro: ' + erro.message);
-                console.error(erro);
-            }
-        }
+                try {
+                    const resposta = await fetch(`http://localhost:3000/pedidos/${cpfLogado}`);
+                    if (!resposta.ok) throw new Error('Erro ao carregar pedidos');
 
-        // Fechar modal ao clicar fora
-        document.getElementById('exchangeModal').addEventListener('click', (e) => {
-            if (e.target.id === 'exchangeModal') {
-                closeExchangeModal();
-            }
-        });
+                    const pedidos = await resposta.json();      // array com todos os pedidos
 
-        carregarDetalhesDoPedido();
-    </script>
+                    // 1. Encontra o pedido específico
+                    const pedido = pedidos.find(p => String(p.cd_pedido) === idPedido);
+
+                    // 2. Verifica se existe
+                    if (!pedido) {
+                        container.innerHTML = '<p class="text-red-500">Pedido não encontrado.</p>';
+                        return;
+                    }
+
+                    // 3. Guarda na variável global (para o modal de troca)
+                    pedidoAtual = pedido;
+
+                    // 4. Renderiza os detalhes
+                    renderizarDetalhes(pedido);
+
+                } catch (erro) {
+                    container.innerHTML = `<p class="text-red-500">Erro: ${erro.message}</p>`;
+                }
+            }
+
+            function renderizarDetalhes(pedido) {
+                const data = new Date(pedido.dt_pedido).toLocaleDateString('pt-BR', {
+                    day: '2-digit', month: 'long', year: 'numeric'
+                });
+                const valorTotal = Number(pedido.vl_total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const valorFrete = Number(pedido.vl_frete).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const statusNome = pedido.status_pedido?.nm_status || 'Desconhecido';
+
+                const coresStatus = {
+                    'Em Processamento': 'yellow',
+                    'Aprovada': 'blue',
+                    'Em Trânsito': 'purple',
+                    'Entregue': 'green',
+                    'Cancelado': 'red'
+                };
+                const cor = coresStatus[statusNome] || 'gray';
+
+                const end = pedido.endereco_entrega;
+                const enderecoStr = end
+                    ? `${end.nm_logradouro}, ${end.cd_numero}, ${end.nm_bairro}, ${end.nm_cidade}/${end.sg_estado}, CEP ${end.cd_cep}`
+                    : 'Endereço não informado';
+
+                const modalidadeStr = pedido.modalidade?.nm_modalidade || 'Não informada';
+
+                const itensHTML = pedido.itens?.map(item => {
+                    const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
+                    const nome = item.produto?.nm_produto || '—';
+                    const tamanho = item.nm_tamanho || '—';
+                    const preco = Number(item.vl_unitario).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    return `
+                <tr>
+                    <td class="px-4 py-3"><img src="${imagem}" class="w-16 h-16 object-cover rounded-lg border" /></td>
+                    <td class="px-4 py-3 text-sm">${nome}</td>
+                    <td class="px-4 py-3 text-sm">${tamanho}</td>
+                    <td class="px-4 py-3 text-sm">${item.qt_item}</td>
+                    <td class="px-4 py-3 text-sm text-right">${preco}</td>
+                </tr>
+            `;
+                }).join('') || '<tr><td colspan="5" class="text-center py-4">Nenhum item</td></tr>';
+
+                const pagamentosHTML = pedido.pagamentos?.map(pag => {
+                    const valor = Number(pag.vl_pago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    const cartaoFinal = pag.cartao?.cd_numero_cartao?.slice(-4) || '—';
+                    const bandeira = pag.cartao?.bandeira?.nm_bandeira || '';
+                    return `<div class="flex justify-between text-sm"><span>${bandeira} final ${cartaoFinal}</span><span>${valor}</span></div>`;
+                }).join('') || '<p class="text-sm">Sem pagamentos</p>';
+
+                const cuponsHTML = pedido.cupons_usados?.length > 0
+                    ? pedido.cupons_usados.map(c => {
+                        const codigo = c.cupom?.nm_codigo;
+                        const desconto = Number(c.cupom?.vl_desconto).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        return `<div class="text-sm">${codigo} (-${desconto})</div>`;
+                    }).join('')
+                    : '<p class="text-sm">Nenhum cupom</p>';
+
+                container.innerHTML = `
+            <div class="space-y-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-2xl font-bold">Pedido #${pedido.cd_pedido}</p>
+                        <p class="text-sm text-zinc-500">${data}</p>
+                    </div>
+                    <span class="inline-flex items-center bg-${cor}-100 dark:bg-${cor}-900/40 text-${cor}-800 dark:text-${cor}-300 text-xs font-medium px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 me-1.5 bg-${cor}-500 rounded-full"></span>${statusNome}
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Endereço de Entrega</h3>
+                        <p class="text-sm">${enderecoStr}</p>
+                    </div>
+                    <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Modalidade de Frete</h3>
+                        <p class="text-sm">${modalidadeStr}</p>
+                    </div>
+                </div>
+                
+                <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
+                    <h3 class="font-semibold mb-4">Itens do Pedido</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
+                            <thead>
+                                <tr class="text-left text-xs text-zinc-500 uppercase">
+                                    <th class="px-4 py-2">Imagem</th>
+                                    <th class="px-4 py-2">Produto</th>
+                                    <th class="px-4 py-2">Tamanho</th>
+                                    <th class="px-4 py-2">Qtd</th>
+                                    <th class="px-4 py-2 text-right">Preço Unit.</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">${itensHTML}</tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
+                    <h3 class="font-semibold mb-4">Resumo</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm"><span>Frete</span><span>${valorFrete}</span></div>
+                        <div class="flex justify-between text-sm"><span>Cupons</span><span>${cuponsHTML}</span></div>
+                        <div class="flex justify-between font-semibold text-lg border-t pt-2"><span>Total</span><span>${valorTotal}</span></div>
+                    </div>
+                </div>
+                
+                <div class="bg-zinc-50 dark:bg-zinc-700/50 rounded-lg p-4">
+                    <h3 class="font-semibold mb-4">Pagamentos</h3>
+                    <div class="space-y-2">${pagamentosHTML}</div>
+                </div>
+            </div>
+        `;
+            }
+
+
+
+            function openExchangeModal() {
+                if (!pedidoAtual || !pedidoAtual.itens || pedidoAtual.itens.length === 0) {
+                    alert('Nenhum item disponível para troca.');
+                    return;
+                }
+
+                const itensContainer = document.getElementById('modal-itens-container');
+
+                // Cria um pequeno select para escolher o item
+                const opcoes = pedidoAtual.itens.map((item, index) => `
+            <option value="${index}">
+                ${item.produto?.nm_produto || 'Produto'} - Tam: ${item.nm_tamanho || 'N/A'} | Qtd: ${item.qt_item}
+            </option>
+        `).join('');
+
+                itensContainer.innerHTML = `
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Item a ser trocado</label>
+            <select id="item-troca" class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg mb-4">
+                ${opcoes}
+            </select>
+            <div id="item-detalhes" class="flex items-start space-x-4">
+                <!-- Detalhes do item selecionado aparecerão aqui -->
+            </div>
+        `;
+
+                atualizarDetalhesItem(0);
+
+                document.getElementById('item-troca').addEventListener('change', function (e) {
+                    atualizarDetalhesItem(parseInt(this.value));
+                });
+
+                document.getElementById('exchangeModal').classList.remove('hidden');
+            }
+
+            function atualizarDetalhesItem(index) {
+                const item = pedidoAtual.itens[index];
+                if (!item) return;
+
+                const detalhesDiv = document.getElementById('item-detalhes');
+                const imagem = item.produto?.nm_imagem_url || 'images/placeholder.png';
+                const nome = item.produto?.nm_produto || 'Produto';
+                const tamanho = item.nm_tamanho || 'N/A';
+                const cor = item.produto?.ds_produto || '—'; // Se houver campo de cor, adapte
+
+                detalhesDiv.innerHTML = `
+            <img alt="${nome}" class="w-24 h-24 object-cover rounded" src="${imagem}" />
+            <div>
+                <p class="text-lg font-semibold text-zinc-900 dark:text-white">${nome}</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Tamanho: ${tamanho}</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Cor: ${cor}</p>
+            </div>
+        `;
+            }
+
+            function closeExchangeModal() {
+                document.getElementById('exchangeModal').classList.add('hidden');
+                document.getElementById('exchangeForm').reset();
+            }
+
+            async function submitExchange(event) {
+                event.preventDefault();
+
+                const reason = document.getElementById('reason').value;
+                const description = document.getElementById('description').value;
+                const itemSelect = document.getElementById('item-troca');
+
+                // Validações
+                if (!reason) {
+                    alert('Selecione um motivo.');
+                    return;
+                }
+                if (!itemSelect || itemSelect.selectedIndex === -1) {
+                    alert('Nenhum item selecionado.');
+                    return;
+                }
+
+                const itemIndex = parseInt(itemSelect.value);
+                const item = pedidoAtual.itens[itemIndex];
+
+                // Monta o objeto exatamente como a API espera
+                const dadosTroca = {
+                    cd_pedido: pedidoAtual.cd_pedido,
+                    cd_item: item?.cd_item || null, // envia null se não houver item (raro)
+                    motivo: reason,                 // "motivo" (singular) como definido na rota
+                    descricao: description
+                };
+
+                try {
+                    // Faz a requisição POST para a API de trocas
+                    const resposta = await fetch('http://localhost:3000/trocas', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(dadosTroca)
+                    });
+
+                    if (!resposta.ok) {
+                        const erro = await resposta.json();
+                        throw new Error(erro.message || 'Erro ao enviar solicitação');
+                    }
+
+                    alert('Solicitação de troca enviada com sucesso!');
+                    closeExchangeModal();
+                } catch (erro) {
+                    alert('Erro: ' + erro.message);
+                    console.error(erro);
+                }
+            }
+
+            // Fechar modal ao clicar fora
+            document.getElementById('exchangeModal').addEventListener('click', (e) => {
+                if (e.target.id === 'exchangeModal') {
+                    closeExchangeModal();
+                }
+            });
+
+            carregarDetalhesDoPedido();
+        </script>

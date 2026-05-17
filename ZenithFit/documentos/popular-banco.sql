@@ -34,12 +34,14 @@ INSERT INTO "Status_cliente" (nm_status) VALUES
   ('Ativo'), ('Inativo'), ('Bloqueado');
 
 -- =========================================
--- STATUS TROCA  (nova tabela)
+-- STATUS TROCA
 -- =========================================
 INSERT INTO "Status_troca" (nm_status) VALUES
-  ('Solicitada'),  -- 1: POST /trocas
-  ('Aprovada'),    -- 2: PATCH gera o cupom
-  ('Recusada');    -- 3
+  ('Pendente'),
+  ('Autorizada'),
+  ('Recusada'),
+  ('Finalizada');
+
 
 -- =========================================
 -- CLIENTES
@@ -109,8 +111,11 @@ INSERT INTO "Produto" (nm_produto, ds_produto, vl_produto, nm_imagem_url, qt_est
 -- STATUS PEDIDO
 -- =========================================
 INSERT INTO "Status_Pedido" (nm_status) VALUES
-  ('Em processamento'), ('Pago'), ('Enviado'), ('Entregue'), ('Cancelado');
-
+  ('Em processamento'),
+  ('Pago'),
+  ('Enviado'),
+  ('Entregue'),
+  ('Cancelado');
 -- =========================================
 -- FRETE
 -- =========================================
@@ -158,18 +163,20 @@ INSERT INTO "Cupom_Pedido" (cd_pedido, cd_cupom) VALUES
   (1, 1);
 
 -- =========================================
--- TROCAS  (nova tabela)
--- =========================================
--- =========================================
 -- TROCAS
 -- =========================================
 INSERT INTO "Troca" (
   dt_solicitacao, ds_motivo, ds_descricao,
   cd_status_troca, cd_pedido, cd_item, cd_cupom
 ) VALUES
-  -- Troca aprovada com cupom (status 2)
+  -- Troca autorizada com cupom (status 2)
   (NOW(), 'Tamanho errado',      'Pedi M mas recebi G, preciso trocar.',         2, 1, 1, 2),
-  -- Troca solicitada sem cupom (status 1)
+
+  -- Troca pendente sem cupom (status 1)
   (NOW(), 'Produto com defeito', 'A costura da manga veio aberta de fábrica.',   1, 1, 2, NULL),
+
   -- Troca recusada (status 3)
-  (NOW(), 'Arrependimento',      'Não gostei da estampa após receber.',           3, 2, 3, NULL);
+  (NOW(), 'Arrependimento',      'Não gostei da estampa após receber.',           3, 2, 3, NULL),
+
+  -- Troca finalizada (status 4)
+  (NOW(), 'Produto pequeno',     'Recebi tamanho menor do que esperado.',         4, 1, 1, 2);
