@@ -1,8 +1,5 @@
 // =============================================================================
-// ZENITH - Fluxo de Venda Completa (7ª Entrega)
-// Cenário: Cliente seleciona 2 produtos distintos, cadastra novo endereço e
-//          novo cartão no ato da compra, divide o pagamento em 2 cartões e
-//          aplica cupom de desconto.
+// ZENITH - Fluxo de Venda Completa 
 // =============================================================================
 
 const COMMAND_DELAY = 3000;
@@ -16,7 +13,7 @@ Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
 });
 
 // ---------------------------------------------------------------------------
-// Dados de teste centralizados — altere aqui se precisar trocar os fixtures
+// Dados de teste centralizados
 // ---------------------------------------------------------------------------
 const USUARIO = {
   email: 'gabriel@email.com',
@@ -35,13 +32,13 @@ const ENDERECO_NOVO = {
 
 const CARTAO_NOVO = {
   nome: 'GABRIEL S SILVA',
-  numero: '5500 0000 0000 0004',  // Mastercard de teste
+  numero: '5500 0000 0000 0004', 
   validade: '12/2028',
   cvv: '123',
   bandeira: 'Mastercard',
 };
 
-const CUPOM = 'DESCONTO10'; // R$ 10,00 de desconto fixo
+const CUPOM = 'DESCONTO10'; // R$ 10,00 de desconto
 
 // ---------------------------------------------------------------------------
 describe('Fluxo de Venda Completa - 7ª Entrega', () => {
@@ -247,8 +244,6 @@ describe('Fluxo de Venda Completa - 7ª Entrega', () => {
 
       // ══════════════════════════════════════════════════════════════════════
       // 9. PAGAMENTO — Divide o valor entre 2 cartões
-      // ATENÇÃO: o inicializarPagamento() chamado ao salvar o cartão reseta o
-      // #resumo-total sem o desconto do cupom. Recalculamos via subtotal + frete - desconto.
       // ══════════════════════════════════════════════════════════════════════
       cy.get('#resumo-subtotal').invoke('text').then((textoSubtotal) => {
        cy.get('#resumo-frete-valor').invoke('text').then((textoFrete) => {
@@ -274,8 +269,8 @@ describe('Fluxo de Venda Completa - 7ª Entrega', () => {
           cy.get(`#input-container-${id}`).should('not.have.class', 'hidden');
           cy.get(`#valor-card-${id}`).should('be.visible').clear().type(restante);
         });
-       }); // fecha then(textoFrete)
-      }); // fecha then(textoSubtotal)
+       }); 
+      }); 
 
       // ══════════════════════════════════════════════════════════════════════
       // 10. FINALIZA O PEDIDO

@@ -1,5 +1,5 @@
 // =============================================================================
-// ZENITH - Gestão de Pedido e Troca Completa (7ª Entrega)
+// ZENITH - Gestão de Pedido e Troca Completa
 // Cenário: Admin confirma pagamento → coloca em transporte → confirma entrega.
 //          Cliente solicita troca de item. Admin autoriza, confirma recebimento
 //          e o sistema gera cupom de troca automaticamente.

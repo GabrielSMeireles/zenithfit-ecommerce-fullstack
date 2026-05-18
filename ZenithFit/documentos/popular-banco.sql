@@ -1,5 +1,5 @@
 -- =========================================
--- LIMPAR TUDO (ORDEM CORRETA COM FK)
+-- LIMPAR TUDO
 -- =========================================
 TRUNCATE TABLE 
   "Troca",
