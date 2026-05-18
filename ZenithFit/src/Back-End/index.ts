@@ -687,7 +687,6 @@ app.get("/trocas/:id", async (req, res) => {
     quantidade: troca.item.qt_item,
     valor_unitario: troca.item.vl_unitario,
   } : null,
-  // ✅ cupom no nível raiz
   cupom: troca.cupom ? {
     codigo: troca.cupom.nm_codigo,
     valor: troca.cupom.vl_desconto,
