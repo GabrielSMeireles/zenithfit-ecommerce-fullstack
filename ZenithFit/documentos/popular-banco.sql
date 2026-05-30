@@ -180,3 +180,15 @@ INSERT INTO "Troca" (
 
   -- Troca finalizada (status 4)
   (NOW(), 'Produto pequeno',     'Recebi tamanho menor do que esperado.',         4, 1, 1, 2);
+
+  UPDATE "Produto" SET ds_produto = 'Camisa oversized com estampa do Mahoraga, shikigami invencível de Jujutsu Kaisen.' WHERE cd_produto = 1;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized do Zenitsu, espadachim do trovão de Demon Slayer.' WHERE cd_produto = 2;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized do Hisoka (Spider), o mago cruel de Hunter x Hunter.' WHERE cd_produto = 3;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized Brother (Ed e Al), alquimia e fraternidade de Fullmetal Alchemist.' WHERE cd_produto = 4;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized Limitless - inspirada no Gojo Satoru de Jujutsu Kaisen. Técnica ilimitada.' WHERE cd_produto = 5;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized Kokushibo, Lua Superior Um de Demon Slayer.' WHERE cd_produto = 6;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized Toji Fushiguro, o Assassino de Feiticeiros de Jujutsu Kaisen.' WHERE cd_produto = 7;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized Symbol - marca da maldição de Berserk ou símbolo oculto.' WHERE cd_produto = 8;
+UPDATE "Produto" SET ds_produto = 'Camiseta oversized Akaza, Lua Superior Três de Demon Slayer.' WHERE cd_produto = 9;
+UPDATE "Produto" SET ds_produto = 'Camiseta oversized Paisagem - vista serena de montanhas e sol poente.' WHERE cd_produto = 10;
+UPDATE "Produto" SET ds_produto = 'Camiseta lisa premium, algodão puro, ideal para uso diário e máximo conforto.' WHERE cd_produto = 11;
