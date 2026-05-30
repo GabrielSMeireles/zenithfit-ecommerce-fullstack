@@ -1,10 +1,35 @@
 import express, {} from "express";
 import { connection, prisma } from "./src/db.js"; // Import simplificado
 import cors from "cors";
+import { gerarRespostaChatbot } from './aiService.js';
 const app = express();
 app.use(express.json());
 app.use(cors());
 connection();
+// No seu index.ts (backend)
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Servir arquivos da pasta que contém homepage.html, assistente.html, etc.
+app.use(express.static(path.join(__dirname, '../Front-End/costumerSide')));
+// Rota para o Chatbot da IA
+app.post('/api/chatbot', async (req, res) => {
+    try {
+        // O frontend (assistente.html) vai enviar o histórico de mensagens
+        const { historico } = req.body;
+        if (!historico || !Array.isArray(historico)) {
+            return res.status(400).json({ erro: "Histórico de conversa inválido ou ausente." });
+        }
+        const respostaIA = await gerarRespostaChatbot(historico);
+        // Devolve a resposta estruturada para o frontend
+        return res.json({ resposta: respostaIA });
+    }
+    catch (error) {
+        console.error("Erro na rota do chatbot:", error);
+        return res.status(500).json({ erro: "Erro interno no servidor do chatbot." });
+    }
+});
 // 1. Criar cliente
 app.post("/clientes", async (req, res) => {
     try {
@@ -601,7 +626,6 @@ app.get("/trocas/:id", async (req, res) => {
                 quantidade: troca.item.qt_item,
                 valor_unitario: troca.item.vl_unitario,
             } : null,
-            // ✅ cupom no nível raiz
             cupom: troca.cupom ? {
                 codigo: troca.cupom.nm_codigo,
                 valor: troca.cupom.vl_desconto,

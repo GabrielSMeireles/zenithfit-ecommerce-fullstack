@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-   <head>
-      <meta charset="utf-8"/>
-      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-      <title>Zenith Recomenda | Seu Assistente Inteligente</title>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-      <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-      <script>
-         tailwind.config = {
-             darkMode: "class",
-             theme: {
-                 extend: {
-                     colors: {
-                         primary: "#000000",
-                         "background-light": "#FFFFFF",
-                         "background-dark": "#0a0a0a",
-                         "card-bg": "#cbd5e1",
-                     },
-                     fontFamily: {
-                         display: ["Inter", "sans-serif"],
-                     },
-                     borderRadius: {
-                         DEFAULT: "0.5rem",
-                     },
-                 },
-             },
-         };
-      </script>
-      <style type="text/tailwindcss">
-         body { font-family: 'Inter', sans-serif; }
-         .product-card-bg {
-         background-color: #f1f5f9;
-         }
+
+<head>
+   <meta charset="utf-8" />
+   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+   <title>Zenith Recomenda | Seu Assistente Inteligente</title>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet" />
+   <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet" />
+   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+   <script>
+      tailwind.config = {
+         darkMode: "class",
+         theme: {
+            extend: {
+               colors: {
+                  primary: "#000000",
+                  "background-light": "#FFFFFF",
+                  "background-dark": "#0a0a0a",
+                  "card-bg": "#cbd5e1",
+               },
+               fontFamily: {
+                  display: ["Inter", "sans-serif"],
+               },
+               borderRadius: {
+                  DEFAULT: "0.5rem",
+               },
+            },
+         },
+      };
+   </script>
+   <style type="text/tailwindcss">
+      body { font-family: 'Inter', sans-serif; }
          .chat-container {
          height: calc(100vh - 64px);
          }
@@ -49,108 +50,308 @@
          .dark ::-webkit-scrollbar-thumb {
          background: #334155;
          }
+         .product-card-bg {
+         background-color: #f1f5f9;
+         }
       </style>
-   </head>
-   <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 overflow-hidden">
-      <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-               <a href="homepage.html" class="flex items-center flex-shrink-0">
-                  <img alt="Zenith Logo" class="h-12" src="images/logo-zenith.png" />
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 overflow-hidden">
+   <header
+      class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+         <div class="flex items-center justify-between h-16">
+            <a href="homepage.html" class="flex items-center flex-shrink-0">
+               <img alt="Zenith Logo" class="h-12" src="images/logo-zenith.png" />
+            </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+               <a class="hover:text-primary transition-colors" href="homepage.html">Home</a>
+               <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop <span
+                     class="material-symbols-outlined text-sm">expand_more</span></a>
+               <a class="hover:text-primary transition-colors" href="novidades.html">Novidades</a>
+               <a class="hover:text-primary transition-colors" href="assistente.html">Assistente</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+               <a href="dashboardCliente.html"
+                  class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                  <span class="material-symbols-outlined">account_circle</span>
                </a>
-               <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                  <a class="hover:text-primary transition-colors" href="homepage.html">Home</a>
-                  <a class="hover:text-primary flex items-center gap-1 transition-colors" href="produtos.html">Shop <span class="material-symbols-outlined text-sm">expand_more</span></a>
-                  <a class="hover:text-primary transition-colors" href="novidades.html">Novidades</a>
-                  <a class="hover:text-primary transition-colors" href="assistente.html">Assistente</a>
-               </nav>
-               <div class="flex items-center space-x-4">
-                  <a href="dashboardCliente.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                     <span class="material-symbols-outlined">account_circle</span>
-                  </a>
-                  <a href="carrinho.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                     <span class="material-symbols-outlined">shopping_cart</span>
-                  </a>
-               </div>
+               <a href="carrinho.html"
+                  class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                  <span class="material-symbols-outlined">shopping_cart</span>
+               </a>
             </div>
          </div>
-      </header>
-      <main class="chat-container flex flex-col relative max-w-4xl mx-auto w-full">
-         <div class="flex-1 overflow-y-auto px-4 py-8 space-y-8">
-            <div class="flex gap-4 max-w-3xl">
-               <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-sm">smart_toy</span>
-               </div>
-               <div class="space-y-2">
-                  <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Zenith Recomenda</p>
-                  <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200">
-                     Olá! Eu sou o Zenith Recomenda, seu assistente inteligente. Estou aqui para te ajudar a encontrar o produto perfeito para o seu estilo e necessidade. Como posso te ajudar hoje?
-                  </div>
-               </div>
-            </div>
-            <div class="flex gap-4 max-w-3xl ml-auto flex-row-reverse">
-               <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-sm">person</span>
-               </div>
-               <div class="space-y-2 text-right">
-                  <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Você</p>
-                  <div class="bg-black text-white rounded-2xl p-4 inline-block text-left">
-                     Quero uma camiseta para usar à noite
-                  </div>
-               </div>
-            </div>
-            <div class="flex gap-4 max-w-4xl">
-               <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-sm">smart_toy</span>
-               </div>
-               <div class="space-y-4 w-full">
-                  <div class="space-y-2">
+      </div>
+   </header>
+   <main class="chat-container flex flex-col relative max-w-4xl mx-auto w-full">
+      <!-- Área de mensagens dinâmica -->
+      <div id="chatMessages" class="flex-1 overflow-y-auto px-4 py-8 space-y-8">
+         <!-- As mensagens serão injetadas via JS -->
+      </div>
+      <!-- Input fixo no final -->
+      <div
+         class="p-4 md:p-8 bg-gradient-to-t from-white via-white/90 to-transparent dark:from-background-dark dark:via-background-dark/90 absolute bottom-0 left-0 right-0">
+         <div class="relative max-w-3xl mx-auto">
+            <input id="userInput"
+               class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl py-4 pl-6 pr-14 text-base focus:ring-2 focus:ring-black dark:focus:ring-white transition-all shadow-sm"
+               placeholder="Digite sua mensagem aqui..." type="text" />
+            <button id="sendBtn"
+               class="absolute right-2 top-2 p-2 bg-black text-white rounded-xl hover:scale-105 transition-transform">
+               <span class="material-symbols-outlined">arrow_upward</span>
+            </button>
+         </div>
+         <p class="text-[10px] text-center text-slate-400 mt-3 font-medium uppercase tracking-widest">IA Treinada pela
+            Zenith Fit para recomendações de estilo</p>
+      </div>
+   </main>
+
+   <script>
+      // --- Configuração ---
+      const API_URL = 'http://localhost:3000/api/chatbot';
+      let conversationHistory = [
+         { role: "assistant", content: "Olá! Eu sou o Zenith Recomenda, seu assistente inteligente. Estou aqui para te ajudar a encontrar o produto perfeito para o seu estilo e necessidade. Como posso te ajudar hoje?" }
+      ];
+
+      // Elementos DOM
+      const chatContainer = document.getElementById('chatMessages');
+      const userInput = document.getElementById('userInput');
+      const sendBtn = document.getElementById('sendBtn');
+
+      // Utilitário: rolar para o final do chat
+      function scrollToBottom() {
+         const container = document.querySelector('.chat-container');
+         const messagesContainer = chatContainer;
+         if (messagesContainer) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+         }
+      }
+
+      // Função para renderizar uma mensagem (usuário ou assistente)
+      // Suporta exibição de produtos caso a resposta contenha o bloco JSON especial
+      function renderMessage(message, isUser = false) {
+         const messageDiv = document.createElement('div');
+         messageDiv.className = `flex gap-4 max-w-3xl ${isUser ? 'ml-auto flex-row-reverse' : ''}`;
+
+         // Avatar
+         const avatarDiv = document.createElement('div');
+         avatarDiv.className = `w-8 h-8 rounded-full ${isUser ? 'bg-slate-200 dark:bg-slate-800' : 'bg-black text-white'} flex items-center justify-center flex-shrink-0`;
+         avatarDiv.innerHTML = `<span class="material-symbols-outlined text-sm">${isUser ? 'person' : 'smart_toy'}</span>`;
+
+         // Container do conteúdo
+         const contentDiv = document.createElement('div');
+         contentDiv.className = `space-y-2 ${isUser ? 'text-right' : 'w-full'}`;
+
+         const label = document.createElement('p');
+         label.className = 'text-sm font-bold text-slate-500 uppercase tracking-wider';
+         label.innerText = isUser ? 'Você' : 'Zenith Recomenda';
+
+         // O conteúdo pode ser texto puro + produtos extraídos
+         // Se for mensagem do usuário, é só texto
+         if (isUser) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bg-black text-white rounded-2xl p-4 inline-block text-left';
+            bubble.innerText = message;
+            contentDiv.appendChild(label);
+            contentDiv.appendChild(bubble);
+         } else {
+            // Para assistente, processar possível JSON de produtos
+            const bubbleContainer = document.createElement('div');
+            bubbleContainer.className = 'bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200 w-full';
+
+            // Extrair texto principal e produtos
+            let mainText = message;
+            let products = [];
+
+            // Procurar pelo marcador [PRODUTOS_START] ... [PRODUTOS_END]
+            const startMarker = '[PRODUTOS_START]';
+            const endMarker = '[PRODUTOS_END]';
+            const startIdx = message.indexOf(startMarker);
+            const endIdx = message.indexOf(endMarker);
+
+            if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+               // Extrair o JSON entre os marcadores
+               const jsonStr = message.substring(startIdx + startMarker.length, endIdx).trim();
+               mainText = message.substring(0, startIdx).trim();
+               try {
+                  const parsed = JSON.parse(jsonStr);
+                  if (parsed.produtos && Array.isArray(parsed.produtos)) {
+                     products = parsed.produtos;
+                  }
+               } catch (e) {
+                  console.warn('Erro ao parsear produtos:', e);
+               }
+            }
+
+            // Adicionar o texto principal
+            if (mainText) {
+               const textPara = document.createElement('p');
+               textPara.innerText = mainText;
+               bubbleContainer.appendChild(textPara);
+            }
+
+            // Se existem produtos, renderizar grid
+            if (products.length > 0) {
+               const gridDiv = document.createElement('div');
+               gridDiv.className = 'grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 mt-2';
+
+               products.forEach(prod => {
+                  const card = document.createElement('div');
+                  card.className = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg';
+                  card.onclick = () => {
+                     // Ao clicar, pode redirecionar para página do produto ou adicionar ao carrinho
+                     window.location.href = `detalhesProduto.html?id=${prod.id}`;
+                  };
+
+                  // Imagem
+                  const imgDiv = document.createElement('div');
+                  imgDiv.className = 'aspect-square bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4';
+                  const img = document.createElement('img');
+                  img.src = prod.imagem || `images/${prod.id}.png`; // fallback
+                  img.alt = prod.nome;
+                  img.className = 'w-full h-full object-contain';
+                  imgDiv.appendChild(img);
+
+                  // Info
+                  const infoDiv = document.createElement('div');
+                  infoDiv.className = 'p-4';
+                  const nome = document.createElement('h3');
+                  nome.className = 'font-bold text-sm mb-1 truncate';
+                  nome.innerText = prod.nome;
+                  const preco = document.createElement('p');
+                  preco.className = 'font-black text-primary dark:text-white';
+                  preco.innerText = `R$ ${prod.preco.toFixed(2)}`;
+                  infoDiv.appendChild(nome);
+                  infoDiv.appendChild(preco);
+
+                  card.appendChild(imgDiv);
+                  card.appendChild(infoDiv);
+                  gridDiv.appendChild(card);
+               });
+
+               bubbleContainer.appendChild(gridDiv);
+            }
+
+            contentDiv.appendChild(label);
+            contentDiv.appendChild(bubbleContainer);
+         }
+
+         messageDiv.appendChild(avatarDiv);
+         messageDiv.appendChild(contentDiv);
+         return messageDiv;
+      }
+
+      // Função para carregar todo o histórico na interface
+      function renderFullChat() {
+         chatContainer.innerHTML = '';
+         conversationHistory.forEach(msg => {
+            const isUser = msg.role === 'user';
+            const messageElement = renderMessage(msg.content, isUser);
+            chatContainer.appendChild(messageElement);
+         });
+         scrollToBottom();
+      }
+
+      // Função para adicionar uma nova mensagem ao histórico e à UI
+      function addMessageToChat(role, content) {
+         conversationHistory.push({ role, content });
+         const messageElement = renderMessage(content, role === 'user');
+         chatContainer.appendChild(messageElement);
+         scrollToBottom();
+      }
+
+      // Função para substituir a última mensagem (caso precise editar, mas usaremos para adicionar)
+      // No caso, após receber resposta, adicionamos normalmente.
+
+      // Exibir loading enquanto aguarda resposta
+      let isLoading = false;
+      function showTypingIndicator() {
+         const typingDiv = document.createElement('div');
+         typingDiv.id = 'typingIndicator';
+         typingDiv.className = 'flex gap-4 max-w-3xl';
+         typingDiv.innerHTML = `
+                 <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+                     <span class="material-symbols-outlined text-sm">smart_toy</span>
+                 </div>
+                 <div class="space-y-2 w-full">
                      <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Zenith Recomenda</p>
                      <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200">
-                        Excelente escolha! Para ocasiões noturnas, camisetas pretas são versáteis e elegantes. Aqui estão três recomendações do nosso estoque:
+                         <div class="flex space-x-1">
+                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                         </div>
                      </div>
-                  </div>
-                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
-                        <div class="aspect-square bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4">
-                           <img alt="Camisa oversized Kokushibo" class="w-full h-full object-contain" src="images/kokushibo.png"/>
-                        </div>
-                        <div class="p-4">
-                           <h3 class="font-bold text-sm mb-1 truncate">Camisa oversized Kokushibo</h3>
-                           <p class="font-black text-primary dark:text-white">R$129,99</p>
-                        </div>
-                     </div>
-                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
-                        <div class="aspect-square bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4">
-                           <img alt="Camisa oversized Toji" class="w-full h-full object-contain" src="images/toji.png"/>
-                        </div>
-                        <div class="p-4">
-                           <h3 class="font-bold text-sm mb-1 truncate">Camisa oversized Toji</h3>
-                           <p class="font-black text-primary dark:text-white">R$129,99</p>
-                        </div>
-                     </div>
-                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
-                        <div class="aspect-square bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4">
-                           <img alt="Camisa oversized Symbol" class="w-full h-full object-contain" src="images/symbol.png"/>
-                        </div>
-                        <div class="p-4">
-                           <h3 class="font-bold text-sm mb-1 truncate">Camisa oversized Symbol</h3>
-                           <p class="font-black text-primary dark:text-white">R$129,99</p>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="p-4 md:p-8 bg-gradient-to-t from-white via-white/90 to-transparent dark:from-background-dark dark:via-background-dark/90 absolute bottom-0 left-0 right-0">
-            <div class="relative max-w-3xl mx-auto">
-               <input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl py-4 pl-6 pr-14 text-base focus:ring-2 focus:ring-black dark:focus:ring-white transition-all shadow-sm" placeholder="Digite sua mensagem aqui..." type="text"/>
-               <button class="absolute right-2 top-2 p-2 bg-black text-white rounded-xl hover:scale-105 transition-transform">
-               <span class="material-symbols-outlined">arrow_upward</span>
-               </button>
-            </div>
-            <p class="text-[10px] text-center text-slate-400 mt-3 font-medium uppercase tracking-widest">IA Treinada pela Zenith Fit para recomendações de estilo</p>
-         </div>
-      </main>
-   </body>
+                 </div>
+             `;
+         chatContainer.appendChild(typingDiv);
+         scrollToBottom();
+      }
+
+      function removeTypingIndicator() {
+         const indicator = document.getElementById('typingIndicator');
+         if (indicator) indicator.remove();
+      }
+
+      // Enviar mensagem para o backend
+      async function sendMessage(userMessage) {
+         if (isLoading || !userMessage.trim()) return;
+         isLoading = true;
+
+         // Adiciona a mensagem do usuário na UI e histórico
+         addMessageToChat('user', userMessage);
+         userInput.value = '';
+
+         // Mostra indicador de digitação
+         showTypingIndicator();
+
+         try {
+            // Prepara o histórico para enviar (sem o indicador, claro)
+            const payload = { historico: conversationHistory };
+
+            const response = await fetch(API_URL, {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+               throw new Error(`Erro HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const assistantReply = data.resposta;
+
+            // Remove o indicador e adiciona a resposta da IA
+            removeTypingIndicator();
+            addMessageToChat('assistant', assistantReply);
+
+         } catch (error) {
+            console.error('Erro ao chamar o chatbot:', error);
+            removeTypingIndicator();
+            addMessageToChat('assistant', 'Ops! Meu sistema está instável no momento. Por favor, tente novamente mais tarde. 😓');
+         } finally {
+            isLoading = false;
+         }
+      }
+
+      // Eventos
+      sendBtn.addEventListener('click', () => {
+         const message = userInput.value.trim();
+         if (message) sendMessage(message);
+      });
+
+      userInput.addEventListener('keypress', (e) => {
+         if (e.key === 'Enter') {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            if (message) sendMessage(message);
+         }
+      });
+
+      // Inicializar: renderizar mensagem de boas-vindas
+      renderFullChat();
+   </script>
+</body>
+
 </html>
