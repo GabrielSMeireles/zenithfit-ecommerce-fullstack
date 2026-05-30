@@ -181,7 +181,7 @@ INSERT INTO "Troca" (
   -- Troca finalizada (status 4)
   (NOW(), 'Produto pequeno',     'Recebi tamanho menor do que esperado.',         4, 1, 1, 2);
 
-  UPDATE "Produto" SET ds_produto = 'Camisa oversized com estampa do Mahoraga, shikigami invencível de Jujutsu Kaisen.' WHERE cd_produto = 1;
+UPDATE "Produto" SET ds_produto = 'Camisa oversized com estampa do Mahoraga, shikigami invencível de Jujutsu Kaisen.' WHERE cd_produto = 1;
 UPDATE "Produto" SET ds_produto = 'Camisa oversized do Zenitsu, espadachim do trovão de Demon Slayer.' WHERE cd_produto = 2;
 UPDATE "Produto" SET ds_produto = 'Camisa oversized do Hisoka (Spider), o mago cruel de Hunter x Hunter.' WHERE cd_produto = 3;
 UPDATE "Produto" SET ds_produto = 'Camisa oversized Brother (Ed e Al), alquimia e fraternidade de Fullmetal Alchemist.' WHERE cd_produto = 4;
