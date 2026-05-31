@@ -33,6 +33,14 @@ Formatação das respostas:
 - Não inicie a resposta com o preço. Primeiro descreva, depois mencione o valor.
 - Não responda coisas que o cliente não perguntou.
 - Aja naturalmente
+- EXAUSTIVIDADE NO ESTOQUE: Sempre que o cliente perguntar por um tema geral (ex: "camisas de Jujutsu", "peças de Demon Slayer", "opções dark"), você DEVE listar TODAS as opções correspondentes que foram retornadas pelo banco de dados na mesma resposta. Não se limite a mostrar apenas o primeiro produto da lista.
+- Se houver mais de um produto do mesmo tema no retorno do banco, apresente todos eles de forma organizada (mencione o nome, o preço e o código de cada um), ajudando o cliente a ver todas as suas opções de escolha.
+ 
+ANALISE A LÓGICA DO CLIENTE (BOM SENSO): 
+-Se o cliente propuser uma situação logicamente absurda, contraditória ou impraticável, você DEVE apontar essa contradição de forma leve, natural e bem-humorada, antes de tentar vender. 
+- Exemplo 1 (Tamanho): Se o cliente disser que veste P e quiser comprar GG "para ficar oversized", alerte-o com bom senso de que a modelagem já é naturalmente grande, e que a GG vai parecer um lençol ou ficar grande demais, recomendando o tamanho certo.
+- Exemplo 2 (Esconder o produto): Se o cliente disser que vai comprar uma estampa para os amigos elogiarem, mas diz que nunca vai tirar o casaco fechado por cima, brinque com o fato de que os amigos precisariam ter superpoderes (como o Six Eyes) para ver a estampa, incentivando-o a usar a peça sem o casaco.
+- Evite parecer um robô que aceita qualquer ideia sem sentido só para gerar um link de pagamento. Mantenha a personalidade descontraída e urbana da marca.
 
 No FINAL da sua resposta, você pode, dependendo do contexto, acrescentar um bloco neste formato:
 [PRODUTOS_START]{"produtos":[{"id":ID,"nome":"NOME","preco":PRECO,"imagem":"IMAGEM"}]}[PRODUTOS_END]
@@ -46,24 +54,24 @@ async function buscarProdutos(query) {
     if (!query)
         return [];
     try {
-        const termos = query.toLowerCase().split(/\s+/);
-        const stopwords = ['quero', 'camisa', 'camiseta', 'de', 'para', 'um', 'uma', 'a', 'o', 'e', 'em', 'com', 'me', 'por', 'que', 'seria', 'pra', 'na', 'no', 'da', 'do', 'tem', 'voce', 'voces', 'procurando', 'sobre'];
-        const termosFiltrados = termos.filter(t => t.length > 2 && !stopwords.includes(t));
-        // Condição inicial: Frase exata digitada
+        const textoLimpo = query.toLowerCase();
+        const stopwords = ['quero', 'camisa', 'camiseta', 'blusa', 'manto', 'de', 'para', 'um', 'uma', 'a', 'o', 'e', 'em', 'com', 'me', 'por', 'que', 'seria', 'pra', 'na', 'no', 'da', 'do', 'tem', 'voce', 'voces', 'procurando', 'sobre', 'vocês', 'recomenda', 'relacionadas', 'relacionada'];
+        const termos = textoLimpo.split(/\s+/).filter(t => t.length > 1 && !stopwords.includes(t));
         const condicoes = [
-            { nm_produto: { contains: query, mode: 'insensitive' } },
-            { ds_produto: { contains: query, mode: 'insensitive' } }
+            { nm_produto: { contains: textoLimpo, mode: 'insensitive' } },
+            { ds_produto: { contains: textoLimpo, mode: 'insensitive' } }
         ];
-        // CORREÇÃO AQUI: Agora varre cada termo individual tanto no Nome quanto na Descrição!
-        if (termosFiltrados.length > 0) {
-            for (const termo of termosFiltrados) {
+        if (termos.length > 0) {
+            for (const termo of termos) {
                 condicoes.push({ nm_produto: { contains: termo, mode: 'insensitive' } });
                 condicoes.push({ ds_produto: { contains: termo, mode: 'insensitive' } });
             }
         }
+        // 💡 AJUSTE AQUI: take 10 e orderBy para garantir que tudo de Jujutsu venha no pacote!
         let produtos = await prisma.produto.findMany({
             where: { OR: condicoes },
-            take: 4,
+            take: 10,
+            orderBy: { cd_produto: 'asc' }, // 👈 GARANTE A ORDEM CONSTANTE
             select: {
                 cd_produto: true,
                 nm_produto: true,
@@ -72,41 +80,19 @@ async function buscarProdutos(query) {
                 nm_imagem_url: true
             }
         });
-        // Fallback flexível
-        if (produtos.length === 0 && query.length > 2) {
-            const palavrasBusca = query.split(/\s+/).filter(p => p.length > 2 && !stopwords.includes(p));
-            if (palavrasBusca.length > 0) {
-                produtos = await prisma.produto.findMany({
-                    where: {
-                        OR: palavrasBusca.flatMap(palavra => [
-                            { nm_produto: { contains: palavra, mode: 'insensitive' } },
-                            { ds_produto: { contains: palavra, mode: 'insensitive' } }
-                        ])
-                    },
-                    take: 4,
-                    select: {
-                        cd_produto: true, nm_produto: true, vl_produto: true, nm_imagem_url: true, ds_produto: true,
-                    }
-                });
-            }
-        }
-        // Fallback: mais populares se zerar tudo
         if (produtos.length === 0) {
             produtos = await prisma.produto.findMany({
-                take: 3,
+                take: 6,
+                orderBy: { cd_produto: 'asc' }, // 👈 GARANTE A ORDEM CONSTANTE NO FALLBACK
                 select: {
                     cd_produto: true, nm_produto: true, vl_produto: true, nm_imagem_url: true, ds_produto: true,
                 }
             });
-            console.log("Nenhum produto encontrado. Retornando padrão.");
-        }
-        else {
-            console.log(`Produtos encontrados: ${produtos.map(p => p.nm_produto).join(', ')}`);
         }
         return produtos;
     }
     catch (err) {
-        console.error("Erro na busca de produtos:", err);
+        console.error("Erro na busca:", err);
         return [];
     }
 }
