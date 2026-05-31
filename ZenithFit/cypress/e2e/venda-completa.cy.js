@@ -9,7 +9,7 @@ Cypress.on('command:start', () => {
 });
 
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
-  return originalFn(element, text, { delay: 100, ...options });
+  return originalFn(element, text, { delay: 10, ...options });
 });
 
 // ---------------------------------------------------------------------------
