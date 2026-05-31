@@ -1,7 +1,6 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 
-// O PrismaClient busca a URL do banco automaticamente no seu .env
 const prisma = new PrismaClient();
 
 export { prisma };

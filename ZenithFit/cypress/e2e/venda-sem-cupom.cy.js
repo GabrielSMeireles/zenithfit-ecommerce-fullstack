@@ -10,7 +10,7 @@ Cypress.on('command:start', (obj) => {
 
 // Delay
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
-  return originalFn(element, text, { delay: 100, ...options });
+  return originalFn(element, text, { delay: 10, ...options });
 });
 
 describe('Fluxo de Venda Completo - Zenith', () => {
