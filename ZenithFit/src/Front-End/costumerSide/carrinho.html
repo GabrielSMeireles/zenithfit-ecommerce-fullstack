@@ -115,21 +115,12 @@
     </div>
 
     <script>
-        /*
-            CORREÇÃO PRINCIPAL:
-            Todos os cálculos agora lêem 'item.vl_unitario' (Number),
-            que é o campo salvo pelo detalhesProduto.html corrigido.
-            Antes, checkoutPagamento.html lia 'item.vl_produto' — campo errado —
-            resultando em NaN no subtotal.
-        */
-
         let carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
 
         function salvarCarrinho() {
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
         }
 
-        // Garante que o preço nunca vira NaN independente de como foi salvo
         function precoSeguro(item) {
             const v = item.vl_unitario ?? item.vl_produto ?? 0;
             return parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
@@ -150,7 +141,6 @@
             document.getElementById('resumo-total').textContent    = formatado;
             document.getElementById('resumo-qtd').textContent      = totalItens();
 
-            // Desabilita botão de checkout se carrinho vazio
             const btnCheckout = document.getElementById('btn-checkout');
             if (carrinho.length === 0) {
                 btnCheckout.classList.add('opacity-50', 'pointer-events-none');

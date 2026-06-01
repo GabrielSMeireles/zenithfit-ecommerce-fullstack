@@ -178,7 +178,6 @@
       const res = await fetch(`${API}/produtos`);
       const produtos = await res.json();
 
-      // Pega os últimos 6 cadastrados (mais recentes)
       const novidades = produtos.slice(-6).reverse();
 
       const container = document.getElementById("container-novidades");

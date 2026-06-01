@@ -96,7 +96,6 @@
         }));
 
         const listaEnderecos = this.enderecos.map((_, index) => ({
-          // Captura o apelido. Se vazio, envia "Casa" como padrão.
           nm_identificacao: form.querySelectorAll('[name="address-nickname"]')[index]?.value || "Casa",
 
           nm_tipo_endereco: form.querySelectorAll('[name="address-type"]')[index]?.value,
@@ -195,7 +194,6 @@
             CRIAR CONTA
           </button>
         </div>
-        <!-- Procure a div x-show="activeTab === 'login'" -->
         <div x-show="activeTab === 'login'" ...>
           <form class="mt-8 space-y-6" @submit.prevent="realizarLogin($event)">
             <div class="rounded-md shadow-sm -space-y-px">

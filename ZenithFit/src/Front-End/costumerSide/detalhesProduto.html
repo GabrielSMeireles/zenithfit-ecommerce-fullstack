@@ -123,13 +123,6 @@
 
                     <!-- BOTÃO ADICIONAR AO CARRINHO -->
                     <div class="mt-8">
-                        <!--
-                            CORREÇÃO PRINCIPAL:
-                            Substituído <a href="carrinho.html"> por <button type="button">.
-                            Um link navega imediatamente ao ser clicado, impedindo que o
-                            localStorage seja salvo antes do redirecionamento.
-                            Agora o JS salva o item e SÓ ENTÃO redireciona manualmente.
-                        -->
                         <button
                             id="btn-carrinho"
                             type="button"
@@ -234,12 +227,6 @@
         });
 
         // ── ADICIONAR AO CARRINHO ─────────────────────────────────────────
-        /*
-            CORREÇÃO:
-            O campo salvo agora é sempre 'vl_unitario' (Number),
-            alinhado com o que carrinho.html e checkoutPagamento.html esperam.
-            Antes usava 'vl_produto', causando NaN nos totais.
-        */
         document.getElementById('btn-carrinho').addEventListener('click', () => {
             if (!produtoAtual) return;
             if (produtoAtual.qt_estoque === 0) return;
@@ -267,7 +254,6 @@
 
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
 
-            // Feedback visual antes de navegar
             const btn = document.getElementById('btn-carrinho');
             const textoOriginal = btn.querySelector('span:last-child').textContent;
             btn.querySelector('span:last-child').textContent = "Adicionado!";
@@ -277,12 +263,10 @@
                 btn.querySelector('span:last-child').textContent = textoOriginal;
                 btn.disabled = false;
                 atualizarBadgeCarrinho();
-                // Redireciona SOMENTE após salvar no localStorage
                 window.location.href = 'carrinho.html';
             }, 600);
         });
 
-        // ── BADGE DO CARRINHO NO ÍCONE ────────────────────────────────────
         function atualizarBadgeCarrinho() {
             const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
             const total = carrinho.reduce((acc, i) => acc + i.qt_item, 0);
