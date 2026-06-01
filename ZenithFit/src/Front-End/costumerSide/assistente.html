@@ -73,6 +73,10 @@
                <a class="hover:text-primary transition-colors" href="assistente.html">Assistente</a>
             </nav>
             <div class="flex items-center space-x-4">
+               <button id="clearChatBtn"
+                  class="p-2 hover:bg-red-100 dark:hover:bg-red-900 rounded-full transition-colors" title="Limpar conversa">
+                  <span class="material-symbols-outlined text-red-600">delete</span>
+               </button>
                <a href="dashboardCliente.html"
                   class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                   <span class="material-symbols-outlined">account_circle</span>
@@ -86,11 +90,8 @@
       </div>
    </header>
    <main class="chat-container flex flex-col relative max-w-4xl mx-auto w-full">
-      <!-- Área de mensagens dinâmica -->
       <div id="chatMessages" class="flex-1 overflow-y-auto px-4 py-8 pb-40 space-y-8">
-         <!-- As mensagens serão injetadas via JS -->
       </div>
-      <!-- Input fixo no final -->
       <div
          class="p-4 md:p-8 bg-gradient-to-t from-white via-white/90 to-transparent dark:from-background-dark dark:via-background-dark/90 sticky bottom-0 left-0 right-0">
          <div class="relative max-w-3xl mx-auto">
@@ -108,38 +109,94 @@
    </main>
 
    <script>
-      // --- Configuração ---
       const API_URL = 'http://localhost:3000/api/chatbot';
-      let conversationHistory = [
-         { role: "assistant", content: "Olá! Eu sou o Zenith Recomenda, seu assistente inteligente. Estou aqui para te ajudar a encontrar o produto perfeito para o seu estilo e necessidade. Como posso te ajudar hoje?" }
-      ];
+      const STORAGE_KEY = 'zenith_chat_history';
+      const WELCOME_MESSAGE = "Olá! Eu sou o Zenith Recomenda, seu assistente inteligente. Estou aqui para te ajudar a encontrar o produto perfeito para o seu estilo e necessidade. Como posso te ajudar hoje?";
 
-      // Elementos DOM
-      const chatContainer = document.getElementById('chatMessages');
-      const userInput = document.getElementById('userInput');
-      const sendBtn = document.getElementById('sendBtn');
+      class ChatHistoryManager {
+         constructor(storageKey) {
+            this.storageKey = storageKey;
+            this.loadHistory();
+         }
 
-      // Utilitário: rolar para o final do chat
-      function scrollToBottom() {
-         const container = document.querySelector('.chat-container');
-         const messagesContainer = chatContainer;
-         if (messagesContainer) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+         loadHistory() {
+            try {
+               const stored = localStorage.getItem(this.storageKey);
+               if (stored) {
+                  this.history = JSON.parse(stored);
+                  console.log('Histórico carregado do localStorage:', this.history.length, 'mensagens');
+               } else {
+                  this.history = [
+                     { role: "assistant", content: WELCOME_MESSAGE }
+                  ];
+                  this.saveHistory();
+               }
+            } catch (error) {
+               console.error('Erro ao carregar histórico:', error);
+               this.history = [
+                  { role: "assistant", content: WELCOME_MESSAGE }
+               ];
+               this.saveHistory();
+            }
+         }
+
+         saveHistory() {
+            try {
+               localStorage.setItem(this.storageKey, JSON.stringify(this.history));
+               console.log('Histórico salvo no localStorage:', this.history.length, 'mensagens');
+            } catch (error) {
+               console.error('Erro ao salvar histórico:', error);
+               if (error.name === 'QuotaExceededError') {
+                  this.history = this.history.slice(-10); 
+                  this.saveHistory();
+               }
+            }
+         }
+
+         addMessage(role, content) {
+            this.history.push({ role, content });
+            this.saveHistory();
+         }
+
+         getHistory() {
+            return this.history;
+         }
+
+         clearHistory() {
+            this.history = [
+               { role: "assistant", content: WELCOME_MESSAGE }
+            ];
+            this.saveHistory();
+            console.log('Histórico limpo');
          }
       }
 
-      // Função para renderizar uma mensagem (usuário ou assistente)
-      // Suporta exibição de produtos caso a resposta contenha o bloco JSON especial
+      const historyManager = new ChatHistoryManager(STORAGE_KEY);
+      let conversationHistory = historyManager.getHistory();
+      let isLoading = false;
+
+      const chatContainer = document.getElementById('chatMessages');
+      const userInput = document.getElementById('userInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const clearChatBtn = document.getElementById('clearChatBtn');
+
+      function scrollToBottom() {
+         const container = document.querySelector('.chat-container');
+         if (container) {
+            setTimeout(() => {
+               container.scrollTop = container.scrollHeight;
+            }, 0);
+         }
+      }
+
       function renderMessage(message, isUser = false) {
          const messageDiv = document.createElement('div');
          messageDiv.className = `flex gap-4 max-w-3xl ${isUser ? 'ml-auto flex-row-reverse' : ''}`;
 
-         // Avatar
          const avatarDiv = document.createElement('div');
          avatarDiv.className = `w-8 h-8 rounded-full ${isUser ? 'bg-slate-200 dark:bg-slate-800' : 'bg-black text-white'} flex items-center justify-center flex-shrink-0`;
          avatarDiv.innerHTML = `<span class="material-symbols-outlined text-sm">${isUser ? 'person' : 'smart_toy'}</span>`;
 
-         // Container do conteúdo
          const contentDiv = document.createElement('div');
          contentDiv.className = `space-y-2 ${isUser ? 'text-right' : 'w-full'}`;
 
@@ -147,8 +204,6 @@
          label.className = 'text-sm font-bold text-slate-500 uppercase tracking-wider';
          label.innerText = isUser ? 'Você' : 'Zenith Recomenda';
 
-         // O conteúdo pode ser texto puro + produtos extraídos
-         // Se for mensagem do usuário, é só texto
          if (isUser) {
             const bubble = document.createElement('div');
             bubble.className = 'bg-black text-white rounded-2xl p-4 inline-block text-left';
@@ -156,22 +211,18 @@
             contentDiv.appendChild(label);
             contentDiv.appendChild(bubble);
          } else {
-            // Para assistente, processar possível JSON de produtos
             const bubbleContainer = document.createElement('div');
             bubbleContainer.className = 'bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200 w-full';
 
-            // Extrair texto principal e produtos
             let mainText = message;
             let products = [];
 
-            // Procurar pelo marcador [PRODUTOS_START] ... [PRODUTOS_END]
             const startMarker = '[PRODUTOS_START]';
             const endMarker = '[PRODUTOS_END]';
             const startIdx = message.indexOf(startMarker);
             const endIdx = message.indexOf(endMarker);
 
             if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-               // Extrair o JSON entre os marcadores
                const jsonStr = message.substring(startIdx + startMarker.length, endIdx).trim();
                mainText = message.substring(0, startIdx).trim();
                try {
@@ -184,14 +235,12 @@
                }
             }
 
-            // Adicionar o texto principal
             if (mainText) {
                const textPara = document.createElement('p');
                textPara.innerText = mainText;
                bubbleContainer.appendChild(textPara);
             }
 
-            // Se existem produtos, renderizar grid
             if (products.length > 0) {
                const gridDiv = document.createElement('div');
                gridDiv.className = 'grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 mt-2';
@@ -200,20 +249,17 @@
                   const card = document.createElement('div');
                   card.className = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg';
                   card.onclick = () => {
-                     // Ao clicar, pode redirecionar para página do produto ou adicionar ao carrinho
                      window.location.href = `detalhesProduto.html?id=${prod.id}`;
                   };
 
-                  // Imagem
                   const imgDiv = document.createElement('div');
                   imgDiv.className = 'aspect-square bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4';
                   const img = document.createElement('img');
-                  img.src = prod.imagem || `images/${prod.id}.png`; // fallback
+                  img.src = prod.imagem || `images/${prod.id}.png`;
                   img.alt = prod.nome;
                   img.className = 'w-full h-full object-contain';
                   imgDiv.appendChild(img);
 
-                  // Info
                   const infoDiv = document.createElement('div');
                   infoDiv.className = 'p-4';
                   const nome = document.createElement('h3');
@@ -242,7 +288,6 @@
          return messageDiv;
       }
 
-      // Função para carregar todo o histórico na interface
       function renderFullChat() {
          chatContainer.innerHTML = '';
          conversationHistory.forEach(msg => {
@@ -253,38 +298,34 @@
          scrollToBottom();
       }
 
-      // Função para adicionar uma nova mensagem ao histórico e à UI
       function addMessageToChat(role, content) {
-         conversationHistory.push({ role, content });
+         historyManager.addMessage(role, content);
+
          const messageElement = renderMessage(content, role === 'user');
          chatContainer.appendChild(messageElement);
+
          scrollToBottom();
       }
 
-      // Função para substituir a última mensagem (caso precise editar, mas usaremos para adicionar)
-      // No caso, após receber resposta, adicionamos normalmente.
-
-      // Exibir loading enquanto aguarda resposta
-      let isLoading = false;
       function showTypingIndicator() {
          const typingDiv = document.createElement('div');
          typingDiv.id = 'typingIndicator';
          typingDiv.className = 'flex gap-4 max-w-3xl';
          typingDiv.innerHTML = `
-                 <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
-                     <span class="material-symbols-outlined text-sm">smart_toy</span>
-                 </div>
-                 <div class="space-y-2 w-full">
-                     <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Zenith Recomenda</p>
-                     <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200">
-                         <div class="flex space-x-1">
-                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
-                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                             <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
-                         </div>
-                     </div>
-                 </div>
-             `;
+            <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+               <span class="material-symbols-outlined text-sm">smart_toy</span>
+            </div>
+            <div class="space-y-2 w-full">
+               <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">Zenith Recomenda</p>
+               <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 text-slate-800 dark:text-slate-200">
+                  <div class="flex space-x-1">
+                     <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                     <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                     <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                  </div>
+               </div>
+            </div>
+         `;
          chatContainer.appendChild(typingDiv);
          scrollToBottom();
       }
@@ -294,20 +335,16 @@
          if (indicator) indicator.remove();
       }
 
-      // Enviar mensagem para o backend
       async function sendMessage(userMessage) {
          if (isLoading || !userMessage.trim()) return;
          isLoading = true;
 
-         // Adiciona a mensagem do usuário na UI e histórico
          addMessageToChat('user', userMessage);
          userInput.value = '';
 
-         // Mostra indicador de digitação
          showTypingIndicator();
 
          try {
-            // Prepara o histórico para enviar (sem o indicador, claro)
             const payload = { historico: conversationHistory };
 
             const response = await fetch(API_URL, {
@@ -323,7 +360,6 @@
             const data = await response.json();
             const assistantReply = data.resposta;
 
-            // Remove o indicador e adiciona a resposta da IA
             removeTypingIndicator();
             addMessageToChat('assistant', assistantReply);
 
@@ -336,7 +372,6 @@
          }
       }
 
-      // Eventos
       sendBtn.addEventListener('click', () => {
          const message = userInput.value.trim();
          if (message) sendMessage(message);
@@ -350,8 +385,17 @@
          }
       });
 
-      // Inicializar: renderizar mensagem de boas-vindas
+      clearChatBtn.addEventListener('click', () => {
+         if (confirm('Tem certeza que deseja limpar todo o histórico de conversa?')) {
+            historyManager.clearHistory();
+            conversationHistory = historyManager.getHistory();
+            renderFullChat();
+         }
+      });
+
+      console.log('Carregando histórico da conversa...');
       renderFullChat();
+      userInput.focus();
    </script>
 </body>
 
