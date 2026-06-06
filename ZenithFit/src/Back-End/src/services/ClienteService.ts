@@ -1,4 +1,4 @@
-import type { IFachada } from '../interfaces/IFachada.js';
+import { Fachada } from './Fachada.js';
 import { Cliente } from '../entities/Cliente.js';
 import { ClienteDAO } from '../dao/ClienteDAO.js';
 import { EnderecoDAO } from '../dao/EnderecoDAO.js';
@@ -7,12 +7,13 @@ import { ValidaCliente } from '../strategies/validacao/ValidaCliente.js';
 import { GeraMensagem } from '../notification/GeraMensagem.js';
 import { prisma } from '../db.js';
 
-export class ClienteService implements IFachada<Cliente> {
-  private dao = new ClienteDAO();
-  private enderecoDAO = new EnderecoDAO();
-  private cartaoDAO = new CartaoDAO();
+export class ClienteService extends Fachada<Cliente> {
   private validacao = new ValidaCliente();
   private notificacao = new GeraMensagem();
+
+  constructor() {
+    super(new ClienteDAO());
+  }
 
   async salvar(dados: any): Promise<Cliente> {
     const cliente = Object.assign(new Cliente(), {
@@ -32,7 +33,7 @@ export class ClienteService implements IFachada<Cliente> {
     await this.validacao.validar(cliente);
 
     const resultado = await prisma.$transaction(async (tx) => {
-      const novoCliente = await tx.cliente.create({
+      return tx.cliente.create({
         data: {
           cd_cpf: cliente.cd_cpf,
           nm_nome_cliente: cliente.nm_nome_cliente,
@@ -69,10 +70,9 @@ export class ClienteService implements IFachada<Cliente> {
           },
         },
       });
-      return novoCliente;
     });
 
-    this.notificacao.log('CADASTRO', `Novo cliente cadastrado: ${cliente.nm_nome_cliente} (${cliente.cd_cpf})`);
+    this.notificacao.log('CADASTRO', `Novo cliente: ${cliente.nm_nome_cliente} (${cliente.cd_cpf})`);
     return Object.assign(new Cliente(), resultado);
   }
 
@@ -94,7 +94,6 @@ export class ClienteService implements IFachada<Cliente> {
     const resultado = await prisma.$transaction(async (tx) => {
       await tx.endereco.deleteMany({ where: { cd_cpf: cliente.cd_cpf } });
       await tx.cartao_credito.deleteMany({ where: { cd_cpf: cliente.cd_cpf } });
-
       return tx.cliente.update({
         where: { cd_cpf: cliente.cd_cpf },
         data: {
@@ -135,20 +134,12 @@ export class ClienteService implements IFachada<Cliente> {
     return Object.assign(new Cliente(), resultado);
   }
 
-  async consultar(cpf: string): Promise<Cliente | null> {
-    return this.dao.consultar(cpf);
-  }
-
   async listarTodos(): Promise<Cliente[]> {
-    return this.dao.listarTodos();
-  }
-
-  async deletar(cpf: string): Promise<void> {
-    await this.dao.deletar(cpf);
+    return (this.dao as ClienteDAO).listarTodos();
   }
 
   async login(email: string, senha: string): Promise<Omit<Cliente, 'cd_senha'> | null> {
-    const cliente = await this.dao.buscarPorEmail(email);
+    const cliente = await (this.dao as ClienteDAO).buscarPorEmail(email);
     if (!cliente || (cliente as any).cd_senha !== senha) return null;
     const { cd_senha, ...semSenha } = cliente as any;
     return semSenha;

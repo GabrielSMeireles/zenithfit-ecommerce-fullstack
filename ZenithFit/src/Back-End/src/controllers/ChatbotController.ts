@@ -6,14 +6,17 @@ export class ChatbotController {
 
   responder = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { historico } = req.body;
+      const { historico, cpf } = req.body;
 
       if (!historico || !Array.isArray(historico)) {
         res.status(400).json({ erro: 'Histórico de conversa inválido ou ausente.' });
         return;
       }
 
-      const resposta = await this.service.processar(historico);
+    const resposta = await this.service.processar(
+      historico,
+      cpf
+    );
       res.status(200).json({ resposta });
     } catch (error) {
       console.error('Erro na rota do chatbot:', error);

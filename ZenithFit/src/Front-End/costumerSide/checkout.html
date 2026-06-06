@@ -344,7 +344,6 @@
             radio.closest('label').classList.add('border-primary', 'bg-gray-50');
         }
 
-        // Inicialização correta
         document.addEventListener('DOMContentLoaded', () => {
             carregarEnderecos();
             const form = document.querySelector('form');
@@ -354,7 +353,6 @@
         });
 
        
-        // Variável para armazenar o subtotal vindo do carrinho
         function precoSeguro(item) {
             const v = item.vl_unitario ?? item.vl_produto ?? 0;
             return parseFloat(String(v).replace('R$', '').replace(',', '.').trim()) || 0;
@@ -411,17 +409,14 @@
 
             const total = subtotalGlobal + valorFrete;
 
-            // Atualiza a tela
             document.getElementById('frete-nome').innerText = nomeFrete;
             document.getElementById('resumo-subtotal').innerText = `R$ ${subtotalGlobal.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
-            // Estilização visual
             document.querySelectorAll('#shipping-options-container label').forEach(l => l.classList.remove('border-primary', 'bg-gray-50'));
             input.closest('label').classList.add('border-primary', 'bg-gray-50');
 
-            // Guarda o ID da modalidade pra enviar pro banco
             localStorage.setItem('checkout_id_modalidade', idModalidade);
             localStorage.setItem('checkout_valor_frete', valorFrete);
             const enderecoSelecionado = document.querySelector('input[name="delivery_address"]:checked');

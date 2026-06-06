@@ -23,8 +23,13 @@ export class TrocaController {
 
   buscar = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
     try {
-      const troca = await this.service.consultar(Number(req.params.id));
-      if (!troca) { res.status(404).json({ message: 'Troca não encontrada.' }); return; }
+      const troca = await this.service.buscar(Number(req.params.id));
+
+      if (!troca) {
+        res.status(404).json({ message: 'Troca não encontrada.' });
+        return;
+      }
+
       res.status(200).json(troca);
     } catch {
       res.status(500).json({ message: 'Erro ao buscar troca.' });

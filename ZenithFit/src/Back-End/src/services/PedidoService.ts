@@ -1,4 +1,4 @@
-import type { IFachada } from '../interfaces/IFachada.js';
+import { Fachada } from './Fachada.js';
 import { Pedido } from '../entities/Pedido.js';
 import { PedidoDAO } from '../dao/PedidoDAO.js';
 import { ValidaEstoque } from '../strategies/validacao/ValidaEstoque.js';
@@ -7,12 +7,15 @@ import { ValidaFormaPagamento } from '../strategies/validacao/ValidaFormaPagamen
 import { GeraMensagem } from '../notification/GeraMensagem.js';
 import { prisma } from '../db.js';
 
-export class PedidoService implements IFachada<Pedido> {
-  private dao = new PedidoDAO();
+export class PedidoService extends Fachada<Pedido> {
   private validaEstoque = new ValidaEstoque();
   private validaCupom = new ValidaCupom();
   private validaPagamento = new ValidaFormaPagamento();
   private notificacao = new GeraMensagem();
+
+  constructor() {
+    super(new PedidoDAO());
+  }
 
   async salvar(dados: any): Promise<Pedido> {
     const modalidade = await prisma.modalidade_Frete.findUnique({
@@ -27,7 +30,6 @@ export class PedidoService implements IFachada<Pedido> {
 
     let total_desconto = 0;
     const cuponsParaVincular: any[] = [];
-
     if (dados.cupons?.length) {
       for (const codigo of dados.cupons) {
         const cupomDb = await prisma.cupom.findUnique({ where: { nm_codigo: codigo } });
@@ -39,13 +41,8 @@ export class PedidoService implements IFachada<Pedido> {
     }
 
     const vl_total = (vl_total_itens + vl_frete) - total_desconto;
-
     const pedido = Object.assign(new Pedido(), {
-      ...dados,
-      cd_cpf: dados.cpf,
-      vl_frete,
-      vl_total,
-      cd_status_pedido: 1,
+      ...dados, cd_cpf: dados.cpf, vl_frete, vl_total, cd_status_pedido: 1,
     });
 
     await this.validaEstoque.validar(pedido);
@@ -61,64 +58,33 @@ export class PedidoService implements IFachada<Pedido> {
           vl_total: pedido.vl_total,
           vl_frete: pedido.vl_frete,
           cd_status_pedido: 1,
-          itens: {
-            create: pedido.itens.map((i: any) => ({
-              cd_produto: i.cd_produto,
-              qt_item: i.qt_item,
-              vl_unitario: i.vl_unitario,
-              nm_tamanho: i.nm_tamanho,
-            })),
-          },
-          pagamentos: {
-            create: pedido.pagamentos.map((p: any) => ({
-              cd_cartao: p.cd_cartao,
-              vl_pago: p.vl_pago,
-            })),
-          },
+          itens: { create: pedido.itens.map((i: any) => ({ cd_produto: i.cd_produto, qt_item: i.qt_item, vl_unitario: i.vl_unitario, nm_tamanho: i.nm_tamanho })) },
+          pagamentos: { create: pedido.pagamentos.map((p: any) => ({ cd_cartao: p.cd_cartao, vl_pago: p.vl_pago })) },
         },
       });
-
       for (const cupom of cuponsParaVincular) {
-        await tx.cupom_Pedido.create({
-          data: { cd_pedido: novoPedido.cd_pedido, cd_cupom: cupom.cd_cupom },
-        });
+        await tx.cupom_Pedido.create({ data: { cd_pedido: novoPedido.cd_pedido, cd_cupom: cupom.cd_cupom } });
         if (cupom.tp_cupom === 'TROCA') {
-          await tx.cupom.update({
-            where: { cd_cupom: cupom.cd_cupom },
-            data: { fl_ativo: false },
-          });
+          await tx.cupom.update({ where: { cd_cupom: cupom.cd_cupom }, data: { fl_ativo: false } });
         }
       }
-
       return novoPedido;
     });
 
-    this.notificacao.log('PEDIDO', `Pedido #${resultado.cd_pedido} criado para CPF ${pedido.cd_cpf} — Total: R$ ${vl_total.toFixed(2)}`);
+    this.notificacao.log('PEDIDO', `Pedido #${resultado.cd_pedido} — R$ ${vl_total.toFixed(2)}`);
     return Object.assign(new Pedido(), resultado);
   }
 
-  async alterar(pedido: Pedido): Promise<Pedido> {
-    return this.dao.alterar(pedido);
-  }
-
-  async consultar(id: number): Promise<Pedido | null> {
-    return this.dao.consultar(id);
-  }
-
   async listarTodos(): Promise<Pedido[]> {
-    return this.dao.listarTodos();
+    return (this.dao as PedidoDAO).listarTodos();
   }
 
   async listarPorCliente(cpf: string): Promise<Pedido[]> {
-    return this.dao.listarPorCliente(cpf);
+    return (this.dao as PedidoDAO).listarPorCliente(cpf);
   }
 
   async atualizarStatus(id: number, status: number): Promise<Pedido> {
     const pedido = Object.assign(new Pedido(), { cd_pedido: id, cd_status_pedido: status });
     return this.dao.alterar(pedido);
-  }
-
-  async deletar(id: number): Promise<void> {
-    await this.dao.deletar(id);
   }
 }

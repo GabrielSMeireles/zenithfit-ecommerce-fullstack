@@ -262,7 +262,6 @@
                     <h4 class="font-bold text-sm mb-6 uppercase tracking-wider">Companhia</h4>
                     <ul class="space-y-4 text-xs text-slate-600 font-medium">
                         <li><a class="hover:text-primary" href="#">Sobre Nós</a></li>
-                        <!-- removed: Nossas Marcas -->
                         <li><a class="hover:text-primary" href="#">Como Funciona</a></li>
                         <li><a class="hover:text-primary" href="#">Trabalhe Conosco</a></li>
                     </ul>
@@ -326,7 +325,6 @@
             document.getElementById('input-preco-max').value  = maxPreco;
             atualizarTrack();
 
-            // Verifica se veio com filtro de categoria pela URL
             const params = new URLSearchParams(window.location.search);
             const filtroCategoria = params.get("filtro");
 

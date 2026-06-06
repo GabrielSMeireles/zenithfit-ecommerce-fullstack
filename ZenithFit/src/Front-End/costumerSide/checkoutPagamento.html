@@ -173,13 +173,11 @@
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
-                                <!-- Adicionado ID aqui -->
                                 <span id="resumo-subtotal"
                                     class="font-medium text-gray-900 dark:text-gray-100">R$0,00</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Frete</span>
-                                <!-- Adicionado ID aqui -->
                                 <span id="resumo-frete-valor"
                                     class="font-medium text-gray-900 dark:text-gray-100">R$0,00</span>
                             </div>
@@ -191,7 +189,6 @@
                         <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
                         <div class="flex justify-between items-center">
                             <span class="text-base text-gray-600 dark:text-gray-300">Total</span>
-                            <!-- Adicionado ID aqui -->
                             <span id="resumo-total"
                                 class="text-2xl font-bold text-gray-900 dark:text-gray-100">R$0,00</span>
                         </div>
@@ -240,18 +237,14 @@
 
                 const cupom = await response.json();
 
-                // 1. Salva o cupom no estado global da página
                 cupomAplicado = cupom;
 
-                // 2. Define o valor do desconto (convertendo para número)
                 valorDesconto = parseFloat(cupom.vl_desconto);
 
                 alert(`Cupom "${codigo}" de R$ ${valorDesconto.toFixed(2)} aplicado!`);
 
-                // 3. Bloqueia o input para não aplicarem dois cupons
                 codigoInput.disabled = true;
 
-                // 4. Atualiza os números na tela
                 atualizarTotais();
 
             } catch (error) {
@@ -262,18 +255,14 @@
             }
         }
 
-        // atualizar os valores na tela
         function atualizarTotais() {
             const totalSemCupom = subtotal + valorFrete;
 
-            // Calcula o total garantindo que não fique negativo
             const totalFinal = Math.max(0, totalSemCupom - valorDesconto);
 
-            // Atualiza os elementos na tela
             document.getElementById('resumo-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-frete-valor').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
 
-            // Atualiza o valor do desconto no resumo
             const elDesconto = document.getElementById('resumo-desconto');
             if (elDesconto) {
                 elDesconto.innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
@@ -284,7 +273,6 @@
                 elDescontoAside.innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
             }
 
-            // Atualiza o Total Final
             document.getElementById('resumo-total').innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
         }
         async function inicializarPagamento() {
@@ -294,18 +282,15 @@
                 return;
             }
 
-            // Atualizar Resumo Visual
             document.getElementById('resumo-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-frete-valor').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
             document.getElementById('resumo-total').innerText = `R$ ${(subtotal + valorFrete).toFixed(2).replace('.', ',')}`;
 
             renderizarItensResumo();
-            // Buscar Cartões do Banco
             try {
                 const response = await fetch(`http://localhost:3000/clientes/${cpf}`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                // O backend pode retornar o objeto direto ou aninhado em { cliente: {...} }
                 const clienteReal = data.cliente || data;
                 const cartoes = clienteReal.cartoes || [];
                 renderizarCartoes(cartoes);
@@ -379,7 +364,6 @@
                 return;
             }
 
-            // Validar cada cartão selecionado
             for (let cb of checkboxes) {
                 const idCartao = cb.getAttribute('data-id');
                 const inputValor = document.getElementById(`valor-card-${idCartao}`);
@@ -399,8 +383,6 @@
                 });
             }
 
-            // Validar se a soma dos cartões bate com o total do pedido
-            // .toFixed(2) para evitar problemas de precisão do JS 
             const totalComDesconto = (subtotal + valorFrete) - valorDesconto;
             if (somaValoresInformados.toFixed(2) !== totalComDesconto.toFixed(2)) {
                 alert(`A soma dos cartões (R$ ${somaValoresInformados.toFixed(2)}) deve ser igual ao total com desconto (R$ ${totalComDesconto.toFixed(2)}).`);
@@ -418,7 +400,7 @@
                     vl_unitario: item.vl_unitario,
                     nm_tamanho: item.nm_tamanho || "G"
                 })),
-                pagamentos: pagamentos,   // ← estava faltando
+                pagamentos: pagamentos,   
                 cupons: cupomAplicado ? [cupomAplicado.nm_codigo] : []
             };
 
@@ -441,7 +423,6 @@
             }
         });
 
-        // Função para mostrar/esconder o campo de valor
         function toggleInputValor(id) {
             const container = document.getElementById(`input-container-${id}`);
             container.classList.toggle('hidden');
@@ -470,8 +451,8 @@
 
                 if (response.ok) {
                     alert("Cartão salvo!");
-                    toggleModal(); // Fecha o modal
-                    inicializarPagamento(); // Recarrega a lista de cartões na tela de checkout
+                    toggleModal(); 
+                    inicializarPagamento(); 
                 } else {
                     alert("Erro ao salvar cartão no servidor.");
                 }
@@ -479,18 +460,15 @@
                 console.error("Erro na requisição:", error);
             }
         }
-        // Função para abrir/fechar o modal
         function toggleModal() {
             const modal = document.getElementById('modalCartao');
             modal.classList.toggle('hidden');
         }
 
 
-        // Função que injeta o formulário na página
         function adicionarNovoCartaoPagina() {
             const container = document.getElementById('container-novo-cartao');
 
-            // Se já tiver um formulário aberto, não faz nada ou foca nele
             if (document.getElementById('form-novo-cartao-inline')) return;
 
             const formHtml = `
@@ -540,21 +518,18 @@
         async function salvarNovoCartaoInline() {
             const cpfCliente = localStorage.getItem('cliente_cpf');
 
-            // 1. Captura os elementos primeiro
             const elNum = document.getElementById('num_cartao');
             const elNome = document.getElementById('nome_cartao');
             const elValidade = document.getElementById('validade_cartao');
             const elCvv = document.getElementById('cvv_cartao');
             const elBandeira = document.getElementById('id_bandeira');
 
-            // 2. Verifica se os elementos existem e extrai os valores
             const numCartao = elNum ? elNum.value.replace(/\s+/g, '') : '';
             const nomeImpresso = elNome ? elNome.value : '';
             const validade = elValidade ? elValidade.value : '';
             const cvv = elCvv ? elCvv.value : '';
             const bandeiraId = elBandeira ? elBandeira.value : '';
 
-            // 3. Validação
             if (!numCartao || !nomeImpresso || !validade || !cvv) {
                 alert("Por favor, preencha todos os campos do cartão.");
                 return;
@@ -564,8 +539,6 @@
                 cd_cpf_cliente: cpfCliente,
                 cd_numero_cartao: numCartao,
                 nm_nome_impresso_cartao: nomeImpresso,
-                // No seu backend Prisma, dt_validade_cartao é DateTime. 
-                // O input date retorna YYYY-MM-DD, precisamos converter para ISO:
                 dt_validade_cartao: new Date(validade + "T12:00:00Z").toISOString(),
                 cd_cvv_cartao: cvv,
                 cd_bandeira: Number(bandeiraId)
@@ -581,7 +554,6 @@
                 if (response.ok) {
                     alert("Cartão adicionado com sucesso!");
                     fecharFormularioNovo();
-                    // Recarrega a lista de cartões para o novo aparecer
                     await inicializarPagamento();
                 } else {
                     const erro = await response.json();

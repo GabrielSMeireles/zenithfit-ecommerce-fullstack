@@ -398,16 +398,15 @@
                 const itemIndex = parseInt(itemSelect.value);
                 const item = pedidoAtual.itens[itemIndex];
 
-                // Monta o objeto exatamente como a API espera
+                
                 const dadosTroca = {
                     cd_pedido: pedidoAtual.cd_pedido,
-                    cd_item: item?.cd_item || null, // envia null se não houver item (raro)
-                    motivo: reason,                 // "motivo" (singular) como definido na rota
+                    cd_item: item?.cd_item || null, 
+                    motivo: reason,                 
                     descricao: description
                 };
 
                 try {
-                    // Faz a requisição POST para a API de trocas
                     const resposta = await fetch('http://localhost:3000/trocas', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
