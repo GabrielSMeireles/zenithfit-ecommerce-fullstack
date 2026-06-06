@@ -92,12 +92,21 @@ model Produto {
   nm_produto    String
   ds_produto    String?
   vl_produto    Decimal @db.Decimal(10, 2)
-  nm_imagem_url String? // Link para a foto do produto (ex: "/images/camisa.png")
+  nm_imagem_url String? 
   qt_estoque    Int     @default(0)
 
-  // Relacionamento inverso (Opcional, mas bom para o Prisma)
+  // Nova Relação com Categoria
+  categoria    Categoria @relation(fields: [cd_categoria], references: [cd_categoria])
+  cd_categoria Int
+
   itens_pedido Item_Pedido[]
 }
+
+model Categoria {
+  cd_categoria Int       @id @default(autoincrement())
+  nm_categoria String    @unique
+  produtos     Produto[]
+} 
 
 model Pedido {
   cd_pedido Int      @id @default(autoincrement())

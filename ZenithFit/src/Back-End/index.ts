@@ -14,6 +14,7 @@ import cupomRoutes from './src/routes/cupomRoutes.js';
 import cartaoRoutes from './src/routes/cartaoRoutes.js';       
 import enderecoRoutes from './src/routes/enderecoRoutes.js';  
 import chatbotRoutes from './src/routes/chatbotRoutes.js';
+import analiseRoutes from './src/routes/analiseRoutes.js';
 
 // Controller para login
 import { ClienteController } from './src/controllers/ClienteController.js';
@@ -40,6 +41,7 @@ app.use('/cupons', cupomRoutes);
 app.use('/cartoes', cartaoRoutes);        
 app.use('/enderecos', enderecoRoutes);    
 app.use('/api/chatbot', chatbotRoutes);
+app.use('/analises', analiseRoutes);
 
 // Rota de login
 const clienteCtrl = new ClienteController();
