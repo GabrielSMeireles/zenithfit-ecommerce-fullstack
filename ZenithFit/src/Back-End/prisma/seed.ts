@@ -45,12 +45,21 @@ async function main() {
       { nm_status: 'Finalizada' }
     ]
   });
+    await prisma.status_Pedido.createMany({
+    data: [
+      { nm_status: 'Em processamento' },
+      { nm_status: 'Pago' },
+      { nm_status: 'Enviado' },
+      { nm_status: 'Entregue' },
+      { nm_status: 'Cancelado' }
+    ]
+  });
 
-  const stPedidoEntregue = await prisma.status_Pedido.create({ data: { nm_status: 'Entregue' } });
-  await prisma.status_Pedido.create({ data: { nm_status: 'Em processamento' } });
-  await prisma.status_Pedido.create({ data: { nm_status: 'Pago' } });
-  await prisma.status_Pedido.create({ data: { nm_status: 'Enviado' } });
-  await prisma.status_Pedido.create({ data: { nm_status: 'Cancelado' } });
+  const stPedidoEntregue = await prisma.status_Pedido.findFirst({
+    where: {
+      nm_status: 'Entregue'
+    }
+  });
 
   const fretePac = await prisma.modalidade_Frete.create({ data: { nm_modalidade: 'PAC', vl_fixo: 15.00 } });
   await prisma.modalidade_Frete.create({ data: { nm_modalidade: 'SEDEX', vl_fixo: 25.00 } });
@@ -97,9 +106,34 @@ async function main() {
   const end1 = await prisma.endereco.create({ data: { cd_cep: '01001-000', nm_logradouro: 'Praça da Sé', cd_numero: '100', nm_bairro: 'Sé', nm_cidade: 'São Paulo', sg_estado: 'SP', nm_tipo_endereco: 'Residencial', nm_identificacao: 'Casa', cd_cpf: '123.456.789-00' } });
 
   // 7. Inserindo Bandeiras e Cartões
-  const b1 = await prisma.bandeira_cartao.create({ data: { nm_bandeira: 'Visa' } });
-  const cartao1 = await prisma.cartao_credito.create({ data: { cd_numero_cartao: '4111111111111111', nm_nome_impresso_cartao: 'GABRIEL MEIRELES', cd_seguranca: '123', dt_validade_cartao: new Date('2027-12-01'), cartao_preferencial: true, cd_bandeira: b1.cd_bandeira, cd_cpf: '123.456.789-00' } });
+  const visa = await prisma.bandeira_cartao.create({
+    data: { nm_bandeira: 'Visa' }
+  });
 
+  const mastercard = await prisma.bandeira_cartao.create({
+    data: { nm_bandeira: 'Mastercard' }
+  });
+
+  const elo = await prisma.bandeira_cartao.create({
+    data: { nm_bandeira: 'Elo' }
+  });
+
+  const americanexpress = await prisma.bandeira_cartao.create({
+    data: { nm_bandeira: 'American Express' }
+  });
+  
+  
+  const cartao1 = await prisma.cartao_credito.create({
+    data: {
+      cd_numero_cartao: '4111111111111111',
+      nm_nome_impresso_cartao: 'GABRIEL MEIRELES',
+      cd_seguranca: '123',
+      dt_validade_cartao: new Date('2027-12-01'),
+      cartao_preferencial: true,
+      cd_bandeira: americanexpress.cd_bandeira,
+      cd_cpf: '123.456.789-00'
+    }
+    });
   // 8. GERADOR DO HISTÓRICO DE COMPRAS (14 Meses Retroativos Obrigatórios)
   console.log('⏳ Gerando e espalhando histórico de vendas de camisas...');
   const hoje = new Date();
@@ -147,7 +181,7 @@ async function main() {
           cd_cpf: c1.cd_cpf,
           cd_endereco: end1.cd_endereco,
           cd_modalidade: fretePac.cd_modalidade,
-          cd_status_pedido: stPedidoEntregue.cd_status_pedido,
+          cd_status_pedido: 1,
           itens: {
             create: itensParaCriar
           },
